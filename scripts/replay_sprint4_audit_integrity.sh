@@ -114,6 +114,13 @@ else
   record "FAIL" "f1_noise_prefix_closed" "child prefix corrupted JSON line"
 fi
 
+run_case "a3_child_stderr_nul_preserved" 0 timeout 5 "$GUARD" --policy "$POLICY" /usr/bin/python3 -c 'import sys; sys.stderr.buffer.write(b"A\x00B"); sys.stderr.flush()'
+if json_query "$RUN_ROOT/a3_child_stderr_nul_preserved/stderr.txt" 'obj.get("event") == "child_stderr" and obj.get("data") == "A\x00B"'; then
+  record "PASS" "a3_child_stderr_nul_preserved" "embedded NUL preserved in escaped child_stderr"
+else
+  record "FAIL" "a3_child_stderr_nul_preserved" "embedded NUL not preserved"
+fi
+
 run_case "f2_signal_exit_record" 143 timeout 5 "$GUARD" --policy "$POLICY" /usr/bin/python3 -c 'import os, signal; os.kill(os.getppid(), signal.SIGTERM)'
 if json_query "$RUN_ROOT/f2_signal_exit_record/stderr.txt" 'obj.get("event") == "supervisor_exit" and obj.get("reason") == "killed_by_signal"'; then
   record "PASS" "f2_signal_exit_record_present" "killed_by_signal recorded"
@@ -132,6 +139,36 @@ else
   record "FAIL" "f3_policy_string_rejected_reason" "malformed policy not rejected cleanly"
 fi
 
+cat > "$WORK/deep_policy.json" <<'JSON'
+{"policy_id":"deep","allowed_executables":["/bin/echo"],"extra":
+JSON
+python3 - "$WORK/deep_policy.json" <<'PY'
+import sys
+path = sys.argv[1]
+with open(path, "a", encoding="utf-8") as f:
+    f.write("[" * 80)
+    f.write("0")
+    f.write("]" * 80)
+    f.write("}\n")
+PY
+run_case "a1_deep_json_rejected" 2 timeout 5 "$GUARD" --policy "$WORK/deep_policy.json" /bin/echo DEEP_TEST
+if ! grep -q 'DEEP_TEST' "$RUN_ROOT/a1_deep_json_rejected/stdout.txt" &&
+   grep -q 'malformed JSON value' "$RUN_ROOT/a1_deep_json_rejected/stderr.txt"; then
+  record "PASS" "a1_deep_json_depth_limit" "deep nested JSON rejected"
+else
+  record "FAIL" "a1_deep_json_depth_limit" "deep nested JSON was not rejected cleanly"
+fi
+
+cat > "$WORK/unicode_policy.json" <<'JSON'
+{"policy_id":"unicode-\u0041","allowed_executables":["/bin/echo"]}
+JSON
+run_case "b6_unicode_policy_id_decoded" 0 timeout 5 "$GUARD" --policy "$WORK/unicode_policy.json" /bin/echo UNICODE_TEST
+if json_query "$RUN_ROOT/b6_unicode_policy_id_decoded/stderr.txt" 'obj.get("policy_id") == "unicode-A"'; then
+  record "PASS" "b6_unicode_policy_id_decoded" "unicode escape decoded"
+else
+  record "FAIL" "b6_unicode_policy_id_decoded" "unicode escape not decoded"
+fi
+
 run_case "f5_proc_self_exe_child_context" 0 timeout 5 "$GUARD" --policy "$POLICY" /usr/bin/python3 -c 'import os; os.execv("/proc/self/exe", ["/proc/self/exe", "--version"])'
 PY_REALPATH="$(realpath /usr/bin/python3)"
 if json_query "$RUN_ROOT/f5_proc_self_exe_child_context/stderr.txt" 'obj.get("event") == "exec_decision" and obj.get("raw_exe") == "/proc/self/exe" and obj.get("realpath") == "'"$PY_REALPATH"'"'; then
@@ -147,10 +184,17 @@ else
 fi
 
 run_case "f7_argv_truncation_marked" 0 timeout 5 "$GUARD" --policy "$POLICY" /bin/echo a b c d e f g h i j k l
-if json_query "$RUN_ROOT/f7_argv_truncation_marked/stderr.txt" 'obj.get("event") == "exec_decision" and obj.get("argv_truncated") is True and int(obj.get("argv_total_count", 0)) > 8'; then
+if json_query "$RUN_ROOT/f7_argv_truncation_marked/stderr.txt" 'obj.get("event") == "exec_decision" and obj.get("argv_truncated") is True and int(obj.get("argv_total_count", 0)) > 8 and obj.get("argv_total_count_capped") is False'; then
   record "PASS" "f7_argv_truncation_fields" "argv truncation metadata emitted"
 else
   record "FAIL" "f7_argv_truncation_fields" "missing argv truncation metadata"
+fi
+
+run_case "a2_argv_count_cap_marked" 0 timeout 5 "$GUARD" --policy "$POLICY" /usr/bin/python3 -c 'import os; os.execv("/bin/echo", ["echo"] + [str(i) for i in range(300)])'
+if json_query "$RUN_ROOT/a2_argv_count_cap_marked/stderr.txt" 'obj.get("event") == "exec_decision" and obj.get("raw_exe") == "/bin/echo" and obj.get("argv_truncated") is True and obj.get("argv_total_count") == 256 and obj.get("argv_total_count_capped") is True'; then
+  record "PASS" "a2_argv_count_cap_marked" "argv count cap disclosed"
+else
+  record "FAIL" "a2_argv_count_cap_marked" "argv count cap not disclosed"
 fi
 
 sha256sum "$SRC" "$GUARD" >"$RUN_ROOT/sha256s.txt"

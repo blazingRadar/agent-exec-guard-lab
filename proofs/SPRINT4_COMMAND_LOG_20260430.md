@@ -82,3 +82,46 @@ sha256sum guard/usernotify_exec_guard.c bin/usernotify_exec_guard scripts/replay
 ```
 
 Hashes recorded in `SPRINT4_AUDIT_INTEGRITY_HARDENING_20260430.md`.
+
+## Sweep After Independent Audits
+
+Independent Sprint 4 audits raised six low/medium fidelity and disclosure issues:
+
+- JSON parser nesting depth
+- argv count saturation disclosure
+- embedded NUL handling in child stderr
+- SIGKILL disclosure
+- async-signal-safe signal handler
+- `\uXXXX` escape decoding
+
+Commands:
+
+```bash
+gcc -Wall -Wextra -O2 -o bin/usernotify_exec_guard guard/usernotify_exec_guard.c
+./scripts/replay_sprint4_audit_integrity.sh
+```
+
+Result:
+
+```text
+pass=22 fail=0
+run_root=/home/blazingradar/agent-exec-guard-lab/proofs/sprint4_runs/sprint4-20260430T234709Z
+```
+
+```bash
+./scripts/replay_sprint2_identity.sh
+```
+
+Result:
+
+```text
+pass=12 fail=0
+run_root=/home/blazingradar/agent-exec-guard-lab/proofs/sprint2_runs/sprint2-20260430T234710Z
+```
+
+```bash
+gcc -Wall -Wextra -fanalyzer -O2 -o proofs/sprint3_scratch/usernotify_exec_guard_analyzer guard/usernotify_exec_guard.c
+rm -f proofs/sprint3_scratch/usernotify_exec_guard_analyzer
+```
+
+Result: analyzer compile exited 0 with no emitted diagnostics. Temporary analyzer binary was removed.

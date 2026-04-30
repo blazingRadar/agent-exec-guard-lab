@@ -1,0 +1,1 @@
+timeout 5 /home/blazingradar/agent-exec-guard-lab/bin/usernotify_exec_guard --policy /home/blazingradar/agent-exec-guard-lab/proofs/sprint4_runs/sprint4-20260430T234600Z/work/deep_policy.json /bin/echo DEEP_TEST 
