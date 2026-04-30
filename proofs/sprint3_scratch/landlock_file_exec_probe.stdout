@@ -1,0 +1,6 @@
+STATIC_PAYLOAD_EXECUTED
+landlock_abi=7
+execute_flag=0x1
+allowed_exec_exit=0
+blocked_exec_exit=126
+RESULT file_level_execute_rule=PASS

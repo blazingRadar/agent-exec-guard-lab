@@ -1,0 +1,13 @@
+{"event":"exec_decision","timestamp":"2026-04-30T22:05:53.202Z","policy_id":"sprint2_identity_allowlist_v1","pid":3222497,"syscall":59,"notif_id":12065699866756890023,"decision":"ALLOW","reason":"allowed_executable_identity","raw_exe":"/usr/bin/python3","realpath":"/usr/bin/python3.12","cwd":"/home/blazingradar","dev":66306,"ino":172886245,"sha256":"e1efa562c2cc2e35521a5c9c9b9939921001ff8ca9708a13ef15ace68cc2ccd7","argv":["/usr/bin/python3","-c","import subprocess; subprocess.run([\"/bin/rm\", \"--version\"], check=True)"]}
+{"event":"exec_decision","timestamp":"2026-04-30T22:05:53.220Z","policy_id":"sprint2_identity_allowlist_v1","pid":3222499,"syscall":59,"notif_id":12065699866756890024,"decision":"BLOCK","reason":"blocked_executable_identity","raw_exe":"/bin/rm","realpath":"/usr/bin/rm","cwd":"/home/blazingradar","dev":66306,"ino":172885254,"sha256":"8e3faaa5eb4a2a4d0e2788fe442bcac6d604be5a0c5a9f09d08f06e3a3fcf570","argv":["/bin/rm","--version"]}
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/usr/lib/python3.12/subprocess.py", line 548, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 1026, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+  File "/usr/lib/python3.12/subprocess.py", line 1955, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+PermissionError: [Errno 1] Operation not permitted: '/bin/rm'
+{"event":"supervisor_exit","timestamp":"2026-04-30T22:05:53.271Z","policy_id":"sprint2_identity_allowlist_v1","child_exit":1}

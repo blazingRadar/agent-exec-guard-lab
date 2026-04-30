@@ -1,0 +1,2 @@
+4d59cb357cea8577057ebb861294f1623768e5d973e0bfd3be80e573792e3d07  /home/blazingradar/agent-exec-guard-lab/guard/usernotify_exec_guard.c
+0bb35fd4ab75dc28aa9e1e9334dbee3646b25bb1902117abfe94f12ad536b61c  /home/blazingradar/agent-exec-guard-lab/bin/usernotify_exec_guard

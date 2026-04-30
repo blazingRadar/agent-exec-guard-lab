@@ -1,0 +1,3 @@
+{"event":"exec_decision","timestamp":"2026-04-30T22:11:45.486Z","policy_id":"sprint2_identity_allowlist_v1","pid":3224798,"syscall":59,"notif_id":5170799195463494541,"decision":"BLOCK","reason":"blocked_executable_identity","raw_exe":"/bin/rm","realpath":"/usr/bin/rm","cwd":"/home/blazingradar/agent-exec-guard-lab","dev":66306,"ino":172885254,"sha256":"8e3faaa5eb4a2a4d0e2788fe442bcac6d604be5a0c5a9f09d08f06e3a3fcf570","argv":["/bin/rm","--version"]}
+execvp: Operation not permitted
+{"event":"supervisor_exit","timestamp":"2026-04-30T22:11:45.486Z","policy_id":"sprint2_identity_allowlist_v1","child_exit":126}

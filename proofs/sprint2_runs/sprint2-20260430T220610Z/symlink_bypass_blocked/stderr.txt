@@ -1,0 +1,3 @@
+{"event":"exec_decision","timestamp":"2026-04-30T22:06:11.129Z","policy_id":"sprint2_identity_allowlist_v1","pid":3222754,"syscall":59,"notif_id":6348211920580689671,"decision":"BLOCK","reason":"blocked_executable_identity","raw_exe":"/home/blazingradar/agent-exec-guard-lab/proofs/sprint2_runs/sprint2-20260430T220610Z/work/python3","realpath":"/usr/bin/rm","cwd":"/home/blazingradar","dev":66306,"ino":172885254,"sha256":"8e3faaa5eb4a2a4d0e2788fe442bcac6d604be5a0c5a9f09d08f06e3a3fcf570","argv":["/home/blazingradar/agent-exec-guard-lab/proofs/sprint2_runs/sprint2-20260430T220610Z/work/python3","--version"]}
+execvp: Operation not permitted
+{"event":"supervisor_exit","timestamp":"2026-04-30T22:06:11.129Z","policy_id":"sprint2_identity_allowlist_v1","child_exit":126}

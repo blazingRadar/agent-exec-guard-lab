@@ -1,0 +1,14 @@
+{
+  "policy_id": "sprint2_identity_allowlist_v1",
+  "allowed_executables": [
+    "/bin/bash",
+    "/bin/cat",
+    "/bin/echo",
+    "/bin/ls",
+    "/bin/sh",
+    "/bin/true",
+    "/usr/bin/env",
+    "/usr/bin/git",
+    "/usr/bin/python3"
+  ]
+}

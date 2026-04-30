@@ -1,0 +1,5 @@
+git version 2.43.0
+landlock_abi=7
+target_exec_exit=0
+blocked_exec_exit=126
+RESULT dynamic_exact_execute_rules=PASS

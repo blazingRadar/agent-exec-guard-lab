@@ -1,0 +1,3 @@
+landlock_abi=7
+exec_after_replace_errno=13 Permission denied
+RESULT replacement_path_exec_denied=PASS
