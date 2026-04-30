@@ -51,6 +51,7 @@
 #define MAX_POLICY_ENTRIES 64
 #define MAX_ARGV_CAPTURE 8
 #define MAX_ARGV_COUNT_SCAN 256
+#define MAX_JSON_DEPTH 64
 
 static int audit_fd = STDERR_FILENO;
 static FILE *audit_out = NULL;
@@ -81,6 +82,7 @@ typedef struct {
     char argv_json[2048];
     bool argv_truncated;
     size_t argv_total_count;
+    bool argv_total_count_capped;
 } Decision;
 
 static void die(const char *msg) {
@@ -93,22 +95,21 @@ static FILE *audit_stream(void) {
 }
 
 static void fatal_signal_handler(int signo) {
-    const char *sig = "UNKNOWN";
+    const char *msg =
+        "{\"event\":\"supervisor_exit\",\"reason\":\"killed_by_signal\",\"signal\":\"UNKNOWN\"}\n";
+    size_t msg_len = sizeof("{\"event\":\"supervisor_exit\",\"reason\":\"killed_by_signal\",\"signal\":\"UNKNOWN\"}\n") - 1;
     if (signo == SIGTERM) {
-        sig = "SIGTERM";
+        msg = "{\"event\":\"supervisor_exit\",\"reason\":\"killed_by_signal\",\"signal\":\"SIGTERM\"}\n";
+        msg_len = sizeof("{\"event\":\"supervisor_exit\",\"reason\":\"killed_by_signal\",\"signal\":\"SIGTERM\"}\n") - 1;
     } else if (signo == SIGINT) {
-        sig = "SIGINT";
+        msg = "{\"event\":\"supervisor_exit\",\"reason\":\"killed_by_signal\",\"signal\":\"SIGINT\"}\n";
+        msg_len = sizeof("{\"event\":\"supervisor_exit\",\"reason\":\"killed_by_signal\",\"signal\":\"SIGINT\"}\n") - 1;
     } else if (signo == SIGHUP) {
-        sig = "SIGHUP";
+        msg = "{\"event\":\"supervisor_exit\",\"reason\":\"killed_by_signal\",\"signal\":\"SIGHUP\"}\n";
+        msg_len = sizeof("{\"event\":\"supervisor_exit\",\"reason\":\"killed_by_signal\",\"signal\":\"SIGHUP\"}\n") - 1;
     }
-    char buf[192];
-    int n = snprintf(buf, sizeof(buf),
-                     "{\"event\":\"supervisor_exit\",\"reason\":\"killed_by_signal\",\"signal\":\"%s\"}\n",
-                     sig);
-    if (n > 0) {
-        ssize_t ignored = write(audit_fd, buf, (size_t)n);
-        (void)ignored;
-    }
+    ssize_t ignored = write(audit_fd, msg, msg_len);
+    (void)ignored;
     _exit(128 + signo);
 }
 
@@ -306,6 +307,43 @@ static void json_escape(FILE *out, const char *s) {
     fputc('"', out);
 }
 
+static void json_escape_bytes(FILE *out, const char *s, size_t len) {
+    fputc('"', out);
+    for (size_t i = 0; i < len; i++) {
+        unsigned char ch = (unsigned char)s[i];
+        switch (ch) {
+        case '"':
+            fputs("\\\"", out);
+            break;
+        case '\\':
+            fputs("\\\\", out);
+            break;
+        case '\b':
+            fputs("\\b", out);
+            break;
+        case '\f':
+            fputs("\\f", out);
+            break;
+        case '\n':
+            fputs("\\n", out);
+            break;
+        case '\r':
+            fputs("\\r", out);
+            break;
+        case '\t':
+            fputs("\\t", out);
+            break;
+        default:
+            if (ch < 0x20) {
+                fprintf(out, "\\u%04x", ch);
+            } else {
+                fputc(ch, out);
+            }
+        }
+    }
+    fputc('"', out);
+}
+
 static void iso8601_now(char *buf, size_t buf_len) {
     struct timespec ts;
     clock_gettime(CLOCK_REALTIME, &ts);
@@ -450,6 +488,52 @@ static void skip_ws(const char **p) {
     }
 }
 
+static int json_hex_value(char ch) {
+    if (ch >= '0' && ch <= '9') {
+        return ch - '0';
+    }
+    if (ch >= 'a' && ch <= 'f') {
+        return 10 + ch - 'a';
+    }
+    if (ch >= 'A' && ch <= 'F') {
+        return 10 + ch - 'A';
+    }
+    return -1;
+}
+
+static bool append_utf8_codepoint(char *out, size_t out_len, size_t *used, unsigned cp) {
+    unsigned char bytes[4];
+    size_t count = 0;
+
+    if (cp <= 0x7f) {
+        bytes[count++] = (unsigned char)cp;
+    } else if (cp <= 0x7ff) {
+        bytes[count++] = (unsigned char)(0xc0 | (cp >> 6));
+        bytes[count++] = (unsigned char)(0x80 | (cp & 0x3f));
+    } else if (cp >= 0xd800 && cp <= 0xdfff) {
+        return false;
+    } else if (cp <= 0xffff) {
+        bytes[count++] = (unsigned char)(0xe0 | (cp >> 12));
+        bytes[count++] = (unsigned char)(0x80 | ((cp >> 6) & 0x3f));
+        bytes[count++] = (unsigned char)(0x80 | (cp & 0x3f));
+    } else if (cp <= 0x10ffff) {
+        bytes[count++] = (unsigned char)(0xf0 | (cp >> 18));
+        bytes[count++] = (unsigned char)(0x80 | ((cp >> 12) & 0x3f));
+        bytes[count++] = (unsigned char)(0x80 | ((cp >> 6) & 0x3f));
+        bytes[count++] = (unsigned char)(0x80 | (cp & 0x3f));
+    } else {
+        return false;
+    }
+
+    if (*used + count >= out_len) {
+        return false;
+    }
+    for (size_t i = 0; i < count; i++) {
+        out[(*used)++] = (char)bytes[i];
+    }
+    return true;
+}
+
 static bool parse_json_string(const char **p, char *out, size_t out_len) {
     skip_ws(p);
     if (**p != '"') {
@@ -488,16 +572,22 @@ static bool parse_json_string(const char **p, char *out, size_t out_len) {
             case 't':
                 ch = '\t';
                 break;
-            case 'u':
+            case 'u': {
+                unsigned cp = 0;
                 for (int i = 0; i < 4; i++) {
                     (*p)++;
-                    if (!(**p >= '0' && **p <= '9') && !(**p >= 'a' && **p <= 'f') &&
-                        !(**p >= 'A' && **p <= 'F')) {
+                    int hv = json_hex_value(**p);
+                    if (hv < 0) {
                         return false;
                     }
+                    cp = (cp << 4) | (unsigned)hv;
                 }
-                ch = '?';
-                break;
+                if (!append_utf8_codepoint(out, out_len, &used, cp)) {
+                    return false;
+                }
+                (*p)++;
+                continue;
+            }
             default:
                 return false;
             }
@@ -516,9 +606,12 @@ static bool parse_json_string(const char **p, char *out, size_t out_len) {
     return true;
 }
 
-static bool skip_json_value(const char **p);
+static bool skip_json_value(const char **p, unsigned depth);
 
-static bool skip_json_array(const char **p) {
+static bool skip_json_array(const char **p, unsigned depth) {
+    if (depth > MAX_JSON_DEPTH) {
+        return false;
+    }
     if (**p != '[') {
         return false;
     }
@@ -529,7 +622,7 @@ static bool skip_json_array(const char **p) {
         return true;
     }
     for (;;) {
-        if (!skip_json_value(p)) {
+        if (!skip_json_value(p, depth + 1)) {
             return false;
         }
         skip_ws(p);
@@ -544,7 +637,10 @@ static bool skip_json_array(const char **p) {
     }
 }
 
-static bool skip_json_object(const char **p) {
+static bool skip_json_object(const char **p, unsigned depth) {
+    if (depth > MAX_JSON_DEPTH) {
+        return false;
+    }
     char key[256];
     if (**p != '{') {
         return false;
@@ -564,7 +660,7 @@ static bool skip_json_object(const char **p) {
             return false;
         }
         (*p)++;
-        if (!skip_json_value(p)) {
+        if (!skip_json_value(p, depth + 1)) {
             return false;
         }
         skip_ws(p);
@@ -626,16 +722,19 @@ static bool skip_json_number(const char **p) {
     return *p > start;
 }
 
-static bool skip_json_value(const char **p) {
+static bool skip_json_value(const char **p, unsigned depth) {
+    if (depth > MAX_JSON_DEPTH) {
+        return false;
+    }
     char ignored[256];
     skip_ws(p);
     switch (**p) {
     case '"':
         return parse_json_string(p, ignored, sizeof(ignored));
     case '{':
-        return skip_json_object(p);
+        return skip_json_object(p, depth + 1);
     case '[':
-        return skip_json_array(p);
+        return skip_json_array(p, depth + 1);
     case 't':
         return skip_json_literal(p, "true");
     case 'f':
@@ -721,7 +820,7 @@ static void load_policy(const char *path, Policy *policy) {
                         cursor++;
                     }
                 }
-            } else if (!skip_json_value(&cursor)) {
+            } else if (!skip_json_value(&cursor, 0)) {
                 free(buf);
                 json_parse_error("malformed JSON value");
             }
@@ -794,12 +893,15 @@ static bool resolve_child_exe(pid_t pid, const char *raw, char *cwd, size_t cwd_
 }
 
 static void capture_argv_json(pid_t pid, uint64_t argv_addr, char *out, size_t out_len,
-                              bool *truncated, size_t *total_count) {
+                              bool *truncated, size_t *total_count, bool *count_capped) {
     if (truncated) {
         *truncated = false;
     }
     if (total_count) {
         *total_count = 0;
+    }
+    if (count_capped) {
+        *count_capped = false;
     }
     size_t used = 0;
     used += snprintf(out + used, out_len - used, "[");
@@ -847,6 +949,17 @@ static void capture_argv_json(pid_t pid, uint64_t argv_addr, char *out, size_t o
         used += (size_t)written;
         if (used >= out_len && truncated) {
             *truncated = true;
+        }
+    }
+    uint64_t next_ptr = 0;
+    if (read_child_bytes(pid, argv_addr + (MAX_ARGV_COUNT_SCAN * sizeof(uint64_t)), &next_ptr,
+                         sizeof(next_ptr)) &&
+        next_ptr != 0) {
+        if (truncated) {
+            *truncated = true;
+        }
+        if (count_capped) {
+            *count_capped = true;
         }
     }
     if (used < out_len) {
@@ -969,7 +1082,7 @@ static void decide_exec(const Policy *policy, const struct seccomp_notif *req, D
         snprintf(decision->raw_exe, sizeof(decision->raw_exe), "<execveat>");
         capture_argv_json(req->pid, req->data.args[2], decision->argv_json,
                           sizeof(decision->argv_json), &decision->argv_truncated,
-                          &decision->argv_total_count);
+                          &decision->argv_total_count, &decision->argv_total_count_capped);
         return;
     }
 
@@ -982,7 +1095,7 @@ static void decide_exec(const Policy *policy, const struct seccomp_notif *req, D
 
     capture_argv_json(req->pid, req->data.args[1], decision->argv_json,
                       sizeof(decision->argv_json), &decision->argv_truncated,
-                      &decision->argv_total_count);
+                      &decision->argv_total_count, &decision->argv_total_count_capped);
 
     if (!resolve_child_exe(req->pid, decision->raw_exe, decision->cwd, sizeof(decision->cwd),
                            decision->real_path, sizeof(decision->real_path))) {
@@ -1042,8 +1155,10 @@ static void write_decision_json(const char *event, const Policy *policy,
                 (unsigned long long)decision->dev, (unsigned long long)decision->ino);
         json_escape(out, decision->sha256);
         fprintf(out, ",\"argv\":%s", decision->argv_json[0] ? decision->argv_json : "[]");
-        fprintf(out, ",\"argv_truncated\":%s,\"argv_total_count\":%zu",
-                decision->argv_truncated ? "true" : "false", decision->argv_total_count);
+        fprintf(out,
+                ",\"argv_truncated\":%s,\"argv_total_count\":%zu,\"argv_total_count_capped\":%s",
+                decision->argv_truncated ? "true" : "false", decision->argv_total_count,
+                decision->argv_total_count_capped ? "true" : "false");
     }
     if (child_exit >= 0) {
         fprintf(out, ",\"child_exit\":%d", child_exit);
@@ -1061,11 +1176,7 @@ static void write_child_stderr_json(const Policy *policy, const char *buf, size_
     fprintf(out, ",\"policy_id\":");
     json_escape(out, policy->policy_id);
     fprintf(out, ",\"data\":");
-    char tmp[1025];
-    size_t n = len < sizeof(tmp) - 1 ? len : sizeof(tmp) - 1;
-    memcpy(tmp, buf, n);
-    tmp[n] = '\0';
-    json_escape(out, tmp);
+    json_escape_bytes(out, buf, len);
     fprintf(out, "}\n");
     fflush(out);
 }

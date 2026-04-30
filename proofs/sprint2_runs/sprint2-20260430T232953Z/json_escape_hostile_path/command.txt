@@ -1,0 +1,1 @@
+timeout 5 /home/blazingradar/agent-exec-guard-lab/bin/usernotify_exec_guard --policy /home/blazingradar/agent-exec-guard-lab/policy/sprint2.allow.json /home/blazingradar/agent-exec-guard-lab/proofs/sprint2_runs/sprint2-20260430T232953Z/work/bad\"name 
