@@ -19,21 +19,23 @@ The deeper governance system remains private.
 ## Current Status
 
 - Lab initialized: 2026-04-30
-- Implementation status: Sprint 9 productized demo in progress
+- Implementation status: Sprint 9 guided demo passed; post-audit portability cleanup passed
 - Public demo status: private audit before any public repo/demo
 - Primary target: pinned OpenHands 1.6.0 headless `CodeActAgent` command path
 - Proof standard: reproduce locally before publishing anything
 
 ## Quick Demo
 
-With Docker available and an OpenAI API key in the environment:
+With Docker available, the pinned OpenHands source already present at `external/OpenHands-1.6.0`, and an OpenAI API key in the environment:
 
 ```bash
-./scripts/demo/run_openhands_guard_demo.sh \
-  --env-file /home/blazingradar/huddy/config/.env
+export OPENAI_API_KEY=...
+./scripts/demo/run_openhands_guard_demo.sh
 ```
 
 The runner compiles `policy/examples/openhands_action_server.yaml` into a fresh run-local JSON policy, launches the pinned OpenHands headless agent proof, and writes artifacts under `proofs/sprint9_runs/`.
+
+This is a guided private demo path, not yet a public self-serve clone-and-run package.
 
 See [docs/DEMO.md](docs/DEMO.md) for the full command, outputs, and claim boundaries.
 

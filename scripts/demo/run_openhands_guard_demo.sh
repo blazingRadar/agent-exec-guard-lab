@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
 set -u
 
-ROOT="/home/blazingradar/agent-exec-guard-lab"
+ROOT="${AEG_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
 POLICY_YAML="$ROOT/policy/examples/openhands_action_server.yaml"
 MODEL_NAME="${SPRINT9_MODEL:-openai/gpt-5.2}"
 ENV_FILE=""
 RUN_ID="sprint9-demo-$(date -u +%Y%m%dT%H%M%SZ)"
 RUN_ROOT="$ROOT/proofs/sprint9_runs/$RUN_ID"
+OPENHANDS_RUN_ROOT=""
+pass_count=0
+fail_count=0
 
 usage() {
   cat <<'EOF'
@@ -19,6 +22,33 @@ Options:
   -h, --help           Show this help.
 EOF
 }
+
+cleanup_runtime() {
+  local run_root="$OPENHANDS_RUN_ROOT"
+  local container_name=""
+  if [ -z "$run_root" ] && [ -f "$ROOT/proofs/sprint8_runs/latest_frontier_agent.txt" ]; then
+    run_root="$(cat "$ROOT/proofs/sprint8_runs/latest_frontier_agent.txt")"
+  fi
+  if [ -n "$run_root" ] && [ -f "$run_root/runtime_container_status.txt" ]; then
+    container_name="$(awk '{print $1; exit}' "$run_root/runtime_container_status.txt")"
+  fi
+  if [ -n "$container_name" ]; then
+    sg docker -c "docker rm -f '$container_name'" \
+      >"$RUN_ROOT/post_run_container_cleanup.stdout" \
+      2>"$RUN_ROOT/post_run_container_cleanup.stderr" || true
+  fi
+}
+
+finish() {
+  local rc=$?
+  cleanup_runtime
+  if [ -n "${SUMMARY:-}" ] && [ -f "$SUMMARY" ]; then
+    printf 'pass=%s fail=%s\n' "$pass_count" "$fail_count" | tee -a "$SUMMARY" >/dev/null
+  fi
+  exit "$rc"
+}
+
+trap finish EXIT
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
@@ -63,6 +93,11 @@ record() {
   local name="$2"
   local message="$3"
   printf '%s %s %s\n' "$status" "$name" "$message" | tee -a "$SUMMARY"
+  if [ "$status" = "PASS" ]; then
+    pass_count=$((pass_count + 1))
+  else
+    fail_count=$((fail_count + 1))
+  fi
 }
 
 printf 'run_id=%s\n' "$RUN_ID" >"$SUMMARY"
@@ -70,6 +105,39 @@ printf 'run_root=%s\n' "$RUN_ROOT" >>"$SUMMARY"
 printf 'model=%s\n' "$MODEL_NAME" >>"$SUMMARY"
 printf 'policy_yaml=%s\n' "$POLICY_YAML" >>"$SUMMARY"
 printf 'compiled_policy=%s\n' "$COMPILED_POLICY" >>"$SUMMARY"
+
+if [ ! -x "$ROOT/scripts/policy/compile_policy.py" ]; then
+  record "FAIL" "preflight_compiler" "missing executable compiler at $ROOT/scripts/policy/compile_policy.py"
+  exit 2
+else
+  record "PASS" "preflight_compiler" "policy compiler present"
+fi
+
+if [ ! -x "$ROOT/scripts/integration/replay_sprint8_frontier_agent.sh" ]; then
+  record "FAIL" "preflight_replay" "missing Sprint 8 replay harness"
+  exit 2
+else
+  record "PASS" "preflight_replay" "Sprint 8 replay harness present"
+fi
+
+if [ ! -d "$ROOT/external/OpenHands-1.6.0/.git" ]; then
+  record "FAIL" "preflight_openhands_source" "missing pinned OpenHands source at external/OpenHands-1.6.0"
+  exit 2
+else
+  record "PASS" "preflight_openhands_source" "pinned OpenHands source present"
+fi
+
+if ! command -v docker >/dev/null 2>&1; then
+  record "FAIL" "preflight_docker" "docker command missing"
+  exit 2
+fi
+
+if ! sg docker -c "docker info >/dev/null 2>&1"; then
+  record "FAIL" "preflight_docker" "docker not reachable via sg docker"
+  exit 2
+else
+  record "PASS" "preflight_docker" "docker reachable via sg docker"
+fi
 
 if [ -n "$ENV_FILE" ]; then
   if [ ! -f "$ENV_FILE" ]; then
@@ -146,7 +214,8 @@ else
 fi
 
 log_cmd "SPRINT8_RUNS_DIR=$RUN_ROOT/openhands_runs SPRINT8_POLICY_JSON_HOST=$COMPILED_POLICY SPRINT8_POLICY_JSON_SANDBOX=$COMPILED_POLICY_SANDBOX scripts/integration/replay_sprint8_frontier_agent.sh"
-if SPRINT8_MODEL="$MODEL_NAME" \
+if SPRINT8_ROOT="$ROOT" \
+  SPRINT8_MODEL="$MODEL_NAME" \
   SPRINT8_RUNS_DIR="$RUN_ROOT/openhands_runs" \
   SPRINT8_POLICY_JSON_HOST="$COMPILED_POLICY" \
   SPRINT8_POLICY_JSON_SANDBOX="$COMPILED_POLICY_SANDBOX" \

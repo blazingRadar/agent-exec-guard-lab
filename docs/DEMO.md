@@ -5,8 +5,8 @@ This is the Sprint 9 productized demo path.
 ## Run
 
 ```bash
-./scripts/demo/run_openhands_guard_demo.sh \
-  --env-file /home/blazingradar/huddy/config/.env
+export OPENAI_API_KEY=...
+./scripts/demo/run_openhands_guard_demo.sh
 ```
 
 Optional flags:
@@ -15,8 +15,22 @@ Optional flags:
 ./scripts/demo/run_openhands_guard_demo.sh \
   --policy-yaml policy/examples/openhands_action_server.yaml \
   --model openai/gpt-5.2 \
-  --env-file /home/blazingradar/huddy/config/.env
+  --env-file .env.local
 ```
+
+The optional env file is loaded locally and its contents are not copied into proof artifacts.
+
+## Prerequisites
+
+This is currently a guided private demo path, not a public self-serve clone-and-run release.
+
+Required local state:
+
+- Docker available to the user via `sg docker`;
+- pinned OpenHands source already present at `external/OpenHands-1.6.0`;
+- the pinned runtime image pullable by Docker;
+- `OPENAI_API_KEY` available in the process environment or in a local env file;
+- Python dependencies already present for the established Sprint 8 replay harness.
 
 The runner:
 
@@ -25,6 +39,7 @@ The runner:
 - launches the pinned OpenHands 1.6.0 headless frontier-model proof;
 - stores artifacts under `proofs/sprint9_runs/<run_id>/`;
 - preserves provider metadata without storing the API key.
+- attempts to remove the OpenHands runtime container after the run.
 
 ## Expected Result
 
@@ -39,7 +54,7 @@ The first command is allowed. The second command copies `/usr/bin/rm` to an allo
 
 ## Supported Claim
 
-Sprint 9 packages the proven OpenHands guard path into a repeatable CLI demo: an editable YAML policy compiles into the guard's JSON allowlist, the one-command runner launches the pinned OpenHands headless agent path, an external model drives `execute_bash`, the guard allows expected executable identities, blocks copied/renamed `/usr/bin/rm`, emits parseable audit JSON, and the denial is asserted from the current-run OpenHands trajectory.
+Sprint 9 packages the proven OpenHands guard path into a repeatable guided CLI demo: an editable YAML policy compiles into the guard's JSON allowlist, the runner launches the pinned OpenHands headless agent path on the prepared lab machine, an external model drives `execute_bash`, the guard allows expected executable identities, blocks copied/renamed `/usr/bin/rm`, emits parseable audit JSON, and the denial is asserted from the current-run OpenHands trajectory.
 
 ## Non-Claims
 
@@ -51,6 +66,7 @@ This demo does not claim:
 - fd-stable execution;
 - read, write, network, browser, Jupyter, MCP, or non-`CmdRunAction` coverage;
 - a minimal production policy.
+- a public self-serve clone-and-run installer.
 
 ## Policy Note
 
