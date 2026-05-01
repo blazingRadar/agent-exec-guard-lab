@@ -1,0 +1,12 @@
+[92m18:29:05 - openhands:ERROR[0m: logger.py:379 - Uncaught exception
+Traceback (most recent call last):
+  File "/home/blazingradar/agent-exec-guard-lab/proofs/sprint7_runs/sprint7-headless-agent-20260501T012903Z/sprint7_headless_agent.py", line 19, in <module>
+    from openhands.core.main import run_controller  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/core/main.py", line 43, in <module>
+    from openhands.mcp import add_mcp_tools_to_agent
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/mcp/__init__.py", line 1, in <module>
+    from openhands.mcp.client import MCPClient
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/mcp/client.py", line 4, in <module>
+    from fastmcp import Client
+ModuleNotFoundError: No module named 'fastmcp'

@@ -905,9 +905,14 @@ static void capture_argv_json(pid_t pid, uint64_t argv_addr, char *out, size_t o
     }
     size_t used = 0;
     used += snprintf(out + used, out_len - used, "[");
+    bool saw_argv_terminator = false;
     for (size_t i = 0; i < MAX_ARGV_COUNT_SCAN; i++) {
         uint64_t ptr = 0;
-        if (!read_child_bytes(pid, argv_addr + (i * sizeof(uint64_t)), &ptr, sizeof(ptr)) || ptr == 0) {
+        if (!read_child_bytes(pid, argv_addr + (i * sizeof(uint64_t)), &ptr, sizeof(ptr))) {
+            break;
+        }
+        if (ptr == 0) {
+            saw_argv_terminator = true;
             break;
         }
         if (total_count) {
@@ -951,10 +956,7 @@ static void capture_argv_json(pid_t pid, uint64_t argv_addr, char *out, size_t o
             *truncated = true;
         }
     }
-    uint64_t next_ptr = 0;
-    if (read_child_bytes(pid, argv_addr + (MAX_ARGV_COUNT_SCAN * sizeof(uint64_t)), &next_ptr,
-                         sizeof(next_ptr)) &&
-        next_ptr != 0) {
+    if (!saw_argv_terminator) {
         if (truncated) {
             *truncated = true;
         }

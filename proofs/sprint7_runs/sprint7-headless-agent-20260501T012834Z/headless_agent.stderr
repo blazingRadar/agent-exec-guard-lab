@@ -1,0 +1,24 @@
+[92m18:28:36 - openhands:ERROR[0m: logger.py:379 - Uncaught exception
+Traceback (most recent call last):
+  File "/home/blazingradar/agent-exec-guard-lab/proofs/sprint7_runs/sprint7-headless-agent-20260501T012834Z/sprint7_headless_agent.py", line 19, in <module>
+    from openhands.core.main import run_controller  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/core/main.py", line 16, in <module>
+    import openhands.agenthub  # noqa F401 (we import this to get the agents registered)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/agenthub/__init__.py", line 6, in <module>
+    from openhands.agenthub import (  # noqa: E402
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/agenthub/codeact_agent/__init__.py", line 1, in <module>
+    from openhands.agenthub.codeact_agent.codeact_agent import CodeActAgent
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/agenthub/codeact_agent/codeact_agent.py", line 22, in <module>
+    import openhands.agenthub.codeact_agent.function_calling as codeact_function_calling
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/agenthub/codeact_agent/function_calling.py", line 19, in <module>
+    from openhands.agenthub.codeact_agent.tools import (
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/agenthub/codeact_agent/tools/__init__.py", line 2, in <module>
+    from .browser import BrowserTool
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/agenthub/codeact_agent/tools/browser.py", line 147, in <module>
+    assert action.signature in _BROWSER_TOOL_DESCRIPTION, (
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Browser description mismatch. Please double check if the BrowserGym updated their action space.
+
+Action: fill(bid: str, value: str, enable_autocomplete_menu: bool = False)

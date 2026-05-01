@@ -1,0 +1,26 @@
+run_id=sprint4-20260501T013852Z
+root=/home/blazingradar/agent-exec-guard-lab
+PASS compile gcc clean
+FAIL f1_forged_stderr_is_child_stderr expected_exit=0 actual_exit=126
+FAIL f1_forged_stderr_demoted forged JSON reached audit stream as decision
+PASS f1_noise_cannot_prefix_supervisor_json exit=0
+PASS f1_noise_prefix_closed no child prefix on supervisor JSON
+PASS a3_child_stderr_nul_preserved exit=0
+PASS a3_child_stderr_nul_preserved embedded NUL preserved in escaped child_stderr
+PASS f2_signal_exit_record exit=143
+PASS f2_signal_exit_record_present killed_by_signal recorded
+PASS f3_policy_string_rejected exit=2
+PASS f3_policy_string_rejected_reason malformed policy failed closed
+PASS a1_deep_json_rejected exit=2
+PASS a1_deep_json_depth_limit deep nested JSON rejected
+PASS b6_unicode_policy_id_decoded exit=0
+PASS b6_unicode_policy_id_decoded unicode escape decoded
+PASS f5_proc_self_exe_child_context exit=0
+PASS f5_proc_self_exe_resolved_to_child numeric proc resolution used
+PASS f6_no_sha256sum_exec source no longer references sha256sum
+PASS f7_argv_truncation_marked exit=0
+PASS f7_argv_truncation_fields argv truncation metadata emitted
+PASS a2_argv_count_cap_marked exit=0
+PASS a2_argv_count_cap_marked argv count cap disclosed
+pass=20 fail=2
+run_root=/home/blazingradar/agent-exec-guard-lab/proofs/sprint4_runs/sprint4-20260501T013852Z

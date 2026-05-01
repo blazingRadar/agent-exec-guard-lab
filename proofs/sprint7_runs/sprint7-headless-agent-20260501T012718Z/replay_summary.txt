@@ -1,0 +1,11 @@
+run_id=sprint7-headless-agent-20260501T012718Z
+source_commit=c5e0de8ecd85cef10e7808d57e9f939f3770ab9d
+PASS source_commit c5e0de8ecd85cef10e7808d57e9f939f3770ab9d
+FAIL headless_agent OpenHands headless agent loop failed
+FAIL runtime_container_found missing OpenHands runtime container
+FAIL llm_tool_calls missing LLM tool-call evidence
+FAIL guard_blocked_python3 missing copied rm block
+FAIL guard_allowed_cat missing allowed cat
+FAIL openhands_observed_denial missing OpenHands denial observation
+pass=1 fail=6
+run_root=/home/blazingradar/agent-exec-guard-lab/proofs/sprint7_runs/sprint7-headless-agent-20260501T012718Z

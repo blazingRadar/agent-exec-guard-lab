@@ -1,0 +1,16 @@
+run_id=sprint2-20260501T014017Z
+root=/home/blazingradar/agent-exec-guard-lab
+PASS compile gcc clean
+PASS allow_git exit=0 json=valid
+PASS direct_block_rm exit=126 json=valid
+PASS direct_block_rm_output rm output absent
+PASS bash_nested_block_rm exit=126 json=valid
+PASS python_nested_block_rm exit=1 json=valid
+PASS copy_rename_bypass_blocked exit=126 json=valid
+PASS copy_bypass_output renamed rm did not execute
+PASS symlink_bypass_blocked exit=126 json=valid
+PASS env_path_bypass_blocked exit=126 json=valid
+PASS json_escape_hostile_path exit=126 json=valid
+PASS execveat_blocked exit=0 json=valid
+pass=12 fail=0
+run_root=/home/blazingradar/agent-exec-guard-lab/proofs/sprint2_runs/sprint2-20260501T014017Z

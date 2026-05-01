@@ -1,0 +1,14 @@
+[92m18:24:21 - openhands:ERROR[0m: logger.py:379 - Uncaught exception
+Traceback (most recent call last):
+  File "/home/blazingradar/agent-exec-guard-lab/proofs/sprint7_runs/sprint7-headless-agent-20260501T012419Z/sprint7_headless_agent.py", line 18, in <module>
+    from openhands.core.config import load_openhands_config  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/core/config/__init__.py", line 18, in <module>
+    from openhands.core.config.utils import (
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/core/config/utils.py", line 38, in <module>
+    from openhands.storage import get_file_store
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/storage/__init__.py", line 7, in <module>
+    from openhands.storage.google_cloud import GoogleCloudFileStore
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/storage/google_cloud.py", line 3, in <module>
+    from google.api_core.exceptions import NotFound
+ModuleNotFoundError: No module named 'google'

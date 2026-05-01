@@ -1,0 +1,33 @@
+[92m18:27:41 - openhands:ERROR[0m: logger.py:379 - Uncaught exception
+Traceback (most recent call last):
+  File "/home/blazingradar/agent-exec-guard-lab/proofs/sprint7_runs/sprint7-headless-agent-20260501T012740Z/sprint7_headless_agent.py", line 19, in <module>
+    from openhands.core.main import run_controller  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/core/main.py", line 16, in <module>
+    import openhands.agenthub  # noqa F401 (we import this to get the agents registered)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/agenthub/__init__.py", line 6, in <module>
+    from openhands.agenthub import (  # noqa: E402
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/agenthub/browsing_agent/__init__.py", line 1, in <module>
+    from openhands.agenthub.browsing_agent.browsing_agent import BrowsingAgent
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/agenthub/browsing_agent/browsing_agent.py", line 13, in <module>
+    from openhands.agenthub.browsing_agent.response_parser import BrowsingResponseParser
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/agenthub/browsing_agent/response_parser.py", line 11, in <module>
+    from openhands.controller.action_parser import ActionParser, ResponseParser
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/controller/__init__.py", line 1, in <module>
+    from openhands.controller.agent_controller import AgentController
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/controller/agent_controller.py", line 35, in <module>
+    from openhands.controller.agent import Agent
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/controller/agent.py", line 30, in <module>
+    from openhands.runtime.plugins import PluginRequirement
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/runtime/__init__.py", line 10, in <module>
+    from openhands.runtime.base import Runtime
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/runtime/base.py", line 71, in <module>
+    from openhands.runtime.plugins import (
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/runtime/plugins/__init__.py", line 13, in <module>
+    from openhands.runtime.plugins.jupyter import JupyterPlugin, JupyterRequirement
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/runtime/plugins/jupyter/__init__.py", line 18, in <module>
+    from openhands.runtime.plugins.jupyter.execute_server import JupyterKernel
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/runtime/plugins/jupyter/execute_server.py", line 16, in <module>
+    import tornado
+ModuleNotFoundError: No module named 'tornado'

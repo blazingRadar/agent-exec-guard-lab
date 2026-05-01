@@ -1,0 +1,16 @@
+run_id=sprint5-docker-20260501T014022Z
+image=python:3.12-slim
+root=/home/blazingradar/agent-exec-guard-lab
+PASS image_identity recorded
+PASS docker_metadata_inspect HostConfig retained
+PASS docker_securityopt_default HostConfig.SecurityOpt=None
+PASS docker_proc_status_seccomp container reports Seccomp:2
+PASS allowed_python exit=0 json=valid
+PASS allowed_python_decision ALLOW decision recorded
+PASS blocked_renamed_rm exit=126 json=valid
+PASS blocked_renamed_rm_reason identity block recorded
+PASS blocked_renamed_rm_output renamed rm did not execute
+PASS stderr_forgery_contained exit=0 json=valid
+PASS stderr_forgery_contained_check forgery captured as child_stderr
+pass=11 fail=0
+run_root=/home/blazingradar/agent-exec-guard-lab/proofs/sprint5_runs/sprint5-docker-20260501T014022Z

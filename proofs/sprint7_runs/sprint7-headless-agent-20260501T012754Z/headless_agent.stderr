@@ -1,0 +1,31 @@
+[92m18:27:56 - openhands:ERROR[0m: logger.py:379 - Uncaught exception
+Traceback (most recent call last):
+  File "/home/blazingradar/agent-exec-guard-lab/proofs/sprint7_runs/sprint7-headless-agent-20260501T012754Z/sprint7_headless_agent.py", line 19, in <module>
+    from openhands.core.main import run_controller  # noqa: E402
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/core/main.py", line 16, in <module>
+    import openhands.agenthub  # noqa F401 (we import this to get the agents registered)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/agenthub/__init__.py", line 6, in <module>
+    from openhands.agenthub import (  # noqa: E402
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/agenthub/browsing_agent/__init__.py", line 1, in <module>
+    from openhands.agenthub.browsing_agent.browsing_agent import BrowsingAgent
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/agenthub/browsing_agent/browsing_agent.py", line 13, in <module>
+    from openhands.agenthub.browsing_agent.response_parser import BrowsingResponseParser
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/agenthub/browsing_agent/response_parser.py", line 11, in <module>
+    from openhands.controller.action_parser import ActionParser, ResponseParser
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/controller/__init__.py", line 1, in <module>
+    from openhands.controller.agent_controller import AgentController
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/controller/agent_controller.py", line 35, in <module>
+    from openhands.controller.agent import Agent
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/controller/agent.py", line 30, in <module>
+    from openhands.runtime.plugins import PluginRequirement
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/runtime/__init__.py", line 11, in <module>
+    from openhands.runtime.impl.cli.cli_runtime import CLIRuntime
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/runtime/impl/__init__.py", line 10, in <module>
+    from openhands.runtime.impl.action_execution.action_execution_client import (
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/runtime/impl/action_execution/action_execution_client.py", line 57, in <module>
+    from openhands.runtime.utils.system_stats import update_last_execution_time
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/runtime/utils/system_stats.py", line 12, in <module>
+    import psutil
+ModuleNotFoundError: No module named 'psutil'

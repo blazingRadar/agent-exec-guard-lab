@@ -1,0 +1,302 @@
+[
+    {
+        "Id": "dc56ea2427a98f042189aa1ef2d6b37e77810681fc73560ffccb5f15cd5fa7e7",
+        "Created": "2026-05-01T01:35:49.404955553Z",
+        "Path": "/lab/bin/usernotify_exec_guard",
+        "Args": [
+            "--policy",
+            "/lab/policy/integration/openhands_action_server.allow.json",
+            "/openhands/micromamba/bin/micromamba",
+            "run",
+            "-n",
+            "openhands",
+            "poetry",
+            "run",
+            "python",
+            "-u",
+            "-m",
+            "openhands.runtime.action_execution_server",
+            "34404",
+            "--working-dir",
+            "/lab/proofs/sprint7_runs/sprint7-headless-agent-20260501T013546Z/workspace",
+            "--username",
+            "daemon",
+            "--user-id",
+            "1",
+            "--no-enable-browser"
+        ],
+        "State": {
+            "Status": "exited",
+            "Running": false,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 0,
+            "ExitCode": 3,
+            "Error": "",
+            "StartedAt": "2026-05-01T01:35:49.491195931Z",
+            "FinishedAt": "2026-05-01T01:36:03.15941866Z"
+        },
+        "Image": "sha256:cd7816c0780dd59009372361c0f5ee61cdf0e0057c6696d681a4330766c62e60",
+        "ResolvConfPath": "/var/lib/docker/containers/dc56ea2427a98f042189aa1ef2d6b37e77810681fc73560ffccb5f15cd5fa7e7/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/dc56ea2427a98f042189aa1ef2d6b37e77810681fc73560ffccb5f15cd5fa7e7/hostname",
+        "HostsPath": "/var/lib/docker/containers/dc56ea2427a98f042189aa1ef2d6b37e77810681fc73560ffccb5f15cd5fa7e7/hosts",
+        "LogPath": "/var/lib/docker/containers/dc56ea2427a98f042189aa1ef2d6b37e77810681fc73560ffccb5f15cd5fa7e7/dc56ea2427a98f042189aa1ef2d6b37e77810681fc73560ffccb5f15cd5fa7e7-json.log",
+        "Name": "/openhands-runtime-sprint7headless",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "docker-default",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "/home/blazingradar/agent-exec-guard-lab:/lab:rw",
+                "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0:/openhands/code:ro"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "bridge",
+            "PortBindings": {
+                "34404/tcp": [
+                    {
+                        "HostIp": "0.0.0.0",
+                        "HostPort": "34404"
+                    }
+                ],
+                "51629/tcp": [
+                    {
+                        "HostIp": "0.0.0.0",
+                        "HostPort": "51629"
+                    }
+                ],
+                "57903/tcp": [
+                    {
+                        "HostIp": "0.0.0.0",
+                        "HostPort": "57903"
+                    }
+                ]
+            },
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": null,
+            "DnsSearch": null,
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": null,
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": null,
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/acpi",
+                "/proc/asound",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/sys/devices/virtual/powercap",
+                "/sys/firmware"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ],
+            "Init": true
+        },
+        "Storage": {
+            "RootFS": {
+                "Snapshot": {
+                    "Name": "overlayfs"
+                }
+            }
+        },
+        "Mounts": [
+            {
+                "Type": "bind",
+                "Source": "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0",
+                "Destination": "/openhands/code",
+                "Mode": "ro",
+                "RW": false,
+                "Propagation": "rprivate"
+            },
+            {
+                "Type": "bind",
+                "Source": "/home/blazingradar/agent-exec-guard-lab",
+                "Destination": "/lab",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": "rprivate"
+            }
+        ],
+        "Config": {
+            "Hostname": "dc56ea2427a9",
+            "Domainname": "",
+            "User": "root",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "34404/tcp": {},
+                "51629/tcp": {},
+                "57903/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "port=34404",
+                "PYTHONUNBUFFERED=1",
+                "VSCODE_PORT=42636",
+                "APP_PORT_1=51629",
+                "APP_PORT_2=57903",
+                "OPENHANDS_SESSION_ID=sprint7headless",
+                "PIP_BREAK_SYSTEM_PACKAGES=1",
+                "PYTHONPATH=/openhands/code",
+                "SHELL=/bin/bash",
+                "PATH=/openhands/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=C.UTF-8",
+                "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+                "PYTHON_VERSION=3.12.13",
+                "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684",
+                "POETRY_HOME=/usr/local",
+                "POETRY_VIRTUALENVS_PATH=/openhands/poetry",
+                "MAMBA_ROOT_PREFIX=/openhands/micromamba",
+                "LC_ALL=C.UTF-8",
+                "EDITOR=code",
+                "VISUAL=code",
+                "GIT_EDITOR=code --wait",
+                "OPENVSCODE_SERVER_ROOT=/openhands/.openvscode-server"
+            ],
+            "Cmd": [
+                "/lab/bin/usernotify_exec_guard",
+                "--policy",
+                "/lab/policy/integration/openhands_action_server.allow.json",
+                "/openhands/micromamba/bin/micromamba",
+                "run",
+                "-n",
+                "openhands",
+                "poetry",
+                "run",
+                "python",
+                "-u",
+                "-m",
+                "openhands.runtime.action_execution_server",
+                "34404",
+                "--working-dir",
+                "/lab/proofs/sprint7_runs/sprint7-headless-agent-20260501T013546Z/workspace",
+                "--username",
+                "daemon",
+                "--user-id",
+                "1",
+                "--no-enable-browser"
+            ],
+            "Image": "ghcr.io/openhands/runtime:1.6.0-nikolaik",
+            "Volumes": {
+                "/lab": {},
+                "/openhands/code": {}
+            },
+            "WorkingDir": "/openhands/code",
+            "Entrypoint": [],
+            "Labels": {
+                "org.opencontainers.image.authors": "Nikolai R Kristiansen <nikolaik@gmail.com>"
+            }
+        },
+        "NetworkSettings": {
+            "SandboxID": "",
+            "SandboxKey": "",
+            "Ports": {},
+            "Networks": {
+                "bridge": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": null,
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "cb3c3294e5bcce640c56f26e9ca769868ff4dd8e13551e4c7fc27057910f4e63",
+                    "EndpointID": "",
+                    "Gateway": "",
+                    "IPAddress": "",
+                    "MacAddress": "",
+                    "IPPrefixLen": 0,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": null
+                }
+            }
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.docker.distribution.manifest.v2+json",
+            "digest": "sha256:4959cef8059841fa5bf05fb1368d9ce5735d0ba94b2a3ceee335285e26529452",
+            "size": 7189,
+            "platform": {
+                "architecture": "amd64",
+                "os": "linux"
+            }
+        }
+    }
+]
