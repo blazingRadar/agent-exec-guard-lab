@@ -145,3 +145,14 @@ A pinned OpenHands 1.6.0 headless `CodeActAgent` loop can be driven by an OpenAI
 - Full F4 TOCTOU closure.
 - Minimal allowlist claim; the OpenHands startup policy is intentionally broad enough to boot the pinned runtime.
 - Jupyter/plugin execution supervision claim.
+
+## Post-Audit Cleanup
+
+Independent Sprint 7 auditors found that the original harness used a fixed OpenHands `sid`, which allowed reruns to accumulate state under `~/.openhands/sessions/`. The cleanup in `proofs/SPRINT7_8_CLEANUP_20260501.md` changes Sprint 7 to use a unique run-ID `sid`, dynamic runtime container names, and structured current-run trajectory assertions instead of broad `grep -R "Operation not permitted"` checks.
+
+Cleanup verification:
+
+```text
+proofs/sprint7_runs/sprint7-headless-agent-20260501T023918Z  pass=7 fail=0
+proofs/sprint7_runs/sprint7-headless-agent-20260501T023939Z  pass=7 fail=0
+```

@@ -1,0 +1,12 @@
+run_id=sprint7-headless-agent-20260501T023823Z
+source_commit=c5e0de8ecd85cef10e7808d57e9f939f3770ab9d
+sid=sprint7-headless-agent-20260501T023823Z
+PASS source_commit c5e0de8ecd85cef10e7808d57e9f939f3770ab9d
+PASS headless_agent OpenHands headless agent loop completed
+FAIL runtime_container_found missing OpenHands runtime container
+PASS llm_tool_calls fake LLM issued execute_bash tool calls
+FAIL guard_blocked_python3 missing copied rm block
+FAIL guard_allowed_cat missing allowed cat
+PASS trajectory_denial_structured trajectory has current-run execute_bash denial with exit_code=126
+pass=4 fail=3
+run_root=/home/blazingradar/agent-exec-guard-lab/proofs/sprint7_runs/sprint7-headless-agent-20260501T023823Z
