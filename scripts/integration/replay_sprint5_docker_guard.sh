@@ -198,7 +198,7 @@ else
   record "FAIL" "stderr_forgery_contained_check" "forgery reached decision stream"
 fi
 
-sha256sum "$ROOT/guard/usernotify_exec_guard.c" \
+sha256sum "$ROOT/src/usernotify_exec_guard.c" \
   "$ROOT/bin/usernotify_exec_guard" \
   "$ROOT/policy/integration/docker_python_slim.allow.json" \
   "$ROOT/scripts/integration/replay_sprint5_docker_guard.sh" >"$RUN_ROOT/sha256s.txt"

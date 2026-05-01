@@ -209,7 +209,7 @@ else
   record "PASS" "blocked_renamed_rm_output" "renamed rm did not execute"
 fi
 
-sha256sum "$ROOT/guard/usernotify_exec_guard.c" \
+sha256sum "$ROOT/src/usernotify_exec_guard.c" \
   "$ROOT/bin/usernotify_exec_guard" \
   "$ROOT/policy/integration/openhands_runtime.allow.json" \
   "$ROOT/scripts/integration/replay_sprint6_openhands_runtime.sh" >"$RUN_ROOT/sha256s.txt"

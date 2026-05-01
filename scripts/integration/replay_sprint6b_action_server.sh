@@ -257,11 +257,11 @@ else
   record "FAIL" "guard_log_blocked_python3" "missing copied rm block log"
 fi
 
-sha256sum "$ROOT/guard/usernotify_exec_guard.c" \
+sha256sum "$ROOT/src/usernotify_exec_guard.c" \
   "$ROOT/bin/usernotify_exec_guard" \
   "$ROOT/policy/integration/openhands_action_server.allow.json" \
   "$ROOT/scripts/integration/replay_sprint6b_action_server.sh" \
-  "$ROOT/proofs/SPRINT6B_GATE_20260501.md" >"$RUN_ROOT/sha256s.txt"
+  "$ROOT/proofs/gates/SPRINT6B_GATE_20260501.md" >"$RUN_ROOT/sha256s.txt"
 
 cleanup_container
 

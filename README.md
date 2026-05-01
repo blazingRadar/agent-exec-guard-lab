@@ -85,7 +85,20 @@ See:
 
 - [docs/DEMO.md](docs/DEMO.md)
 - [docs/POLICY_WORKFLOW.md](docs/POLICY_WORKFLOW.md)
-- [proofs/AUDIT_HISTORY_INDEX_20260501.md](proofs/AUDIT_HISTORY_INDEX_20260501.md)
+- [proofs/index/AUDIT_HISTORY_INDEX_20260501.md](proofs/index/AUDIT_HISTORY_INDEX_20260501.md)
+
+## Repository Layout
+
+```text
+src/                  C guard implementation
+bin/                  built guard binary used by the preserved proofs
+scripts/demo/         guided OpenHands demo and policy workflow runners
+scripts/integration/  replay harnesses for Docker/OpenHands integration
+scripts/policy/       YAML policy compiler and observed-policy generator
+policy/               hand-authored and integration policy files
+docs/                 current docs; old planning notes live under docs/archive/
+proofs/               audit trail, split into audits, gates, memos, command logs, and runs
+```
 
 ## Comparison Framing
 

@@ -215,7 +215,7 @@ else
   exit 1
 fi
 
-sha256sum "$ROOT/guard/usernotify_exec_guard.c" \
+sha256sum "$ROOT/src/usernotify_exec_guard.c" \
   "$ROOT/bin/usernotify_exec_guard" \
   "$ROOT/scripts/policy/generate_policy_from_audit.py" \
   "$ROOT/scripts/demo/observe_generate_review_enforce.sh" \

@@ -1,6 +1,6 @@
 # Human-editable policy source for the OpenHands guarded action-server demo.
 #
-# This compiles to the JSON policy schema consumed by guard/usernotify_exec_guard.c.
+# This compiles to the JSON policy schema consumed by src/usernotify_exec_guard.c.
 # The policy is intentionally broad enough to boot the pinned OpenHands 1.6.0
 # runtime action server. It is not a minimal production policy.
 

@@ -3,7 +3,7 @@ set -u
 
 ROOT="/home/blazingradar/agent-exec-guard-lab"
 GUARD="$ROOT/bin/usernotify_exec_guard"
-SRC="$ROOT/guard/usernotify_exec_guard.c"
+SRC="$ROOT/src/usernotify_exec_guard.c"
 POLICY="$ROOT/policy/sprint2.allow.json"
 ORIGINAL_PATH="$PATH"
 RUN_ID="sprint2-$(date -u +%Y%m%dT%H%M%SZ)"

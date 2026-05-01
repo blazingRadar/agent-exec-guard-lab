@@ -385,10 +385,10 @@ else
   record "FAIL" "trajectory_denial_structured" "missing structured current-run denial observation"
 fi
 
-sha256sum "$ROOT/guard/usernotify_exec_guard.c" \
+sha256sum "$ROOT/src/usernotify_exec_guard.c" \
   "$ROOT/bin/usernotify_exec_guard" \
   "$ROOT/scripts/integration/replay_sprint7_headless_agent.sh" \
-  "$ROOT/proofs/SPRINT7_GATE_20260501.md" >"$RUN_ROOT/sha256s.txt"
+  "$ROOT/proofs/gates/SPRINT7_GATE_20260501.md" >"$RUN_ROOT/sha256s.txt"
 
 printf 'pass=%s fail=%s\n' "$pass_count" "$fail_count" | tee -a "$RUN_ROOT/replay_summary.txt"
 printf 'run_root=%s\n' "$RUN_ROOT" | tee -a "$RUN_ROOT/replay_summary.txt"

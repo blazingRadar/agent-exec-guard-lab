@@ -236,7 +236,7 @@ else
   record "FAIL" "openhands_summary_present" "missing OpenHands replay summary"
 fi
 
-sha256sum "$ROOT/guard/usernotify_exec_guard.c" \
+sha256sum "$ROOT/src/usernotify_exec_guard.c" \
   "$ROOT/bin/usernotify_exec_guard" \
   "$ROOT/scripts/demo/run_openhands_guard_demo.sh" \
   "$ROOT/scripts/policy/compile_policy.py" \
