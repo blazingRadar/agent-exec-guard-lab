@@ -74,6 +74,7 @@ Sprint 9 specifically preserves the process correction from earlier audits: the 
 - `proofs/AUDIT_20260501_sprint6b_independent_review_b.md`
 - `proofs/AUDIT_20260501_sprint7_independent_review_a.md`
 - `proofs/AUDIT_20260501_sprint7_independent_review_b.md`
+- `proofs/AUDIT_20260501_sprint8_independent_review_orchestrator.md`
 
 ## Preserved Run Directories
 
