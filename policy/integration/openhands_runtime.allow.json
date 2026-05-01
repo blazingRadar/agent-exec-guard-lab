@@ -1,0 +1,9 @@
+{
+  "policy_id": "sprint6_openhands_runtime_allowlist_v1",
+  "allowed_executables": [
+    "/usr/bin/cat",
+    "/usr/bin/ls",
+    "/usr/bin/true",
+    "/usr/local/bin/python3"
+  ]
+}

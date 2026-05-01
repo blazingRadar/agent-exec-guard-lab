@@ -1,0 +1,1 @@
+/lab/bin/usernotify_exec_guard --policy /lab/policy/integration/docker_python_slim.allow.json /usr/local/bin/python3 --version 

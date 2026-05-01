@@ -1,0 +1,1 @@
+/lab/bin/usernotify_exec_guard --policy /lab/policy/integration/openhands_runtime.allow.json /usr/bin/cat /lab/proofs/sprint6_runs/sprint6-openhands-runtime-20260501T003122Z/workspace/input.txt 

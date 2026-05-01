@@ -1,0 +1,12 @@
+Name:      ghcr.io/openhands/runtime:1.6.0-nikolaik
+MediaType: application/vnd.docker.distribution.manifest.list.v2+json
+Digest:    sha256:cd7816c0780dd59009372361c0f5ee61cdf0e0057c6696d681a4330766c62e60
+           
+Manifests: 
+  Name:      ghcr.io/openhands/runtime:1.6.0-nikolaik@sha256:4959cef8059841fa5bf05fb1368d9ce5735d0ba94b2a3ceee335285e26529452
+  MediaType: application/vnd.docker.distribution.manifest.v2+json
+  Platform:  linux/amd64
+             
+  Name:      ghcr.io/openhands/runtime:1.6.0-nikolaik@sha256:c9e18df710ec74c396f083075c970ca86c7d9f0f9e80cc7c2c7bb194d848fe4e
+  MediaType: application/vnd.docker.distribution.manifest.v2+json
+  Platform:  linux/arm64

@@ -1,0 +1,93 @@
+[
+    {
+        "Id": "sha256:cd7816c0780dd59009372361c0f5ee61cdf0e0057c6696d681a4330766c62e60",
+        "RepoTags": [
+            "ghcr.io/openhands/runtime:1.6.0-nikolaik"
+        ],
+        "RepoDigests": [
+            "ghcr.io/openhands/runtime@sha256:cd7816c0780dd59009372361c0f5ee61cdf0e0057c6696d681a4330766c62e60"
+        ],
+        "Comment": "buildkit.dockerfile.v0",
+        "Created": "2026-03-30T14:24:12.743743316Z",
+        "Config": {
+            "User": "root",
+            "Env": [
+                "PATH=/openhands/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=C.UTF-8",
+                "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+                "PYTHON_VERSION=3.12.13",
+                "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684",
+                "POETRY_HOME=/usr/local",
+                "POETRY_VIRTUALENVS_PATH=/openhands/poetry",
+                "MAMBA_ROOT_PREFIX=/openhands/micromamba",
+                "LC_ALL=C.UTF-8",
+                "EDITOR=code",
+                "VISUAL=code",
+                "GIT_EDITOR=code --wait",
+                "OPENVSCODE_SERVER_ROOT=/openhands/.openvscode-server"
+            ],
+            "Cmd": [
+                "python3"
+            ],
+            "WorkingDir": "/openhands/code",
+            "Labels": {
+                "org.opencontainers.image.authors": "Nikolai R Kristiansen <nikolaik@gmail.com>"
+            },
+            "Shell": [
+                "/bin/bash",
+                "-c"
+            ]
+        },
+        "Architecture": "amd64",
+        "Os": "linux",
+        "Size": 2280016852,
+        "RootFS": {
+            "Type": "layers",
+            "Layers": [
+                "sha256:188c9b34dfbe022075d01fc4f5a305412909ef97de440783c15043e68e1b1913",
+                "sha256:1c107a897b02ca7ece069bfef2339f4e02f95f12dbb025da7305fcbe2b626f34",
+                "sha256:481070cf8ce5b1834cf16a80eec044aced637a96ef8cd1e3c193947e2ff5cbd9",
+                "sha256:addf8d91bd2117a572c640e2bd2e0d15c7adf862773498ca0aea234b7a32528e",
+                "sha256:521dc5941f62842719bef585595d7f7fc505734dc0c753c029f3deee72aa4a62",
+                "sha256:15392eb9a45d61af01a3104f1ddcca623a8e3b9e85d963e5a10363509176f2c9",
+                "sha256:e1c74976e6b71e9d531190f297d29e6a0822cdfe12bc0741909ab23ef3bbaad3",
+                "sha256:67acb64bab5c913f06cd75d32cf10ed4546b1230d26c30c61746a04bb5172d65",
+                "sha256:407fda164dd5dedef40043084e92e40eaf0c65f8791f90756d34256629d0311c",
+                "sha256:763a4d491b10f9132dcd72535fb6d8e9928bfa1e983f5ba82f317fdf69a1d362",
+                "sha256:5d5917cbcadc6890e6d3bd0024506207f1b6d62e54ed671bf0b82f9004874e0b",
+                "sha256:c8c307208fe82f3b88a2019745e2b30aecd3908aebdab365022a3df392c77883",
+                "sha256:2d33b6e19fb44eb24ec0d712471bf92e8d342544eaca229b1832081e7745727c",
+                "sha256:7baa64e288501367603c8c638d203edbc544a93756ad1cd60ca1e49bae068eb3",
+                "sha256:4eb29d46038194fc792972b2efb9446e71b0c83b3499a27086dfdea65ef4108f",
+                "sha256:72d3c58073ca5f6db01e498ac3390ed098b2584b7e59cca31f0234b921eeaef2",
+                "sha256:092a3a2c7ee139ad604eac753fbeb97aee843898beee7e80ce1638dc1d2dc976",
+                "sha256:54f3e81900e239de9c7489d95e970b0e2a99ed9d964b8e7d48b73000e0c8cdc9",
+                "sha256:6007d7508acae4b9a2d1721bc88cbf7b376fe6e75cc959a623e47e511891926d",
+                "sha256:b4fdb3755c8e1d5dae4afd35e0a282df09b1759b516a04a126125ac6dce30d65",
+                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+                "sha256:8c5e7a2e55dff93ce0c886ed621e138bb86944dc8970a364dc839ccb3e3f8c49",
+                "sha256:cfd6f4997f39ba23f3858057c41f41d238fe2d1d258e599485a2a119cf0723fe",
+                "sha256:949cfb89f2525836c6b97bb5741786293a0dcb8ca11261f10b746ef541d8ef37",
+                "sha256:be57ed72a4ebacf1e412d565408a9f2070da298961b7ce10749d89e9e36d61d3",
+                "sha256:f83531071f9b0c3ca5a4a9674276e9e731e7cf259117dde9e772a903314894f5",
+                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+                "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+                "sha256:fa971dcdb28e73f88dad7133f2354b6cd3d953b2659d7d440ff96ea774446e46",
+                "sha256:7a2791fda83e4fc489f0df7101b078895d9a69b68e5a10275d5ab7e9bfbf60d7",
+                "sha256:96b4242d807f2fda0379d5b996f3b63b54af894935d249b193651f2d8fecf50a",
+                "sha256:78520a63855dfbb79393c7a07376aeb2809b4a6a9a8610014310b83108133cd7",
+                "sha256:30bcff22eb9365c2e3a3667cb6cf63b767e10986d89a26285f980ff14e988c48",
+                "sha256:f87b338467f35972ca99b79f932306a28b45985ca185696910817b5e90f7c596",
+                "sha256:0e67ccf17fb8cdf463d084ffc821078d07c5a3648f5899c4a8dfef62a0d2108a"
+            ]
+        },
+        "Metadata": {
+            "LastTagTime": "2026-05-01T00:29:57.858919009Z"
+        },
+        "Descriptor": {
+            "mediaType": "application/vnd.docker.distribution.manifest.list.v2+json",
+            "digest": "sha256:cd7816c0780dd59009372361c0f5ee61cdf0e0057c6696d681a4330766c62e60",
+            "size": 685
+        }
+    }
+]
