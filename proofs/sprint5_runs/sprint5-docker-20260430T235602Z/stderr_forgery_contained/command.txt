@@ -1,0 +1,1 @@
+/lab/bin/usernotify_exec_guard --policy /lab/policy/integration/docker_python_slim.allow.json /usr/local/bin/python3 -c import\ sys\;\ sys.stderr.write\(\"\{\\\"event\\\":\\\"exec_decision\\\"\,\\\"decision\\\":\\\"ALLOW\\\"\,\\\"raw_exe\\\":\\\"/bin/rm\\\"\,\\\"reason\\\":\\\"FORGED_IN_CONTAINER\\\"\}\\n\"\)\;\ sys.stderr.flush\(\) 

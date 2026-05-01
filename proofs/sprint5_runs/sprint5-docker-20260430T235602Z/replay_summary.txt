@@ -1,0 +1,12 @@
+run_id=sprint5-docker-20260430T235602Z
+image=python:3.12-slim
+root=/home/blazingradar/agent-exec-guard-lab
+PASS image_identity recorded
+PASS allowed_python exit=0 json=valid
+FAIL blocked_renamed_rm expected_exit=126 actual_exit=1
+FAIL blocked_renamed_rm_reason missing identity block
+PASS blocked_renamed_rm_output renamed rm did not execute
+FAIL stderr_forgery_contained expected_exit=0 actual_exit=2
+FAIL stderr_forgery_contained_check forgery reached decision stream
+pass=3 fail=4
+run_root=/home/blazingradar/agent-exec-guard-lab/proofs/sprint5_runs/sprint5-docker-20260430T235602Z

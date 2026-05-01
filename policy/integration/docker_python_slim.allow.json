@@ -1,0 +1,11 @@
+{
+  "policy_id": "sprint5_docker_python_slim_allowlist_v1",
+  "allowed_executables": [
+    "/bin/cat",
+    "/bin/echo",
+    "/bin/ls",
+    "/bin/sh",
+    "/bin/true",
+    "/usr/local/bin/python3"
+  ]
+}
