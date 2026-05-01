@@ -11,7 +11,7 @@ Verified GitHub visibility at time of writing: `PRIVATE`
 Verified pushed head at time of writing:
 
 ```text
-98125d9cfa265cb8aaf9fdb363f0e97d345a81e7 refs/heads/main
+664c4ade5a04f1fcebfff9febc0c9157677216ea refs/heads/main
 ```
 
 ## Repository Evidence Shape
@@ -27,7 +27,7 @@ The repository intentionally preserves:
 - run-local Docker/OpenHands metadata;
 - known caveats and non-claims.
 
-The proof directory currently contains 109 files and is approximately 28 MB.
+The proof directory currently contains 4120 files and is approximately 29 MB.
 
 ## Sprint Chain
 
@@ -42,7 +42,7 @@ The proof directory currently contains 109 files and is approximately 28 MB.
 | Sprint 6B | `SPRINT6B_ACTION_SERVER_PROOF_20260501.md` | OpenHands action server proof; independent audits A/B and post-audit cleanup preserved |
 | Sprint 7 | `SPRINT7_HEADLESS_AGENT_PROOF_20260501.md` | Headless OpenHands agent-loop proof; independent audits A/B preserved |
 | Sprint 8 | `SPRINT8_FRONTIER_MODEL_PROOF_20260501.md` | External OpenAI model proof; cleanup memo preserved |
-| Sprint 9 | `SPRINT9_PRODUCTIZED_DEMO_PROOF_20260501.md` | Productized one-command demo with editable YAML policy; run artifacts preserved |
+| Sprint 9 | `SPRINT9_PRODUCTIZED_DEMO_PROOF_20260501.md` | Guided one-command demo with editable YAML policy; post-audit cleanup and run artifacts preserved |
 
 ## Gate Memos
 
@@ -92,7 +92,7 @@ Sprint 9 specifically preserves the process correction from earlier audits: the 
 
 ## Current Strongest Claim
 
-Sprint 9 packages the proven OpenHands guard path into a repeatable CLI demo: an editable YAML policy compiles into the guard's JSON allowlist, the one-command runner launches the pinned OpenHands headless agent path, an external OpenAI model drives `execute_bash`, the guard allows expected executable identities, blocks copied/renamed `/usr/bin/rm`, emits parseable audit JSON, and the denial is asserted from the current-run OpenHands trajectory.
+Sprint 9 packages the proven OpenHands guard path into a repeatable guided CLI demo on the prepared lab machine: an editable YAML policy compiles into the guard's JSON allowlist, the one-command runner launches the pinned OpenHands headless agent path, an external OpenAI model drives `execute_bash`, the guard allows expected executable identities, blocks copied/renamed `/usr/bin/rm`, emits parseable audit JSON, and the denial is asserted from the current-run OpenHands trajectory.
 
 ## Current Non-Claims
 
@@ -103,6 +103,8 @@ Sprint 9 packages the proven OpenHands guard path into a repeatable CLI demo: an
 - Read/write/network isolation.
 - Browser, Jupyter, MCP, `FileReadAction`, `FileWriteAction`, `IPythonRunCellAction`, or non-`CmdRunAction` coverage.
 - Minimal production policy.
+- Public self-serve clone-and-run packaging.
+- Recorded outreach video/asciinema.
 
 ## Backup Status
 

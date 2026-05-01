@@ -7,6 +7,25 @@ Source of record: live commands; my own pass-1 draft (which missed three finding
 
 ---
 
+## Post-Cleanup Addendum
+
+This audit memo records the Sprint 9 findings as they existed before the post-audit cleanup. The findings below are preserved for traceability; their closure is recorded in `proofs/SPRINT9_POST_AUDIT_CLEANUP_20260501.md`.
+
+Closure state after cleanup commit `664c4ad`:
+
+| Finding | Current status |
+| --- | --- |
+| F-9-A hardcoded local path | Closed for prepared checkout: demo runner and Sprint 8 replay now derive repo root dynamically; public self-serve bootstrap still not claimed |
+| F-9-B no container cleanup | Closed: runner uses an EXIT trap and preserved cleanup stdout/stderr |
+| F-9-C README stale | Closed: README states Sprint 9 guided demo and post-audit cleanup passed |
+| F-9-D missing aggregate pass row | Closed: passing cleanup run records `pass=14 fail=0` |
+| F-9-F no recorded video/asciinema | Still open; outreach artifact, not Sprint 9 proof blocker |
+| Public clone-and-run package | Still open; needs bootstrap docs/environment setup before claim is allowed |
+
+The passing post-cleanup run is `proofs/sprint9_runs/sprint9-demo-20260501T040010Z`.
+
+---
+
 ## Why a Pass-2 Memo Exists
 
 When I went to write my Sprint 9 audit, I discovered a consolidated summary already at the canonical path. Reading it, it caught three findings my draft missed:

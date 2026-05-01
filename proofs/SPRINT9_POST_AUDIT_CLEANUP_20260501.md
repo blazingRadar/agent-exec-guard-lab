@@ -13,7 +13,7 @@ Status: PASS
 | Private env-file docs | README and `docs/DEMO.md` now use generic `OPENAI_API_KEY` / `.env.local` examples |
 | Missing preflight checks | Demo runner now checks compiler, replay harness, pinned OpenHands source, and Docker access before launch |
 | Manual container cleanup | Demo runner now attempts post-run Docker cleanup in an EXIT trap |
-| README stale status | README now states Sprint 9 guided demo passed and post-audit cleanup is in progress |
+| README stale status | README now states Sprint 9 guided demo passed and post-audit cleanup passed |
 | No aggregate pass/fail in wrapper | Demo runner now appends `pass=N fail=N` to `demo_summary.txt` |
 
 ## Remaining Boundary
