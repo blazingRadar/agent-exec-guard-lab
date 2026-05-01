@@ -1,0 +1,1 @@
+/lab/bin/usernotify_exec_guard --policy /lab/policy/integration/openhands_runtime.allow.json /usr/bin/cat /proc/self/status 

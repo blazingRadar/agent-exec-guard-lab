@@ -1,0 +1,5 @@
+Seccomp:	2
+NoNewPrivs:	0
+/usr/local/bin/python3
+/usr/bin/cat
+/usr/bin/rm

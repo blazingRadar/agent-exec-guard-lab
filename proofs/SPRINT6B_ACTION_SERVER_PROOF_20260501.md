@@ -8,6 +8,8 @@ Gate commit: `c4392ae Pre-register Sprint 6B OpenHands command path gate`
 
 Result: PASS
 
+Post-audit cleanup: `proofs/SPRINT6B_POST_AUDIT_CLEANUP_20260501.md` adds the missing in-container `Seccomp:2` and guarded-child `NoNewPrivs:1` metadata checks requested by Sprint 6B auditors. The guard source and binary did not change.
+
 Final run root:
 
 `proofs/sprint6b_runs/sprint6b-action-server-20260501T004956Z`

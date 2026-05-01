@@ -132,6 +132,14 @@ PY
   else
     record "FAIL" "docker_securityopt_default" "HostConfig.SecurityOpt not default"
   fi
+
+  sg docker -c "docker exec '$CONTAINER_NAME' /bin/sh -lc 'grep -E \"^(Seccomp|NoNewPrivs):\" /proc/self/status'" \
+    >"$RUN_ROOT/container_proc_status.txt" 2>"$RUN_ROOT/container_proc_status.stderr"
+  if grep -q '^Seccomp:[[:space:]]*2$' "$RUN_ROOT/container_proc_status.txt"; then
+    record "PASS" "docker_proc_status_seccomp" "container reports Seccomp:2"
+  else
+    record "FAIL" "docker_proc_status_seccomp" "container Seccomp metadata missing"
+  fi
 }
 
 write_client_scripts() {
@@ -226,6 +234,13 @@ if json_response_query "$RUN_ROOT/action_allowed_cat.response.json" 'obj.get("su
   record "PASS" "action_allowed_cat_result" "workspace file read via /execute_action"
 else
   record "FAIL" "action_allowed_cat_result" "unexpected allowed action response"
+fi
+
+run_action_case "action_guarded_proc_status" "cat /proc/self/status"
+if json_response_query "$RUN_ROOT/action_guarded_proc_status.response.json" 'any(line.startswith("NoNewPrivs:") and line.split()[-1] == "1" for line in obj.get("content", "").splitlines()) and any(line.startswith("Seccomp:") and line.split()[-1] == "2" for line in obj.get("content", "").splitlines())'; then
+  record "PASS" "action_guarded_proc_status_result" "guarded action child reports NoNewPrivs:1 and Seccomp:2"
+else
+  record "FAIL" "action_guarded_proc_status_result" "guarded action child metadata missing"
 fi
 
 run_action_case "action_block_renamed_rm" "cp /usr/bin/rm ./python3 && chmod +x ./python3 && ./python3 --version"
