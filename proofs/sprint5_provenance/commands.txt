@@ -1,0 +1,6 @@
+gh repo view OpenHands/OpenHands --json nameWithOwner,defaultBranchRef,latestRelease,url
+gh api repos/OpenHands/OpenHands/commits/main
+sg docker -c "docker manifest inspect docker.openhands.dev/openhands/openhands:1.6.0"
+sg docker -c "docker manifest inspect --verbose docker.openhands.dev/openhands/openhands:1.6.0"
+sg docker -c "docker manifest inspect ghcr.io/openhands/runtime:1.6.0-nikolaik"
+sg docker -c "docker manifest inspect --verbose ghcr.io/openhands/runtime:1.6.0-nikolaik"

@@ -20,6 +20,12 @@ sg docker -c "docker buildx imagetools inspect docker.openhands.dev/openhands/op
 sg docker -c "docker manifest inspect --verbose ghcr.io/openhands/runtime:1.6.0-nikolaik"
 ```
 
+Raw outputs were preserved under:
+
+```text
+proofs/sprint5_provenance/
+```
+
 Recorded target facts:
 
 ```text
@@ -40,8 +46,8 @@ Sprint 5 Docker proof:
 Latest clean result:
 
 ```text
-run_root=/home/blazingradar/agent-exec-guard-lab/proofs/sprint5_runs/sprint5-docker-20260501T000055Z
-pass=6 fail=0
+run_root=/home/blazingradar/agent-exec-guard-lab/proofs/sprint5_runs/sprint5-docker-20260501T002321Z
+pass=11 fail=0
 ```
 
 Sprint 2 and Sprint 4 regression gates were then run sequentially:
@@ -66,7 +72,7 @@ run_root=/home/blazingradar/agent-exec-guard-lab/proofs/sprint4_runs/sprint4-202
 ```text
 07a27fd1e73545b2ff6ac29b06737eda012e1698b0291468b71d807f3b15c87a  guard/usernotify_exec_guard.c
 e3bdaabfc1b9b9404482ad80c6c2d6dccb0efe76046ec390223eae21abdcba5b  bin/usernotify_exec_guard
-edbed7ca0eaed27300893354b9066c370b4d6ff175310bd6cce00d547ac8ff07  scripts/integration/replay_sprint5_docker_guard.sh
+5ec1cb09b2994f12306186949e175ad7d9c7d843eddd1f36d7c139b8c05cef86  scripts/integration/replay_sprint5_docker_guard.sh
 7ccb1ceae281a50d0e50a6f7cd777c66adf863b6adbe1c1ede280254e8a2f8e6  policy/integration/docker_python_slim.allow.json
 1f861067fae3a758c761b903d7458a5d8e7d40b79064d6cb07f5e0fd9f04d391  proofs/SPRINT5_GATE_20260430.md
 ```

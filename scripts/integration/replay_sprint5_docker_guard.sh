@@ -5,6 +5,7 @@ ROOT="/home/blazingradar/agent-exec-guard-lab"
 IMAGE="python:3.12-slim"
 RUN_ID="sprint5-docker-$(date -u +%Y%m%dT%H%M%SZ)"
 RUN_ROOT="$ROOT/proofs/sprint5_runs/$RUN_ID"
+META_CONTAINER="aeg-${RUN_ID}"
 POLICY_IN_CONTAINER="/lab/policy/integration/docker_python_slim.allow.json"
 GUARD_IN_CONTAINER="/lab/bin/usernotify_exec_guard"
 
@@ -66,6 +67,59 @@ docker_run() {
   sg docker -c "docker run --rm -v '$ROOT:/lab:rw' -w /lab '$IMAGE' $*"
 }
 
+record_docker_metadata() {
+  local meta_dir="$RUN_ROOT/docker_metadata"
+  mkdir -p "$meta_dir"
+
+  sg docker -c "docker rm -f '$META_CONTAINER' >/dev/null 2>&1 || true"
+  sg docker -c "docker create --name '$META_CONTAINER' -v '$ROOT:/lab:rw' -w /lab '$IMAGE' /bin/sh -c 'grep \"^Seccomp:\" /proc/self/status; grep \"^NoNewPrivs:\" /proc/self/status'" \
+    >"$meta_dir/docker_create.stdout" 2>"$meta_dir/docker_create.stderr"
+  local create_rc=$?
+  printf '%s\n' "$create_rc" >"$meta_dir/docker_create.exit_code"
+  if [ "$create_rc" -ne 0 ]; then
+    record "FAIL" "docker_metadata_create" "docker create failed"
+    return
+  fi
+
+  sg docker -c "docker inspect '$META_CONTAINER'" >"$meta_dir/docker_inspect.json" 2>"$meta_dir/docker_inspect.stderr"
+  local inspect_rc=$?
+  printf '%s\n' "$inspect_rc" >"$meta_dir/docker_inspect.exit_code"
+  if [ "$inspect_rc" -ne 0 ]; then
+    record "FAIL" "docker_metadata_inspect" "docker inspect failed"
+  else
+    record "PASS" "docker_metadata_inspect" "HostConfig retained"
+  fi
+
+  python3 - "$meta_dir/docker_inspect.json" >"$meta_dir/hostconfig_securityopt.txt" <<'PY'
+import json
+import sys
+
+with open(sys.argv[1], "r", encoding="utf-8") as f:
+    data = json.load(f)
+security_opt = data[0].get("HostConfig", {}).get("SecurityOpt")
+print(repr(security_opt))
+PY
+  if grep -qx 'None' "$meta_dir/hostconfig_securityopt.txt"; then
+    record "PASS" "docker_securityopt_default" "HostConfig.SecurityOpt=None"
+  else
+    record "FAIL" "docker_securityopt_default" "HostConfig.SecurityOpt not default"
+  fi
+
+  sg docker -c "docker start -a '$META_CONTAINER'" >"$meta_dir/proc_status.stdout" 2>"$meta_dir/proc_status.stderr"
+  local start_rc=$?
+  printf '%s\n' "$start_rc" >"$meta_dir/proc_status.exit_code"
+  sg docker -c "docker rm -f '$META_CONTAINER' >/dev/null 2>&1 || true"
+  if [ "$start_rc" -ne 0 ]; then
+    record "FAIL" "docker_proc_status" "container status probe failed"
+    return
+  fi
+  if grep -q '^Seccomp:[[:space:]]*2$' "$meta_dir/proc_status.stdout"; then
+    record "PASS" "docker_proc_status_seccomp" "container reports Seccomp:2"
+  else
+    record "FAIL" "docker_proc_status_seccomp" "missing Seccomp:2"
+  fi
+}
+
 run_case() {
   local name="$1"
   local expected_exit="$2"
@@ -101,8 +155,14 @@ else
   record "FAIL" "image_identity" "inspect failed"
 fi
 
+record_docker_metadata
+
 run_case "allowed_python" 0 "$GUARD_IN_CONTAINER" --policy "$POLICY_IN_CONTAINER" /usr/local/bin/python3 --version
-json_query "$RUN_ROOT/allowed_python/stderr.txt" 'obj.get("decision") == "ALLOW"' || record "FAIL" "allowed_python_decision" "missing ALLOW"
+if json_query "$RUN_ROOT/allowed_python/stderr.txt" 'obj.get("decision") == "ALLOW"'; then
+  record "PASS" "allowed_python_decision" "ALLOW decision recorded"
+else
+  record "FAIL" "allowed_python_decision" "missing ALLOW"
+fi
 
 cat > "$RUN_ROOT/blocked_renamed_rm.sh" <<'SH'
 #!/bin/sh
@@ -114,7 +174,11 @@ chmod 755 "$(dirname "$0")/renamed_rm_python3"
 SH
 chmod +x "$RUN_ROOT/blocked_renamed_rm.sh"
 run_case "blocked_renamed_rm" 126 /bin/sh /lab/proofs/sprint5_runs/$RUN_ID/blocked_renamed_rm.sh
-json_query "$RUN_ROOT/blocked_renamed_rm/stderr.txt" 'obj.get("reason") == "blocked_executable_identity"' || record "FAIL" "blocked_renamed_rm_reason" "missing identity block"
+if json_query "$RUN_ROOT/blocked_renamed_rm/stderr.txt" 'obj.get("reason") == "blocked_executable_identity"'; then
+  record "PASS" "blocked_renamed_rm_reason" "identity block recorded"
+else
+  record "FAIL" "blocked_renamed_rm_reason" "missing identity block"
+fi
 if grep -q 'rm (GNU coreutils)' "$RUN_ROOT/blocked_renamed_rm/stdout.txt"; then
   record "FAIL" "blocked_renamed_rm_output" "renamed rm executed"
 else
@@ -134,7 +198,10 @@ else
   record "FAIL" "stderr_forgery_contained_check" "forgery reached decision stream"
 fi
 
-sha256sum "$ROOT/guard/usernotify_exec_guard.c" "$ROOT/bin/usernotify_exec_guard" "$ROOT/policy/integration/docker_python_slim.allow.json" >"$RUN_ROOT/sha256s.txt"
+sha256sum "$ROOT/guard/usernotify_exec_guard.c" \
+  "$ROOT/bin/usernotify_exec_guard" \
+  "$ROOT/policy/integration/docker_python_slim.allow.json" \
+  "$ROOT/scripts/integration/replay_sprint5_docker_guard.sh" >"$RUN_ROOT/sha256s.txt"
 
 printf 'pass=%s fail=%s\n' "$pass_count" "$fail_count" | tee -a "$RUN_ROOT/replay_summary.txt"
 printf 'run_root=%s\n' "$RUN_ROOT" | tee -a "$RUN_ROOT/replay_summary.txt"

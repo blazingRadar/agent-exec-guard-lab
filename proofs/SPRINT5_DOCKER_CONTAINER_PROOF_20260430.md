@@ -8,7 +8,20 @@ Posture: integration reality check, not F4 architecture work.
 
 | ID | Item | Sprint 5 status |
 |---|---|---|
+| F1 | Audit log forgery via shared fd 2 | Closed in Sprint 4; preserved by Sprint 5 Docker replay. |
+| F2 | Supervisor killable by child via SIGTERM without final audit | Closed best-effort in Sprint 4; no new Sprint 5 regression. SIGKILL remains uncatchable. |
+| F3 | Policy parser fail-open on malformed `allowed_executables` | Closed in Sprint 4; no new Sprint 5 regression. |
 | F4 | `SECCOMP_USER_NOTIF_FLAG_CONTINUE` path TOCTOU | Deferred and still disclosed. Sprint 5 does not implement `SECCOMP_IOCTL_NOTIF_ADDFD + execveat`. |
+| F5 | `/proc/self/exe` resolves in supervisor namespace | Closed in Sprint 4; no new Sprint 5 regression. |
+| F6 | SHA256 helper fork+exec | Closed in Sprint 4 via AF_ALG; no new Sprint 5 regression. |
+| F7 | argv truncation metadata missing | Closed in Sprint 4; no new Sprint 5 regression. |
+| F8 | escaped quote handling in `policy_id` | Closed by Sprint 4 JSON parser; no new Sprint 5 regression. |
+| A1 | JSON parser nesting depth limit | Closed in Sprint 4 sweep; no new Sprint 5 regression. |
+| A2 | argv total count cap marker | Closed in Sprint 4 sweep; no new Sprint 5 regression. |
+| A3 | child stderr NUL preservation | Closed in Sprint 4 sweep; no new Sprint 5 regression. |
+| A4 | SIGKILL disclosure | Closed as disclosure in Sprint 4; SIGKILL remains uncatchable. |
+| B5 | signal-handler async-signal-safety | Closed in Sprint 4 sweep; no new Sprint 5 regression. |
+| B6 | `\uXXXX` parsing limitation | Partially closed in Sprint 4 sweep; surrogate pairs are intentionally rejected and disclosed. |
 | OpenHands full runtime | Prove against the pinned OpenHands command runtime image | Not yet claimed. Runtime image was identified but not pulled into this proof. |
 | Production-grade sandboxing | Complete sandbox claim | Not allowed. Sprint 5 proves a local container execution boundary only. |
 
@@ -49,19 +62,38 @@ The OpenHands runtime image is about 2.28 GB compressed for amd64, so this sprin
 Latest Sprint 5 Docker replay:
 
 ```text
-run_root=/home/blazingradar/agent-exec-guard-lab/proofs/sprint5_runs/sprint5-docker-20260501T000055Z
-pass=6 fail=0
+run_root=/home/blazingradar/agent-exec-guard-lab/proofs/sprint5_runs/sprint5-docker-20260501T002321Z
+pass=11 fail=0
 ```
 
 Cases:
 
 ```text
 PASS image_identity recorded
+PASS docker_metadata_inspect HostConfig retained
+PASS docker_securityopt_default HostConfig.SecurityOpt=None
+PASS docker_proc_status_seccomp container reports Seccomp:2
 PASS allowed_python exit=0 json=valid
+PASS allowed_python_decision ALLOW decision recorded
 PASS blocked_renamed_rm exit=126 json=valid
+PASS blocked_renamed_rm_reason identity block recorded
 PASS blocked_renamed_rm_output renamed rm did not execute
 PASS stderr_forgery_contained exit=0 json=valid
 PASS stderr_forgery_contained_check forgery captured as child_stderr
+```
+
+Positive Docker-seccomp metadata is retained in:
+
+```text
+proofs/sprint5_runs/sprint5-docker-20260501T002113Z/docker_metadata/
+proofs/sprint5_runs/sprint5-docker-20260501T002321Z/docker_metadata/
+```
+
+The retained metadata includes:
+
+```text
+HostConfig.SecurityOpt=None
+Seccomp: 2
 ```
 
 Regression gates after Sprint 5:
@@ -82,6 +114,7 @@ Two failed or superseded observations are intentionally preserved:
 
 - `proofs/sprint5_runs/sprint5-docker-20260430T235602Z`: first Docker harness attempt failed due shell quoting bugs.
 - `proofs/sprint5_runs/sprint5-docker-20260430T235637Z` and `proofs/sprint5_runs/sprint5-docker-20260430T235835Z`: clean Docker passes superseded by the final run after the harness was tightened to avoid retaining the copied `/bin/rm` fixture.
+- `proofs/sprint5_runs/sprint5-docker-20260501T000055Z` and `proofs/sprint5_runs/sprint5-docker-20260501T002113Z`: clean Docker passes superseded by the metadata-retaining final run.
 - `proofs/sprint2_runs/sprint2-20260430T235747Z` and `proofs/sprint4_runs/sprint4-20260430T235748Z`: false replay failures caused by running Sprint 2 and Sprint 4 harnesses in parallel while both compiled to `bin/usernotify_exec_guard`. Sequential reruns passed.
 
 ## Claim Now Allowed
