@@ -20,11 +20,12 @@ Allowed claims must be backed by a replay artifact, proof memo, source hash, or 
 Do not claim:
 
 - production sandbox security
-- Docker/OpenHands integration
+- full OpenHands web UI coverage
 - complete `SECCOMP_USER_NOTIF_FLAG_CONTINUE` TOCTOU elimination
 - fd-stable execution
 - read/write/network restriction
 - general Linux portability beyond the tested host
+- non-`CmdRunAction` coverage unless a sprint specifically proves it
 
 Current strongest supported framing:
 
@@ -32,7 +33,7 @@ Current strongest supported framing:
 
 Current strongest supported technical claim:
 
-> On the tested Linux host, a local seccomp user-notify execution guard preserves file-backed executable identity decisions, adds a child-inherited Landlock execute underlay, and emits supervisor-owned audit records that the supervised child cannot forge by writing JSON to stderr.
+> On the tested Linux host, a local seccomp user-notify execution guard preserves file-backed executable identity decisions, adds a child-inherited Landlock execute underlay, emits supervisor-owned audit records that the supervised child cannot forge by writing JSON to stderr, and wraps the pinned OpenHands 1.6.0 headless command-execution path in the tested replay harness.
 
 ## Carry-Forward Rule
 

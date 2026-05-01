@@ -5,12 +5,15 @@ ROOT="/home/blazingradar/agent-exec-guard-lab"
 SOURCE_DIR="$ROOT/external/OpenHands-1.6.0"
 SOURCE_COMMIT="c5e0de8ecd85cef10e7808d57e9f939f3770ab9d"
 MODEL_NAME="${SPRINT8_MODEL:-openai/gpt-5.2}"
+RUNS_DIR="${SPRINT8_RUNS_DIR:-$ROOT/proofs/sprint8_runs}"
 RUN_ID="sprint8-frontier-agent-$(date -u +%Y%m%dT%H%M%SZ)"
-RUN_ROOT="$ROOT/proofs/sprint8_runs/$RUN_ID"
+RUN_ROOT="$RUNS_DIR/$RUN_ID"
 SID="$RUN_ID"
 CONTAINER_NAME="openhands-runtime-$SID"
+POLICY_JSON_HOST="${SPRINT8_POLICY_JSON_HOST:-$ROOT/policy/integration/openhands_action_server.allow.json}"
+POLICY_JSON_SANDBOX="${SPRINT8_POLICY_JSON_SANDBOX:-/lab/policy/integration/openhands_action_server.allow.json}"
 
-mkdir -p "$RUN_ROOT/workspace"
+mkdir -p "$RUN_ROOT/workspace" "$ROOT/proofs/sprint8_runs"
 printf '%s\n' "$RUN_ROOT" >"$ROOT/proofs/sprint8_runs/latest_frontier_agent.txt"
 printf 'sprint8-frontier-file\n' >"$RUN_ROOT/workspace/input.txt"
 sg docker -c "docker rm -f '$CONTAINER_NAME'" \
@@ -36,6 +39,8 @@ printf 'run_id=%s\n' "$RUN_ID" >"$RUN_ROOT/replay_summary.txt"
 printf 'source_commit=%s\n' "$SOURCE_COMMIT" >>"$RUN_ROOT/replay_summary.txt"
 printf 'model=%s\n' "$MODEL_NAME" >>"$RUN_ROOT/replay_summary.txt"
 printf 'sid=%s\n' "$SID" >>"$RUN_ROOT/replay_summary.txt"
+printf 'policy_json_host=%s\n' "$POLICY_JSON_HOST" >>"$RUN_ROOT/replay_summary.txt"
+printf 'policy_json_sandbox=%s\n' "$POLICY_JSON_SANDBOX" >>"$RUN_ROOT/replay_summary.txt"
 
 if [ -n "${OPENAI_API_KEY:-}" ]; then
   record "PASS" "openai_api_key_present" "OPENAI_API_KEY present in process environment"
@@ -54,6 +59,13 @@ else
   fi
 fi
 
+if [ -f "$POLICY_JSON_HOST" ]; then
+  cp "$POLICY_JSON_HOST" "$RUN_ROOT/policy_used.json"
+  record "PASS" "policy_json_present" "$POLICY_JSON_HOST"
+else
+  record "FAIL" "policy_json_present" "missing policy JSON: $POLICY_JSON_HOST"
+fi
+
 cat >"$RUN_ROOT/sprint8_frontier_agent.py" <<'PY'
 import asyncio
 import json
@@ -64,8 +76,18 @@ from pathlib import Path
 ROOT = Path("/home/blazingradar/agent-exec-guard-lab")
 RUN_ROOT = Path(os.environ["SPRINT8_RUN_ROOT"])
 SOURCE_DIR = ROOT / "external" / "OpenHands-1.6.0"
-POLICY = "/lab/policy/integration/openhands_action_server.allow.json"
+POLICY = os.environ.get(
+    "SPRINT8_POLICY_JSON_SANDBOX",
+    "/lab/policy/integration/openhands_action_server.allow.json",
+)
 MODEL_NAME = os.environ.get("SPRINT8_MODEL", "openai/gpt-5.2")
+if str(RUN_ROOT).startswith(str(ROOT) + "/"):
+    WORKSPACE_SANDBOX = "/lab/" + str(RUN_ROOT.relative_to(ROOT) / "workspace")
+else:
+    WORKSPACE_SANDBOX = os.environ.get(
+        "SPRINT8_WORKSPACE_SANDBOX",
+        f"/workspace/{RUN_ROOT.name}",
+    )
 
 sys.path.insert(0, str(SOURCE_DIR))
 
@@ -147,7 +169,7 @@ async def main():
 runtime = "docker"
 workspace_base = "{RUN_ROOT / 'workspace'}"
 workspace_mount_path = "{RUN_ROOT / 'workspace'}"
-workspace_mount_path_in_sandbox = "/lab/proofs/sprint8_runs/{RUN_ROOT.name}/workspace"
+workspace_mount_path_in_sandbox = "{WORKSPACE_SANDBOX}"
 run_as_openhands = false
 enable_browser = false
 max_iterations = 8
@@ -213,7 +235,7 @@ if [ ! -x "$SPRINT8_PYTHON" ]; then
   SPRINT8_PYTHON="python3"
 fi
 
-SPRINT8_RUN_ROOT="$RUN_ROOT" SPRINT8_MODEL="$MODEL_NAME" sg docker -c "SPRINT8_RUN_ROOT='$RUN_ROOT' SPRINT8_MODEL='$MODEL_NAME' timeout 360 '$SPRINT8_PYTHON' '$RUN_ROOT/sprint8_frontier_agent.py'" \
+SPRINT8_RUN_ROOT="$RUN_ROOT" SPRINT8_MODEL="$MODEL_NAME" SPRINT8_POLICY_JSON_SANDBOX="$POLICY_JSON_SANDBOX" sg docker -c "SPRINT8_RUN_ROOT='$RUN_ROOT' SPRINT8_MODEL='$MODEL_NAME' SPRINT8_POLICY_JSON_SANDBOX='$POLICY_JSON_SANDBOX' timeout 360 '$SPRINT8_PYTHON' '$RUN_ROOT/sprint8_frontier_agent.py'" \
   >"$RUN_ROOT/frontier_agent.stdout" 2>"$RUN_ROOT/frontier_agent.stderr"
 agent_rc=$?
 printf '%s\n' "$agent_rc" >"$RUN_ROOT/frontier_agent.exit_code"

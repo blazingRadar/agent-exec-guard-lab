@@ -1,0 +1,3 @@
+policy_id: missing_executable
+allowed_executables:
+  - /definitely/not/a/real/executable

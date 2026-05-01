@@ -1,0 +1,7 @@
+{
+  "input": "/home/blazingradar/agent-exec-guard-lab/policy/examples/openhands_action_server.yaml",
+  "output": "/home/blazingradar/agent-exec-guard-lab/proofs/sprint9_runs/sprint9-demo-20260501T025441Z/policy/openhands_action_server.allow.json",
+  "policy_id": "sprint9_openhands_action_server_allowlist_v1",
+  "allowed_executables": 23,
+  "check_exists": false
+}

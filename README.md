@@ -1,39 +1,52 @@
 # Agent Exec Guard Lab
 
-Private lab for validating a minimal runtime execution guard for AI coding agents before any public demo or repo is shipped.
+Private lab for validating a runtime execution guard for AI coding agents before any public demo or repo is shipped.
 
 ## Purpose
 
 Build tangible local proof that an OpenHands-style coding agent running in a Docker sandbox can be constrained by a stricter runtime execution policy than Docker's default compatibility profile.
 
-The public artifact, if validated, should be a thin demo:
+The current artifact is a private, audit-first demo:
 
-- custom seccomp profile or equivalent hard runtime boundary
-- minimal adjudicator
-- simple policy file
-- local proof scripts
-- OpenHands integration notes
-- short video-ready reproduction
+- seccomp user-notify execution guard
+- Landlock execute underlay
+- editable YAML policy compiled to the guard JSON schema
+- one-command OpenHands headless-agent demo runner
+- preserved replay artifacts and audit memos
 
 The deeper governance system remains private.
 
 ## Current Status
 
 - Lab initialized: 2026-04-30
-- Implementation status: not started
-- Public demo status: blocked until local proof passes
-- Primary target: OpenHands-style Docker sandbox execution
+- Implementation status: Sprint 9 productized demo in progress
+- Public demo status: private audit before any public repo/demo
+- Primary target: pinned OpenHands 1.6.0 headless `CodeActAgent` command path
 - Proof standard: reproduce locally before publishing anything
+
+## Quick Demo
+
+With Docker available and an OpenAI API key in the environment:
+
+```bash
+./scripts/demo/run_openhands_guard_demo.sh \
+  --env-file /home/blazingradar/huddy/config/.env
+```
+
+The runner compiles `policy/examples/openhands_action_server.yaml` into a fresh run-local JSON policy, launches the pinned OpenHands headless agent proof, and writes artifacts under `proofs/sprint9_runs/`.
+
+See [docs/DEMO.md](docs/DEMO.md) for the full command, outputs, and claim boundaries.
 
 ## Local Proof Standard
 
 No public claim should ship until the lab can show:
 
-1. Baseline container or OpenHands sandbox allows the target execution under default settings.
-2. Guarded execution blocks the same target action.
-3. Allowed developer commands still run.
-4. Block events produce a clear local audit record.
-5. The result is reproducible from a clean checkout on the same machine.
+1. Guarded OpenHands command execution runs under pinned source and runtime image.
+2. Allowed developer commands still run.
+3. A copied and renamed non-policy executable is blocked by identity, not basename.
+4. Block events produce supervisor-owned audit records.
+5. OpenHands trajectory records the denial from the current run.
+6. The result is reproducible from a clean checkout on the same machine.
 
 ## Key Boundary
 
