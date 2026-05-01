@@ -10,7 +10,7 @@ Status: PASS
 | --- | --- |
 | F-10-A BLOCK/ALLOW overlap not reconciled | Generator now excludes any realpath that appears in both `ALLOW` and `BLOCK`, and records `blocked_overlap_excluded` in metadata |
 | F-10-B / F-10-F identity evidence discarded | Generator now emits `observed_identity_evidence` with observed raw exe, sha256, dev, ino, first/last line, and observation count |
-| F-10-C input provenance implicit | Generator now supports `--trusted-root` and `--require-policy-id`; Sprint 10 runner uses both |
+| F-10-C input provenance implicit | Generator now supports `--trusted-root` and `--require-policy-id`; Sprint 10 runner uses both. `--require-policy-id` rejects unexpected `policy_id` values when present; it does not require every record to carry one. |
 | F-10-D review field not enforced | Docs now state the runner performs automated shape checks and does not enforce human approval |
 | F-10-F partial preflight | Sprint 10 runner now checks generator, compiler, and guided demo runner before continuing |
 | F-10-G hardcoded pass count | Sprint 10 runner now accepts any `pass=N fail=0` enforce summary |

@@ -1,6 +1,6 @@
 # Agent Exec Guard
 
-OpenHands' default Docker runtime can execute arbitrary binaries inside its sandbox; this lab adds a Linux syscall-boundary execution policy and audit layer around that command path.
+OpenHands' default Docker runtime does not express task-scoped executable identity policy for agent-launched commands; this lab adds a Linux syscall-boundary execution policy and audit layer around that command path.
 
 The demo wraps the pinned OpenHands 1.6.0 headless `CodeActAgent` action server with a `seccomp` user-notify guard plus a Landlock execute underlay. A frontier model drives real `execute_bash` actions; expected tools are allowed, while a copied `/usr/bin/rm` renamed to `./python3` is blocked by executable identity and reported back through the OpenHands trajectory.
 

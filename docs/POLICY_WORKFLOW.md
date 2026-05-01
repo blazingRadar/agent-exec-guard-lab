@@ -34,7 +34,7 @@ It proves that real guard audit logs can produce a reviewable YAML allowlist whi
 
 ## Trust Boundary
 
-The audit log is part of the trust boundary. The workflow is intended for logs produced by this guard in the local `proofs/` tree. The generator can enforce a trusted root and expected source `policy_id`, but it does not make arbitrary third-party JSON trustworthy.
+The audit log is part of the trust boundary. The workflow is intended for logs produced by this guard in the local `proofs/` tree. The generator can enforce a trusted root and reject unexpected source `policy_id` values when present, but it does not require every record to carry a `policy_id` and it does not make arbitrary third-party JSON trustworthy.
 
 The generated YAML includes an `observed_identity_evidence` section with the observed `sha256`, `dev`, `ino`, and line numbers for review. The guard still consumes only `allowed_executables`; runtime identity is rebound by the guard when the compiled policy is loaded.
 
