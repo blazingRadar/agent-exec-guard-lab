@@ -1,0 +1,14 @@
+{
+  "provider": "OpenAI",
+  "base_url_host": "api.openai.com",
+  "openai_api_key_present": true,
+  "models_tried": [
+    {
+      "model": "openai/gpt-5.2",
+      "ok": true,
+      "response_model": "gpt-5.2-2025-12-11",
+      "content": "OK."
+    }
+  ],
+  "selected_model": "openai/gpt-5.2"
+}

@@ -1,0 +1,42 @@
+[92m18:53:42 - openhands:INFO[0m: llm_registry.py:94 - [LLM registry dceeab4c-e5ed-4e56-8408-bee4f0f05be0]: Registering service for agent
+[92m18:53:42 - openhands:INFO[0m: llm_registry.py:94 - [LLM registry dceeab4c-e5ed-4e56-8408-bee4f0f05be0]: Registering service for condenser
+[92m18:53:42 - openhands:INFO[0m: base.py:175 - Loaded plugins for runtime sprint8frontier: []
+[92m18:53:42 - openhands:INFO[0m: docker_runtime.py:189 - [runtime sprint8frontier] Starting runtime with image: ghcr.io/openhands/runtime:1.6.0-nikolaik
+[92m18:53:42 - openhands:INFO[0m: docker_runtime.py:505 - [runtime sprint8frontier] Starting server with command: ['/lab/bin/usernotify_exec_guard', '--policy', '/lab/policy/integration/openhands_action_server.allow.json', '/openhands/micromamba/bin/micromamba', 'run', '-n', 'openhands', 'poetry', 'run', 'python', '-u', '-m', 'openhands.runtime.action_execution_server', '39009', '--working-dir', '/lab/proofs/sprint8_runs/sprint8-frontier-agent-20260501T015339Z/workspace', '--username', 'daemon', '--user-id', '1', '--no-enable-browser']
+[92m18:53:42 - openhands:INFO[0m: docker_runtime.py:193 - [runtime sprint8frontier] Container started: openhands-runtime-sprint8frontier. VSCode URL: None
+[92m18:53:42 - openhands:INFO[0m: docker_runtime.py:204 - [runtime sprint8frontier] Waiting for client to become ready at http://localhost:39009...
+[92m18:53:56 - openhands:INFO[0m: docker_runtime.py:210 - [runtime sprint8frontier] Runtime is ready.
+[92m18:53:57 - openhands:INFO[0m: base.py:1166 - Successfully configured git: name=openhands, email=openhands@all-hands.dev
+[92m18:53:57 - openhands:INFO[0m: base.py:995 - [runtime sprint8frontier] Selected repo: None, loading microagents from /lab/proofs/sprint8_runs/sprint8-frontier-agent-20260501T015339Z/workspace/.openhands/microagents (inside runtime)
+[92m18:53:57 - openhands:INFO[0m: base.py:705 - [runtime sprint8frontier] Attempting to list files in repository microagents directory: /lab/proofs/sprint8_runs/sprint8-frontier-agent-20260501T015339Z/workspace/.openhands/microagents
+[92m18:53:57 - openhands:INFO[0m: memory.py:279 - Loading user workspace microagents: []
+[92m18:53:57 - openhands:INFO[0m: state_tracker.py:101 - AgentController sprint8frontier - created new state. start_id: 0
+[92m18:53:57 - openhands:INFO[0m: agent_controller.py:679 - [Agent Controller sprint8frontier] Setting agent(CodeActAgent) state from AgentState.LOADING to AgentState.RUNNING
+[92m18:53:57 - openhands:INFO[0m: memory.py:262 - Microagent 'security' triggered by keyword 'security'
+[92m18:53:57 - openhands:INFO[0m: conversation_stats.py:73 - Saved conversation stats
+[92m18:54:06 - openhands:INFO[0m: agent_controller.py:679 - [Agent Controller sprint8frontier] Setting agent(CodeActAgent) state from AgentState.RUNNING to AgentState.AWAITING_USER_INPUT
+[92m18:54:06 - openhands:ERROR[0m: stream.py:285 - Error in event callback sprint8frontier for subscriber EventStreamSubscriber.MAIN: EOF when reading a line
+ERROR:concurrent.futures:exception calling callback for <Future at 0x79521ec6e240 state=finished raised EOFError>
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 340, in _invoke_callbacks
+    callback(self)
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/events/stream.py", line 289, in _handle_callback_error
+    raise e
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/events/stream.py", line 283, in _handle_callback_error
+    fut.result()
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/usr/lib/python3.12/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/core/main.py", line 229, in on_event
+    message = read_input(config.cli_multiline_input)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0/openhands/io/io.py", line 17, in read_input
+    return input('>> ').rstrip()
+           ^^^^^^^^^^^^
+EOFError: EOF when reading a line
+[92m18:54:06 - openhands:INFO[0m: conversation_stats.py:73 - Saved conversation stats

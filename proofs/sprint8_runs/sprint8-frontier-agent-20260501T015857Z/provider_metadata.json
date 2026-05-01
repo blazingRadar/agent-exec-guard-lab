@@ -1,0 +1,6 @@
+{
+  "provider": "OpenAI",
+  "model": "openai/gpt-5.2",
+  "base_url_host": "api.openai.com",
+  "openai_api_key_present": true
+}

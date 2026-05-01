@@ -1,0 +1,36 @@
+
+[core]
+runtime = "docker"
+workspace_base = "/home/blazingradar/agent-exec-guard-lab/proofs/sprint7_runs/sprint7-headless-agent-20260501T015226Z/workspace"
+workspace_mount_path = "/home/blazingradar/agent-exec-guard-lab/proofs/sprint7_runs/sprint7-headless-agent-20260501T015226Z/workspace"
+workspace_mount_path_in_sandbox = "/lab/proofs/sprint7_runs/sprint7-headless-agent-20260501T015226Z/workspace"
+run_as_openhands = false
+enable_browser = false
+max_iterations = 6
+save_trajectory_path = "/home/blazingradar/agent-exec-guard-lab/proofs/sprint7_runs/sprint7-headless-agent-20260501T015226Z/trajectory"
+default_agent = "CodeActAgent"
+
+[llm]
+model = "openai/sprint7-fake"
+api_key = "sprint7-local"
+base_url = "http://127.0.0.1:18081/v1"
+native_tool_calling = true
+num_retries = 0
+timeout = 30
+caching_prompt = false
+disable_vision = true
+
+[agent]
+enable_browsing = false
+enable_jupyter = false
+enable_editor = false
+enable_llm_editor = false
+enable_mcp = false
+enable_plan_mode = false
+enable_think = false
+enable_condensation_request = false
+
+[sandbox]
+runtime_container_image = "ghcr.io/openhands/runtime:1.6.0-nikolaik"
+volumes = "/home/blazingradar/agent-exec-guard-lab:/lab:rw,/home/blazingradar/agent-exec-guard-lab/external/OpenHands-1.6.0:/openhands/code:ro"
+runtime_startup_env_vars = { PYTHONPATH = "/openhands/code", SHELL = "/bin/bash" }

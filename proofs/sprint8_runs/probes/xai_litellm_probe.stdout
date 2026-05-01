@@ -1,0 +1,73 @@
+
+[1;31mGive Feedback / Get Help: https://github.com/BerriAI/litellm/issues/new[0m
+LiteLLM.Info: If you need to debug this error, use `litellm._turn_on_debug()'.
+
+
+[1;31mProvider List: https://docs.litellm.ai/docs/providers[0m
+
+
+[1;31mGive Feedback / Get Help: https://github.com/BerriAI/litellm/issues/new[0m
+LiteLLM.Info: If you need to debug this error, use `litellm._turn_on_debug()'.
+
+
+[1;31mProvider List: https://docs.litellm.ai/docs/providers[0m
+
+
+[1;31mGive Feedback / Get Help: https://github.com/BerriAI/litellm/issues/new[0m
+LiteLLM.Info: If you need to debug this error, use `litellm._turn_on_debug()'.
+
+
+[1;31mProvider List: https://docs.litellm.ai/docs/providers[0m
+
+
+[1;31mGive Feedback / Get Help: https://github.com/BerriAI/litellm/issues/new[0m
+LiteLLM.Info: If you need to debug this error, use `litellm._turn_on_debug()'.
+
+
+[1;31mProvider List: https://docs.litellm.ai/docs/providers[0m
+
+
+[1;31mGive Feedback / Get Help: https://github.com/BerriAI/litellm/issues/new[0m
+LiteLLM.Info: If you need to debug this error, use `litellm._turn_on_debug()'.
+
+
+[1;31mProvider List: https://docs.litellm.ai/docs/providers[0m
+
+{
+  "provider": "xAI",
+  "base_url_host": "api.x.ai",
+  "xai_api_key_present": true,
+  "grok_api_key_present": true,
+  "models_tried": [
+    {
+      "model": "xai/grok-4.20-reasoning",
+      "ok": false,
+      "error_type": "APIError",
+      "error": "litellm.APIError: APIError: XaiException - {\"code\":\"The caller does not have permission to execute the specified operation\",\"error\":\"Content violates usage guidelines. Team: <redacted>, API key ID: <redacted>, Model: grok-4.20-0309-reasoning, Failed check: SAFETY_CHECK_TYPE_BIO\"}"
+    },
+    {
+      "model": "xai/grok-4.20",
+      "ok": false,
+      "error_type": "APIError",
+      "error": "litellm.APIError: APIError: XaiException - {\"code\":\"The caller does not have permission to execute the specified operation\",\"error\":\"Content violates usage guidelines. Team: <redacted>, API key ID: <redacted>, Model: grok-4.20-0309-reasoning, Failed check: SAFETY_CHECK_TYPE_BIO\"}"
+    },
+    {
+      "model": "xai/grok-4.20-fast",
+      "ok": false,
+      "error_type": "BadRequestError",
+      "error": "litellm.BadRequestError: XaiException - {\"code\":\"Client specified an invalid argument\",\"error\":\"Model not found: grok-4.20-fast\"}"
+    },
+    {
+      "model": "xai/grok-4.1-fast",
+      "ok": false,
+      "error_type": "BadRequestError",
+      "error": "litellm.BadRequestError: XaiException - {\"code\":\"Client specified an invalid argument\",\"error\":\"Model not found: grok-4.1-fast\"}"
+    },
+    {
+      "model": "xai/grok-3",
+      "ok": false,
+      "error_type": "APIError",
+      "error": "litellm.APIError: APIError: XaiException - {\"code\":\"The caller does not have permission to execute the specified operation\",\"error\":\"Content violates usage guidelines. Team: <redacted>, API key ID: <redacted>, Model: grok-3, Failed check: SAFETY_CHECK_TYPE_BIO\"}"
+    }
+  ]
+}

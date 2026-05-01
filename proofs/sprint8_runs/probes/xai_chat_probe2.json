@@ -1,0 +1,31 @@
+{
+  "provider": "xAI",
+  "base_url_host": "api.x.ai",
+  "xai_api_key_present": true,
+  "models_tried": [
+    {
+      "model": "xai/grok-4.20-0309-non-reasoning",
+      "ok": false,
+      "error_type": "APIError",
+      "error": "litellm.APIError: APIError: XaiException - {\"code\":\"The caller does not have permission to execute the specified operation\",\"error\":\"Content violates usage guidelines. Team: <redacted>, API key ID: <redacted>, Model: grok-4.20-0309-non-reasoning, Failed check: SAFETY_CHECK_TYPE_BIO\"}"
+    },
+    {
+      "model": "xai/grok-4-fast-non-reasoning",
+      "ok": false,
+      "error_type": "APIError",
+      "error": "litellm.APIError: APIError: XaiException - {\"code\":\"The caller does not have permission to execute the specified operation\",\"error\":\"Content violates usage guidelines. Team: <redacted>, API key ID: <redacted>, Model: grok-4-fast-non-reasoning, Failed check: SAFETY_CHECK_TYPE_BIO\"}"
+    },
+    {
+      "model": "xai/grok-4-1-fast-non-reasoning",
+      "ok": false,
+      "error_type": "APIError",
+      "error": "litellm.APIError: APIError: XaiException - {\"code\":\"The caller does not have permission to execute the specified operation\",\"error\":\"Content violates usage guidelines. Team: <redacted>, API key ID: <redacted>, Model: grok-4-1-fast-non-reasoning, Failed check: SAFETY_CHECK_TYPE_BIO\"}"
+    },
+    {
+      "model": "xai/grok-code-fast-1",
+      "ok": false,
+      "error_type": "APIError",
+      "error": "litellm.APIError: APIError: XaiException - {\"code\":\"The caller does not have permission to execute the specified operation\",\"error\":\"Content violates usage guidelines. Team: <redacted>, API key ID: <redacted>, Model: grok-code-fast-1, Failed check: SAFETY_CHECK_TYPE_BIO\"}"
+    }
+  ]
+}
