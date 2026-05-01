@@ -43,7 +43,7 @@ The proof directory currently contains 4120 files and is approximately 29 MB.
 | Sprint 7 | `SPRINT7_HEADLESS_AGENT_PROOF_20260501.md` | Headless OpenHands agent-loop proof; independent audits A/B preserved |
 | Sprint 8 | `SPRINT8_FRONTIER_MODEL_PROOF_20260501.md` | External OpenAI model proof; cleanup memo preserved |
 | Sprint 9 | `SPRINT9_PRODUCTIZED_DEMO_PROOF_20260501.md` | Guided one-command demo with editable YAML policy; post-audit cleanup and run artifacts preserved |
-| Sprint 10 | `SPRINT10_POLICY_WORKFLOW_PROOF_20260501.md` | Observe/generate/review/enforce policy workflow; generated-policy enforce artifacts preserved |
+| Sprint 10 | `SPRINT10_POLICY_WORKFLOW_PROOF_20260501.md` | Observe/generate/review/enforce policy workflow; independent audits and post-audit cleanup preserved |
 
 ## Gate Memos
 
@@ -79,6 +79,8 @@ Sprint 9 specifically preserves the process correction from earlier audits: the 
 - `proofs/AUDIT_20260501_sprint8_independent_review_orchestrator.md`
 - `proofs/AUDIT_20260501_sprint9_independent_review_orchestrator.md`
 - `proofs/AUDIT_20260501_sprint9_independent_review_orchestrator_pass2.md`
+- `proofs/AUDIT_20260501_sprint10_independent_review_a.md`
+- `proofs/AUDIT_20260501_sprint10_independent_review_b.md`
 
 ## Preserved Run Directories
 
@@ -91,10 +93,11 @@ Sprint 9 specifically preserves the process correction from earlier audits: the 
 - `proofs/sprint7_runs/`
 - `proofs/sprint8_runs/`
 - `proofs/sprint9_runs/`
+- `proofs/sprint10_runs/`
 
 ## Current Strongest Claim
 
-Sprint 10 adds an observe/generate/review/enforce workflow: real guard audit logs from the OpenHands demo are converted into reviewable YAML policy, observed BLOCK records are preserved separately, that YAML compiles to guard JSON, and the guided OpenHands demo reruns successfully under the generated policy while preserving the copied-`rm` block assertion.
+Sprint 10 adds an observe/generate/review/enforce workflow: real guard audit logs from the OpenHands demo are converted into reviewable YAML policy, observed BLOCK records are preserved separately, any realpath seen in both ALLOW and BLOCK is excluded from the generated allowlist, that YAML compiles to guard JSON, and the guided OpenHands demo reruns successfully under the generated policy while preserving the copied-`rm` block assertion.
 
 ## Current Non-Claims
 
@@ -108,7 +111,8 @@ Sprint 10 adds an observe/generate/review/enforce workflow: real guard audit log
 - Public self-serve clone-and-run packaging.
 - Recorded outreach video/asciinema.
 - Automatic policy approval without human review.
+- Signed or tamper-proof audit logs.
 
 ## Backup Status
 
-As of this index, all Sprint 1-9 proof artifacts known to the current working tree are committed and pushed to the private GitHub repository. Future audits should update this file when new sprint gates, proof memos, audit reports, or run directories are added.
+As of this index, all Sprint 1-10 proof artifacts known to the current working tree are included in the Sprint 10 post-audit cleanup set. The git commit and push record are the backup evidence. Future audits should update this file when new sprint gates, proof memos, audit reports, or run directories are added.

@@ -1,0 +1,3 @@
+{"event":"exec_decision","policy_id":"good","decision":"ALLOW","realpath":"/usr/bin/cat","raw_exe":"/usr/bin/cat","sha256":"catsha","dev":1,"ino":2}
+{"event":"exec_decision","policy_id":"good","decision":"ALLOW","realpath":"/usr/bin/nc","raw_exe":"/usr/bin/nc","sha256":"ncsha","dev":3,"ino":4}
+{"event":"exec_decision","policy_id":"good","decision":"BLOCK","realpath":"/usr/bin/nc","raw_exe":"./python3","reason":"blocked_executable_identity"}

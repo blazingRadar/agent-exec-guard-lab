@@ -1,0 +1,6 @@
+{
+  "policy_id": "observed_openhands_policy_v1",
+  "allowed_executables": [
+    "/usr/bin/cat"
+  ]
+}

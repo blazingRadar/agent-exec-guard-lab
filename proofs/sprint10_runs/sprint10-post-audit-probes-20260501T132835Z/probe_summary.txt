@@ -1,0 +1,6 @@
+pass=2 fail=1
+
+This probe run is preserved as a failed harness attempt. The Python assertion used
+the wrong shape for observed_identity_evidence and exited non-zero, but the shell
+wrapper did not have set -e enabled and incorrectly wrote pass=3 fail=0. The
+corrected rerun is sprint10-post-audit-probes-20260501T132858Z.

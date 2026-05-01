@@ -1,0 +1,7 @@
+{
+  "input": "proofs/sprint10_runs/sprint10-post-audit-probes-20260501T132555Z/overlap.yaml",
+  "output": "proofs/sprint10_runs/sprint10-post-audit-probes-20260501T132555Z/overlap.json",
+  "policy_id": "observed_openhands_policy_v1",
+  "allowed_executables": 1,
+  "check_exists": false
+}

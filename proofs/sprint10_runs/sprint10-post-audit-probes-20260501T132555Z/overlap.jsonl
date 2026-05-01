@@ -1,0 +1,3 @@
+{"event":"exec_decision","policy_id":"expected","decision":"ALLOW","realpath":"/usr/bin/cat","raw_exe":"/usr/bin/cat","sha256":"aaa","dev":1,"ino":1}
+{"event":"exec_decision","policy_id":"expected","decision":"ALLOW","realpath":"/usr/bin/nc","raw_exe":"/usr/bin/nc","sha256":"bbb","dev":1,"ino":2}
+{"event":"exec_decision","policy_id":"expected","decision":"BLOCK","realpath":"/usr/bin/nc","raw_exe":"/usr/bin/nc","sha256":"bbb","reason":"blocked_executable_identity"}

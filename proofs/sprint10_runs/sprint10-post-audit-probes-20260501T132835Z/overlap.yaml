@@ -1,0 +1,26 @@
+# Generated from guard audit logs. Review before enforcing.
+policy_id: probe
+metadata:
+  generated_from: proofs/sprint10_runs/sprint10-post-audit-probes-20260501T132835Z/overlap.jsonl
+  total_exec_decisions: 3
+  observed_allowed_count: 1
+  observed_blocked_count: 1
+  source_policy_ids:
+  - good
+  blocked_overlap_excluded_count: 1
+  blocked_overlap_excluded:
+  - /usr/bin/nc
+  review_required: true
+  note: Generated from observed ALLOW records. Review before enforcing; any realpath
+    also seen in a BLOCK record is excluded from allowed_executables.
+observed_identity_evidence:
+- realpath: /usr/bin/cat
+  first_line: 1
+  last_line: 1
+  observations: 1
+  raw_exe: /usr/bin/cat
+  sha256: catsha
+  dev: 1
+  ino: 2
+allowed_executables:
+- /usr/bin/cat

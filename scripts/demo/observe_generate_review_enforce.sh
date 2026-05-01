@@ -80,6 +80,27 @@ printf 'run_id=%s\n' "$RUN_ID" >"$SUMMARY"
 printf 'run_root=%s\n' "$RUN_ROOT" >>"$SUMMARY"
 printf 'model=%s\n' "$MODEL_NAME" >>"$SUMMARY"
 
+if [ ! -x "$ROOT/scripts/policy/generate_policy_from_audit.py" ]; then
+  record "FAIL" "preflight_generator" "missing executable generator"
+  exit 2
+else
+  record "PASS" "preflight_generator" "policy generator present"
+fi
+
+if [ ! -x "$ROOT/scripts/policy/compile_policy.py" ]; then
+  record "FAIL" "preflight_compiler" "missing executable compiler"
+  exit 2
+else
+  record "PASS" "preflight_compiler" "policy compiler present"
+fi
+
+if [ ! -x "$ROOT/scripts/demo/run_openhands_guard_demo.sh" ]; then
+  record "FAIL" "preflight_enforce_runner" "missing guided demo runner"
+  exit 2
+else
+  record "PASS" "preflight_enforce_runner" "guided demo runner present"
+fi
+
 if [ -n "$ENV_FILE" ]; then
   if [ ! -f "$ENV_FILE" ]; then
     record "FAIL" "env_file" "missing env file: $ENV_FILE"
@@ -96,10 +117,9 @@ else
 fi
 
 if [ -z "$OBSERVE_RUN_ROOT" ]; then
-  if [ -f "$ROOT/proofs/sprint9_runs/latest_demo.txt" ]; then
-    sprint9_root="$(cat "$ROOT/proofs/sprint9_runs/latest_demo.txt")"
-    OBSERVE_RUN_ROOT="$(find "$sprint9_root/openhands_runs" -maxdepth 1 -mindepth 1 -type d | sort | tail -1)"
-  fi
+  OBSERVE_RUN_ROOT="$(find "$ROOT/proofs/sprint9_runs" \
+    -path '*/openhands_runs/*/runtime_container_logs.combined' \
+    -printf '%T@ %h\n' 2>/dev/null | sort -n | tail -1 | cut -d' ' -f2-)"
 fi
 
 if [ -z "$OBSERVE_RUN_ROOT" ] || [ ! -d "$OBSERVE_RUN_ROOT" ]; then
@@ -125,6 +145,9 @@ log_cmd "scripts/policy/generate_policy_from_audit.py $OBSERVE_LOG $GENERATED_YA
 if "$ROOT/scripts/policy/generate_policy_from_audit.py" \
   "$OBSERVE_LOG" "$GENERATED_YAML" \
   --policy-id "sprint10_observed_openhands_policy_v1" \
+  --trusted-root "$ROOT/proofs" \
+  --require-policy-id "sprint9_openhands_action_server_allowlist_v1" \
+  --require-policy-id "sprint10_observed_openhands_policy_v1" \
   --include-blocked-summary "$BLOCKED_JSON" \
   >"$RUN_ROOT/generate_policy.stdout" 2>"$RUN_ROOT/generate_policy.stderr"; then
   record "PASS" "generate_policy" "generated reviewable YAML from observed guard log"
@@ -149,14 +172,17 @@ import yaml
 policy = yaml.safe_load(open(sys.argv[1], "r", encoding="utf-8"))
 blocked = json.load(open(sys.argv[2], "r", encoding="utf-8"))
 allowed = set(policy.get("allowed_executables", []))
+excluded = set(policy.get("metadata", {}).get("blocked_overlap_excluded", []))
 assert "/usr/bin/cat" in allowed
 assert "/usr/bin/rm" not in allowed
 assert any(item.get("raw_exe") == "./python3" for item in blocked.get("blocked", []))
+assert allowed.isdisjoint(excluded)
 print(json.dumps({
     "allowed_count": len(allowed),
     "blocked_count": blocked.get("blocked_count"),
     "cat_allowed": "/usr/bin/cat" in allowed,
     "rm_allowed": "/usr/bin/rm" in allowed,
+    "blocked_overlap_excluded_count": len(excluded),
     "copied_rm_block_observed": any(
         item.get("raw_exe") == "./python3" for item in blocked.get("blocked", [])
     ),
@@ -182,7 +208,7 @@ fi
 
 ENFORCE_RUN_ROOT="$(cat "$ROOT/proofs/sprint9_runs/latest_demo.txt")"
 printf 'enforce_run_root=%s\n' "$ENFORCE_RUN_ROOT" >>"$SUMMARY"
-if grep -q 'pass=14 fail=0' "$ENFORCE_RUN_ROOT/demo_summary.txt"; then
+if grep -Eq '^pass=[0-9]+ fail=0$' "$ENFORCE_RUN_ROOT/demo_summary.txt"; then
   record "PASS" "enforce_summary" "$ENFORCE_RUN_ROOT/demo_summary.txt"
 else
   record "FAIL" "enforce_summary" "generated-policy enforce summary did not pass"

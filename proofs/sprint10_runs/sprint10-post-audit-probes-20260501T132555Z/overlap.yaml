@@ -1,0 +1,26 @@
+# Generated from guard audit logs. Review before enforcing.
+policy_id: observed_openhands_policy_v1
+metadata:
+  generated_from: proofs/sprint10_runs/sprint10-post-audit-probes-20260501T132555Z/overlap.jsonl
+  total_exec_decisions: 3
+  observed_allowed_count: 1
+  observed_blocked_count: 1
+  source_policy_ids:
+  - expected
+  blocked_overlap_excluded_count: 1
+  blocked_overlap_excluded:
+  - /usr/bin/nc
+  review_required: true
+  note: Generated from observed ALLOW records. Review before enforcing; any realpath
+    also seen in a BLOCK record is excluded from allowed_executables.
+observed_identity_evidence:
+- realpath: /usr/bin/cat
+  first_line: 1
+  last_line: 1
+  observations: 1
+  raw_exe: /usr/bin/cat
+  sha256: aaa
+  dev: 1
+  ino: 1
+allowed_executables:
+- /usr/bin/cat

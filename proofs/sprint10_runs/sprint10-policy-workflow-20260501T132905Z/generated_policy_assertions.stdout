@@ -1,0 +1,8 @@
+{
+  "allowed_count": 16,
+  "blocked_count": 10,
+  "cat_allowed": true,
+  "rm_allowed": false,
+  "blocked_overlap_excluded_count": 0,
+  "copied_rm_block_observed": true
+}

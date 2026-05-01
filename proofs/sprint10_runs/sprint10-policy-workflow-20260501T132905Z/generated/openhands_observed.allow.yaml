@@ -1,0 +1,160 @@
+# Generated from guard audit logs. Review before enforcing.
+policy_id: sprint10_observed_openhands_policy_v1
+metadata:
+  generated_from: /home/blazingradar/agent-exec-guard-lab/proofs/sprint9_runs/sprint9-demo-20260501T080016Z/openhands_runs/sprint8-frontier-agent-20260501T080016Z/runtime_container_logs.combined
+  total_exec_decisions: 128
+  observed_allowed_count: 16
+  observed_blocked_count: 10
+  source_policy_ids:
+  - sprint10_observed_openhands_policy_v1
+  blocked_overlap_excluded_count: 0
+  blocked_overlap_excluded: []
+  review_required: true
+  note: Generated from observed ALLOW records. Review before enforcing; any realpath
+    also seen in a BLOCK record is excluded from allowed_executables.
+observed_identity_evidence:
+- realpath: /openhands/micromamba/bin/micromamba
+  first_line: 2
+  last_line: 62
+  observations: 11
+  raw_exe: /openhands/micromamba/bin/micromamba
+  sha256: 3016eb34edd59923b2d8814f77d0358c27157a1c4f7df04e1308e42219cbc4ba
+  dev: 130
+  ino: 168200136
+- realpath: /openhands/micromamba/envs/openhands/bin/poetry
+  first_line: 7
+  last_line: 7
+  observations: 1
+  raw_exe: /openhands/micromamba/envs/openhands/bin/poetry
+  sha256: f99dccd64cb4bc1d9ee20c3341022f6d1b17026e5d1b8633c2f40875b954051b
+  dev: 130
+  ino: 168200216
+- realpath: /openhands/micromamba/envs/openhands/bin/python3.12
+  first_line: 8
+  last_line: 10
+  observations: 3
+  raw_exe: /openhands/poetry/openhands-ai-5O4_aCHf-py3.12/bin/python
+  sha256: ffff75672b9a2389d11faf9f010ec23f636e551e9f68dc361656e464d733f789
+  dev: 130
+  ino: 168200226
+- realpath: /usr/bin/basename
+  first_line: 5
+  last_line: 61
+  observations: 5
+  raw_exe: /usr/bin/basename
+  sha256: 29d72de9eb547de922c6b4f8265da7c11ae54fe8ad445f8d52fe7958f58b26f8
+  dev: 130
+  ino: 168068329
+- realpath: /usr/bin/bash
+  first_line: 3
+  last_line: 46
+  observations: 4
+  raw_exe: /usr/bin/bash
+  sha256: 897891f8480830ff255274c18cbb38d1040949bda9a9516ad3aaa4d664f6248a
+  dev: 130
+  ino: 168068331
+- realpath: /usr/bin/cat
+  first_line: 117
+  last_line: 117
+  observations: 1
+  raw_exe: /usr/bin/cat
+  sha256: 7e831185a1b611209fbb43aeb6e3729be7d246016226e49e7b995fac633cc750
+  dev: 130
+  ino: 168068334
+- realpath: /usr/bin/chmod
+  first_line: 31
+  last_line: 138
+  observations: 3
+  raw_exe: /usr/bin/chmod
+  sha256: 922b05463b85150ff95f929caec0e5e4337ac3ad9734b45e91344a7e467d557f
+  dev: 130
+  ino: 168068339
+- realpath: /usr/bin/chown
+  first_line: 29
+  last_line: 29
+  observations: 1
+  raw_exe: /usr/bin/chown
+  sha256: b4043df7330f27957d8ca980fb1596c258ab69ce6202d4996e0d027a7ff66ef5
+  dev: 130
+  ino: 168068341
+- realpath: /usr/bin/cp
+  first_line: 125
+  last_line: 136
+  observations: 2
+  raw_exe: /usr/bin/cp
+  sha256: 4f98faf779444844c34f563541e1aa5cbe89bb3308d0594828568af86dbffe13
+  dev: 130
+  ino: 168068349
+- realpath: /usr/bin/dash
+  first_line: 24
+  last_line: 30
+  observations: 4
+  raw_exe: /bin/sh
+  sha256: dcd63c9e9f5dfb6d5f8a44d6c9c1413a5535ecc7b13d824bec47bb59e7e48860
+  dev: 130
+  ino: 168068352
+- realpath: /usr/bin/git
+  first_line: 15
+  last_line: 109
+  observations: 3
+  raw_exe: /usr/bin/git
+  sha256: 92e5d5752b9d1efdf3b969127077a5850a64561532938bf37711653de1b05eba
+  dev: 130
+  ino: 168186241
+- realpath: /usr/bin/id
+  first_line: 25
+  last_line: 37
+  observations: 2
+  raw_exe: /usr/bin/id
+  sha256: 02330003b7fa61e56f37bb18bfc9036fb98eb47f10c2ec0a00b5d3d5b5c1aba1
+  dev: 130
+  ino: 168068413
+- realpath: /usr/bin/mkdir
+  first_line: 27
+  last_line: 27
+  observations: 1
+  raw_exe: /usr/bin/mkdir
+  sha256: dd8ae316c01e4cb86079303764f2778fc9c6ca6a39b53f15fb7bf625d91b5ce3
+  dev: 130
+  ino: 168068445
+- realpath: /usr/bin/run-parts
+  first_line: 49
+  last_line: 49
+  observations: 1
+  raw_exe: /usr/bin/run-parts
+  sha256: 9ee2d7b6651ff6f152d9de24b0317fd9208194b4a523e30034cbd02e6f9b2e4a
+  dev: 130
+  ino: 168068489
+- realpath: /usr/bin/tmux
+  first_line: 33
+  last_line: 143
+  observations: 67
+  raw_exe: /usr/bin/tmux
+  sha256: 126530c0ed980824f6cc4107911cd6782e96860f90892b3c862dd7efef97b35a
+  dev: 130
+  ino: 168186317
+- realpath: /usr/bin/which.debianutils
+  first_line: 63
+  last_line: 140
+  observations: 9
+  raw_exe: /usr/bin/which
+  sha256: 59e7cf8b9bd8711ae1aa6f7bbbd4132b61492409c3afe8e1505225efda1cb8f6
+  dev: 130
+  ino: 168068557
+allowed_executables:
+- /openhands/micromamba/bin/micromamba
+- /openhands/micromamba/envs/openhands/bin/poetry
+- /openhands/micromamba/envs/openhands/bin/python3.12
+- /usr/bin/basename
+- /usr/bin/bash
+- /usr/bin/cat
+- /usr/bin/chmod
+- /usr/bin/chown
+- /usr/bin/cp
+- /usr/bin/dash
+- /usr/bin/git
+- /usr/bin/id
+- /usr/bin/mkdir
+- /usr/bin/run-parts
+- /usr/bin/tmux
+- /usr/bin/which.debianutils

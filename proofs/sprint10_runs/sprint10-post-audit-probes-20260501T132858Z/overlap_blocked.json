@@ -1,0 +1,13 @@
+{
+  "audit_log": "proofs/sprint10_runs/sprint10-post-audit-probes-20260501T132858Z/overlap.jsonl",
+  "blocked_count": 1,
+  "blocked": [
+    {
+      "line": 3,
+      "raw_exe": "./python3",
+      "realpath": "/usr/bin/nc",
+      "reason": "blocked_executable_identity",
+      "sha256": null
+    }
+  ]
+}

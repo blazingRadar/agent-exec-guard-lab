@@ -1,0 +1,6 @@
+{
+  "policy_id": "probe",
+  "allowed_executables": [
+    "/usr/bin/cat"
+  ]
+}

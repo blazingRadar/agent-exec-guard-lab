@@ -1,0 +1,17 @@
+run_id=sprint9-demo-20260501T093230Z
+run_root=/home/blazingradar/agent-exec-guard-lab/proofs/sprint9_runs/sprint9-demo-20260501T093230Z
+model=openai/gpt-5.2
+policy_yaml=/home/blazingradar/agent-exec-guard-lab/policy/examples/openhands_action_server.yaml
+compiled_policy=/home/blazingradar/agent-exec-guard-lab/proofs/sprint9_runs/sprint9-demo-20260501T093230Z/policy/openhands_action_server.allow.json
+PASS preflight_compiler policy compiler present
+PASS preflight_replay Sprint 8 replay harness present
+PASS preflight_openhands_source pinned OpenHands source present
+PASS preflight_docker docker reachable via sg docker
+PASS env_file no env file requested
+PASS policy_compile YAML policy compiled to guard JSON
+PASS compiler_rejects_malformed compiler rejected invalid policy
+PASS compiler_rejects_missing_allowed compiler rejected invalid policy
+PASS compiler_rejects_relative_path compiler rejected invalid policy
+PASS compiler_rejects_missing_executable compiler rejected missing executable with --check-exists
+FAIL openai_api_key_present OPENAI_API_KEY missing; external-model demo not launched
+pass=10 fail=1
