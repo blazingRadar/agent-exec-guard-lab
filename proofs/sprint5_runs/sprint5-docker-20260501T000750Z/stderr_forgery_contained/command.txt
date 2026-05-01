@@ -1,0 +1,1 @@
+/lab/bin/usernotify_exec_guard --policy /lab/policy/integration/docker_python_slim.allow.json /usr/local/bin/python3 /lab/proofs/sprint5_runs/sprint5-docker-20260501T000750Z/forge_stderr.py 
