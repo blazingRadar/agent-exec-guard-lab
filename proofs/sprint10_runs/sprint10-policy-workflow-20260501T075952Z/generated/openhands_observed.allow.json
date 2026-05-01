@@ -1,0 +1,21 @@
+{
+  "policy_id": "sprint10_observed_openhands_policy_v1",
+  "allowed_executables": [
+    "/openhands/micromamba/bin/micromamba",
+    "/openhands/micromamba/envs/openhands/bin/poetry",
+    "/openhands/micromamba/envs/openhands/bin/python3.12",
+    "/usr/bin/basename",
+    "/usr/bin/bash",
+    "/usr/bin/cat",
+    "/usr/bin/chmod",
+    "/usr/bin/chown",
+    "/usr/bin/cp",
+    "/usr/bin/dash",
+    "/usr/bin/git",
+    "/usr/bin/id",
+    "/usr/bin/mkdir",
+    "/usr/bin/run-parts",
+    "/usr/bin/tmux",
+    "/usr/bin/which.debianutils"
+  ]
+}

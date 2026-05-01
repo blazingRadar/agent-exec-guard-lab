@@ -8,10 +8,10 @@ Repo: `https://github.com/blazingRadar/agent-exec-guard-lab`
 
 Verified GitHub visibility at time of writing: `PRIVATE`
 
-Verified pushed head at time of writing:
+Latest pushed head should be verified with `git ls-remote origin refs/heads/main` after each update. Current Sprint 10 work begins at:
 
 ```text
-664c4ade5a04f1fcebfff9febc0c9157677216ea refs/heads/main
+6d91c21 Pre-register Sprint 10 policy workflow gate
 ```
 
 ## Repository Evidence Shape
@@ -43,6 +43,7 @@ The proof directory currently contains 4120 files and is approximately 29 MB.
 | Sprint 7 | `SPRINT7_HEADLESS_AGENT_PROOF_20260501.md` | Headless OpenHands agent-loop proof; independent audits A/B preserved |
 | Sprint 8 | `SPRINT8_FRONTIER_MODEL_PROOF_20260501.md` | External OpenAI model proof; cleanup memo preserved |
 | Sprint 9 | `SPRINT9_PRODUCTIZED_DEMO_PROOF_20260501.md` | Guided one-command demo with editable YAML policy; post-audit cleanup and run artifacts preserved |
+| Sprint 10 | `SPRINT10_POLICY_WORKFLOW_PROOF_20260501.md` | Observe/generate/review/enforce policy workflow; generated-policy enforce artifacts preserved |
 
 ## Gate Memos
 
@@ -52,6 +53,7 @@ The proof directory currently contains 4120 files and is approximately 29 MB.
 - `proofs/SPRINT7_GATE_20260501.md`
 - `proofs/SPRINT8_GATE_20260501.md`
 - `proofs/SPRINT9_GATE_20260501.md`
+- `proofs/SPRINT10_GATE_20260501.md`
 
 Sprint 9 specifically preserves the process correction from earlier audits: the gate commit precedes implementation/proof commit in git history.
 
@@ -92,7 +94,7 @@ Sprint 9 specifically preserves the process correction from earlier audits: the 
 
 ## Current Strongest Claim
 
-Sprint 9 packages the proven OpenHands guard path into a repeatable guided CLI demo on the prepared lab machine: an editable YAML policy compiles into the guard's JSON allowlist, the one-command runner launches the pinned OpenHands headless agent path, an external OpenAI model drives `execute_bash`, the guard allows expected executable identities, blocks copied/renamed `/usr/bin/rm`, emits parseable audit JSON, and the denial is asserted from the current-run OpenHands trajectory.
+Sprint 10 adds an observe/generate/review/enforce workflow: real guard audit logs from the OpenHands demo are converted into reviewable YAML policy, observed BLOCK records are preserved separately, that YAML compiles to guard JSON, and the guided OpenHands demo reruns successfully under the generated policy while preserving the copied-`rm` block assertion.
 
 ## Current Non-Claims
 
@@ -105,6 +107,7 @@ Sprint 9 packages the proven OpenHands guard path into a repeatable guided CLI d
 - Minimal production policy.
 - Public self-serve clone-and-run packaging.
 - Recorded outreach video/asciinema.
+- Automatic policy approval without human review.
 
 ## Backup Status
 

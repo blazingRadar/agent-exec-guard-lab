@@ -1,0 +1,7 @@
+{
+  "input": "/home/blazingradar/agent-exec-guard-lab/proofs/sprint10_runs/sprint10-policy-workflow-20260501T080016Z/generated/openhands_observed.allow.yaml",
+  "output": "/home/blazingradar/agent-exec-guard-lab/proofs/sprint9_runs/sprint9-demo-20260501T080016Z/policy/openhands_action_server.allow.json",
+  "policy_id": "sprint10_observed_openhands_policy_v1",
+  "allowed_executables": 16,
+  "check_exists": false
+}

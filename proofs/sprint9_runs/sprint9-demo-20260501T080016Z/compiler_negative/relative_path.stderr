@@ -1,0 +1,1 @@
+policy compile error: allowed_executables[0] must be an absolute path: usr/bin/cat

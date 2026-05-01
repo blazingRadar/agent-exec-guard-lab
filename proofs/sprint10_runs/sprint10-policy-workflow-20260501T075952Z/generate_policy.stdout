@@ -1,0 +1,8 @@
+{
+  "audit_log": "/home/blazingradar/agent-exec-guard-lab/proofs/sprint9_runs/sprint9-demo-20260501T040010Z/openhands_runs/sprint8-frontier-agent-20260501T040010Z/runtime_container_logs.combined",
+  "output_yaml": "/home/blazingradar/agent-exec-guard-lab/proofs/sprint10_runs/sprint10-policy-workflow-20260501T075952Z/generated/openhands_observed.allow.yaml",
+  "policy_id": "sprint10_observed_openhands_policy_v1",
+  "allowed_executables": 16,
+  "blocked_records": 10,
+  "total_exec_decisions": 130
+}

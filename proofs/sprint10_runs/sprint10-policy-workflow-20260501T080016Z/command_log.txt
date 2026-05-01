@@ -1,0 +1,4 @@
+$ source /home/blazingradar/huddy/config/.env
+$ scripts/policy/generate_policy_from_audit.py /home/blazingradar/agent-exec-guard-lab/proofs/sprint9_runs/sprint9-demo-20260501T040010Z/openhands_runs/sprint8-frontier-agent-20260501T040010Z/runtime_container_logs.combined /home/blazingradar/agent-exec-guard-lab/proofs/sprint10_runs/sprint10-policy-workflow-20260501T080016Z/generated/openhands_observed.allow.yaml
+$ scripts/policy/compile_policy.py /home/blazingradar/agent-exec-guard-lab/proofs/sprint10_runs/sprint10-policy-workflow-20260501T080016Z/generated/openhands_observed.allow.yaml /home/blazingradar/agent-exec-guard-lab/proofs/sprint10_runs/sprint10-policy-workflow-20260501T080016Z/generated/openhands_observed.allow.json
+$ scripts/demo/run_openhands_guard_demo.sh --policy-yaml /home/blazingradar/agent-exec-guard-lab/proofs/sprint10_runs/sprint10-policy-workflow-20260501T080016Z/generated/openhands_observed.allow.yaml

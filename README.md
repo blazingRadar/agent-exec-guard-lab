@@ -11,6 +11,7 @@ The current artifact is a private, audit-first demo:
 - seccomp user-notify execution guard
 - Landlock execute underlay
 - editable YAML policy compiled to the guard JSON schema
+- observed audit logs converted into reviewable YAML policy
 - one-command OpenHands headless-agent demo runner
 - preserved replay artifacts and audit memos
 
@@ -19,7 +20,7 @@ The deeper governance system remains private.
 ## Current Status
 
 - Lab initialized: 2026-04-30
-- Implementation status: Sprint 9 guided demo passed; post-audit portability cleanup passed
+- Implementation status: Sprint 10 observe/generate/review/enforce workflow passed
 - Public demo status: private audit before any public repo/demo
 - Primary target: pinned OpenHands 1.6.0 headless `CodeActAgent` command path
 - Proof standard: reproduce locally before publishing anything
@@ -38,6 +39,8 @@ The runner compiles `policy/examples/openhands_action_server.yaml` into a fresh 
 This is a guided private demo path, not yet a public self-serve clone-and-run package.
 
 See [docs/DEMO.md](docs/DEMO.md) for the full command, outputs, and claim boundaries.
+
+For observed-policy generation, see [docs/POLICY_WORKFLOW.md](docs/POLICY_WORKFLOW.md).
 
 ## Local Proof Standard
 

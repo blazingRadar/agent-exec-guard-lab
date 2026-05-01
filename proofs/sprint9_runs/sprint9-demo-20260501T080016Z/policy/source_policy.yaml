@@ -1,0 +1,27 @@
+# Generated from guard audit logs. Review before enforcing.
+policy_id: sprint10_observed_openhands_policy_v1
+metadata:
+  generated_from: /home/blazingradar/agent-exec-guard-lab/proofs/sprint9_runs/sprint9-demo-20260501T040010Z/openhands_runs/sprint8-frontier-agent-20260501T040010Z/runtime_container_logs.combined
+  total_exec_decisions: 130
+  observed_allowed_count: 16
+  observed_blocked_count: 10
+  review_required: true
+  note: Generated from observed ALLOW records. Review before enforcing; blocked records
+    are excluded from allowed_executables.
+allowed_executables:
+- /openhands/micromamba/bin/micromamba
+- /openhands/micromamba/envs/openhands/bin/poetry
+- /openhands/micromamba/envs/openhands/bin/python3.12
+- /usr/bin/basename
+- /usr/bin/bash
+- /usr/bin/cat
+- /usr/bin/chmod
+- /usr/bin/chown
+- /usr/bin/cp
+- /usr/bin/dash
+- /usr/bin/git
+- /usr/bin/id
+- /usr/bin/mkdir
+- /usr/bin/run-parts
+- /usr/bin/tmux
+- /usr/bin/which.debianutils

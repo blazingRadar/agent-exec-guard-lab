@@ -1,0 +1,30 @@
+[92m01:00:19 - openhands:INFO[0m: llm_registry.py:94 - [LLM registry bd190303-eab2-4db5-b001-458124b304bf]: Registering service for agent
+[92m01:00:19 - openhands:INFO[0m: llm_registry.py:94 - [LLM registry bd190303-eab2-4db5-b001-458124b304bf]: Registering service for condenser
+[92m01:00:19 - openhands:INFO[0m: base.py:175 - Loaded plugins for runtime sprint8-frontier-agent-20260501T080016Z: []
+[92m01:00:19 - openhands:INFO[0m: docker_runtime.py:189 - [runtime sprint8-frontier-agent-20260501T080016Z] Starting runtime with image: ghcr.io/openhands/runtime:1.6.0-nikolaik
+[92m01:00:19 - openhands:INFO[0m: docker_runtime.py:505 - [runtime sprint8-frontier-agent-20260501T080016Z] Starting server with command: ['/lab/bin/usernotify_exec_guard', '--policy', '/lab/proofs/sprint9_runs/sprint9-demo-20260501T080016Z/policy/openhands_action_server.allow.json', '/openhands/micromamba/bin/micromamba', 'run', '-n', 'openhands', 'poetry', 'run', 'python', '-u', '-m', 'openhands.runtime.action_execution_server', '30066', '--working-dir', '/lab/proofs/sprint9_runs/sprint9-demo-20260501T080016Z/openhands_runs/sprint8-frontier-agent-20260501T080016Z/workspace', '--username', 'daemon', '--user-id', '1', '--no-enable-browser']
+[92m01:00:19 - openhands:INFO[0m: docker_runtime.py:193 - [runtime sprint8-frontier-agent-20260501T080016Z] Container started: openhands-runtime-sprint8-frontier-agent-20260501T080016Z. VSCode URL: None
+[92m01:00:19 - openhands:INFO[0m: docker_runtime.py:204 - [runtime sprint8-frontier-agent-20260501T080016Z] Waiting for client to become ready at http://localhost:30066...
+[92m01:00:33 - openhands:INFO[0m: docker_runtime.py:210 - [runtime sprint8-frontier-agent-20260501T080016Z] Runtime is ready.
+[92m01:00:35 - openhands:INFO[0m: base.py:1166 - Successfully configured git: name=openhands, email=openhands@all-hands.dev
+[92m01:00:35 - openhands:INFO[0m: base.py:995 - [runtime sprint8-frontier-agent-20260501T080016Z] Selected repo: None, loading microagents from /lab/proofs/sprint9_runs/sprint9-demo-20260501T080016Z/openhands_runs/sprint8-frontier-agent-20260501T080016Z/workspace/.openhands/microagents (inside runtime)
+[92m01:00:35 - openhands:INFO[0m: base.py:705 - [runtime sprint8-frontier-agent-20260501T080016Z] Attempting to list files in repository microagents directory: /lab/proofs/sprint9_runs/sprint9-demo-20260501T080016Z/openhands_runs/sprint8-frontier-agent-20260501T080016Z/workspace/.openhands/microagents
+[92m01:00:35 - openhands:INFO[0m: memory.py:279 - Loading user workspace microagents: []
+[92m01:00:35 - openhands:INFO[0m: state_tracker.py:101 - AgentController sprint8-frontier-agent-20260501T080016Z - created new state. start_id: 0
+[92m01:00:35 - openhands:INFO[0m: agent_controller.py:679 - [Agent Controller sprint8-frontier-agent-20260501T080016Z] Setting agent(CodeActAgent) state from AgentState.LOADING to AgentState.RUNNING
+[92m01:00:35 - openhands:INFO[0m: memory.py:262 - Microagent 'security' triggered by keyword 'security'
+[92m01:00:35 - openhands:INFO[0m: conversation_stats.py:73 - Saved conversation stats
+[92m01:00:45 - openhands:INFO[0m: agent_controller.py:679 - [Agent Controller sprint8-frontier-agent-20260501T080016Z] Setting agent(CodeActAgent) state from AgentState.RUNNING to AgentState.AWAITING_USER_INPUT
+[92m01:00:45 - openhands:INFO[0m: conversation_stats.py:73 - Saved conversation stats
+[92m01:00:45 - openhands:INFO[0m: agent_controller.py:679 - [Agent Controller sprint8-frontier-agent-20260501T080016Z] Setting agent(CodeActAgent) state from AgentState.AWAITING_USER_INPUT to AgentState.RUNNING
+[92m01:00:45 - openhands:INFO[0m: conversation_stats.py:73 - Saved conversation stats
+[92m01:00:49 - openhands:INFO[0m: agent_controller.py:679 - [Agent Controller sprint8-frontier-agent-20260501T080016Z] Setting agent(CodeActAgent) state from AgentState.RUNNING to AgentState.AWAITING_USER_INPUT
+[92m01:00:49 - openhands:INFO[0m: conversation_stats.py:73 - Saved conversation stats
+[92m01:00:49 - openhands:INFO[0m: agent_controller.py:679 - [Agent Controller sprint8-frontier-agent-20260501T080016Z] Setting agent(CodeActAgent) state from AgentState.AWAITING_USER_INPUT to AgentState.RUNNING
+[92m01:00:49 - openhands:INFO[0m: conversation_stats.py:73 - Saved conversation stats
+[92m01:00:52 - openhands:INFO[0m: agent_controller.py:679 - [Agent Controller sprint8-frontier-agent-20260501T080016Z] Setting agent(CodeActAgent) state from AgentState.RUNNING to AgentState.AWAITING_USER_INPUT
+[92m01:00:52 - openhands:INFO[0m: conversation_stats.py:73 - Saved conversation stats
+[92m01:00:52 - openhands:INFO[0m: agent_controller.py:679 - [Agent Controller sprint8-frontier-agent-20260501T080016Z] Setting agent(CodeActAgent) state from AgentState.AWAITING_USER_INPUT to AgentState.RUNNING
+[92m01:00:52 - openhands:INFO[0m: conversation_stats.py:73 - Saved conversation stats
+[92m01:00:54 - openhands:INFO[0m: agent_controller.py:679 - [Agent Controller sprint8-frontier-agent-20260501T080016Z] Setting agent(CodeActAgent) state from AgentState.RUNNING to AgentState.FINISHED
+[92m01:00:54 - openhands:INFO[0m: conversation_stats.py:73 - Saved conversation stats

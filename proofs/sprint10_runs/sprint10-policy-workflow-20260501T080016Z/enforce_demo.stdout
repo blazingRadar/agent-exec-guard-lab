@@ -1,0 +1,20 @@
+PASS preflight_compiler policy compiler present
+PASS preflight_replay Sprint 8 replay harness present
+PASS preflight_openhands_source pinned OpenHands source present
+PASS preflight_docker docker reachable via sg docker
+PASS env_file no env file requested
+$ scripts/policy/compile_policy.py /home/blazingradar/agent-exec-guard-lab/proofs/sprint10_runs/sprint10-policy-workflow-20260501T080016Z/generated/openhands_observed.allow.yaml /home/blazingradar/agent-exec-guard-lab/proofs/sprint9_runs/sprint9-demo-20260501T080016Z/policy/openhands_action_server.allow.json
+PASS policy_compile YAML policy compiled to guard JSON
+$ scripts/policy/compile_policy.py /home/blazingradar/agent-exec-guard-lab/proofs/sprint9_runs/sprint9-demo-20260501T080016Z/compiler_negative/malformed.yaml /home/blazingradar/agent-exec-guard-lab/proofs/sprint9_runs/sprint9-demo-20260501T080016Z/compiler_negative/malformed.json
+PASS compiler_rejects_malformed compiler rejected invalid policy
+$ scripts/policy/compile_policy.py /home/blazingradar/agent-exec-guard-lab/proofs/sprint9_runs/sprint9-demo-20260501T080016Z/compiler_negative/missing_allowed.yaml /home/blazingradar/agent-exec-guard-lab/proofs/sprint9_runs/sprint9-demo-20260501T080016Z/compiler_negative/missing_allowed.json
+PASS compiler_rejects_missing_allowed compiler rejected invalid policy
+$ scripts/policy/compile_policy.py /home/blazingradar/agent-exec-guard-lab/proofs/sprint9_runs/sprint9-demo-20260501T080016Z/compiler_negative/relative_path.yaml /home/blazingradar/agent-exec-guard-lab/proofs/sprint9_runs/sprint9-demo-20260501T080016Z/compiler_negative/relative_path.json
+PASS compiler_rejects_relative_path compiler rejected invalid policy
+$ scripts/policy/compile_policy.py --check-exists missing_executable.yaml
+PASS compiler_rejects_missing_executable compiler rejected missing executable with --check-exists
+PASS openai_api_key_present OPENAI_API_KEY present in process environment
+$ SPRINT8_RUNS_DIR=/home/blazingradar/agent-exec-guard-lab/proofs/sprint9_runs/sprint9-demo-20260501T080016Z/openhands_runs SPRINT8_POLICY_JSON_HOST=/home/blazingradar/agent-exec-guard-lab/proofs/sprint9_runs/sprint9-demo-20260501T080016Z/policy/openhands_action_server.allow.json SPRINT8_POLICY_JSON_SANDBOX=/lab/proofs/sprint9_runs/sprint9-demo-20260501T080016Z/policy/openhands_action_server.allow.json scripts/integration/replay_sprint8_frontier_agent.sh
+PASS openhands_guard_demo OpenHands frontier-model guard demo completed
+PASS openhands_summary_present /home/blazingradar/agent-exec-guard-lab/proofs/sprint9_runs/sprint9-demo-20260501T080016Z/openhands_runs/sprint8-frontier-agent-20260501T080016Z/replay_summary.txt
+PASS secret_scan no API key pattern found in Sprint 9 run artifacts
