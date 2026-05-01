@@ -1,0 +1,11 @@
+UID          PID    PPID  C STIME TTY          TIME CMD
+root           1       0  0 00:45 ?        00:00:00 /lab/bin/usernotify_exec_guard --policy /lab/policy/integration/openhands_action_server.allow.json /openhands/micromamba/bin/micromamba run -n openhands poetry run python -u -m openhands.runtime.action_execution_server 30000 --working-dir /lab/proofs/sprint6b_runs/sprint6b-action-server-mamba-20260501T004528Z/workspace --username root --user-id 0 --no-enable-browser
+root           7       1  0 00:45 ?        00:00:00 /openhands/micromamba/bin/micromamba run -n openhands poetry run python -u -m openhands.runtime.action_execution_server 30000 --working-dir /lab/proofs/sprint6b_runs/sprint6b-action-server-mamba-20260501T004528Z/workspace --username root --user-id 0 --no-enable-browser
+root           9       7 14 00:45 ?        00:00:09 /openhands/poetry/openhands-ai-5O4_aCHf-py3.12/bin/python -u -m openhands.runtime.action_execution_server 30000 --working-dir /lab/proofs/sprint6b_runs/sprint6b-action-server-mamba-20260501T004528Z/workspace --username root --user-id 0 --no-enable-browser
+root          61       1  0 00:45 ?        00:00:00 [tmux: server] <defunct>
+root          74       1  0 00:45 ?        00:00:00 [su] <defunct>
+root         214       0  0 00:46 ?        00:00:00 /bin/sh -lc ps -ef | sed -n "1,80p"; (ss -ltnp || netstat -ltnp || true)
+root         223     214  0 00:46 ?        00:00:00 ps -ef
+root         224     214  0 00:46 ?        00:00:00 sed -n 1,80p
+/bin/sh: 1: ss: not found
+/bin/sh: 1: netstat: not found

@@ -1,0 +1,17 @@
+run_id=sprint6b-action-server-20260501T004907Z
+image=ghcr.io/openhands/runtime:1.6.0-nikolaik
+source_commit=c5e0de8ecd85cef10e7808d57e9f939f3770ab9d
+PASS source_commit c5e0de8ecd85cef10e7808d57e9f939f3770ab9d
+PASS image_identity recorded
+PASS docker_run container started
+PASS docker_inspect recorded
+PASS docker_securityopt_default HostConfig.SecurityOpt=None
+PASS alive_probe server returned /alive
+PASS action_allowed_cat HTTP action returned
+PASS action_allowed_cat_result workspace file read via /execute_action
+PASS action_block_renamed_rm HTTP action returned
+PASS action_block_renamed_rm_result renamed rm blocked via /execute_action
+FAIL container_logs_json guard audit JSON invalid
+FAIL guard_log_blocked_python3 missing copied rm block log
+pass=10 fail=2
+run_root=/home/blazingradar/agent-exec-guard-lab/proofs/sprint6b_runs/sprint6b-action-server-20260501T004907Z

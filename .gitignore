@@ -1,0 +1,6 @@
+external/
+
+# Replays preserve commands/stdout/stderr, not copied executable payloads.
+proofs/sprint*_runs/**/work/git
+proofs/sprint*_runs/**/work/python3
+proofs/sprint*b_runs/**/workspace/python3
