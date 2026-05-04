@@ -1,0 +1,32 @@
+# Human-editable policy source for the OpenHands guarded action-server demo.
+#
+# This compiles to the JSON policy schema consumed by src/usernotify_exec_guard.c.
+# The policy is intentionally broad enough to boot the pinned OpenHands 1.6.0
+# runtime action server. It is not a minimal production policy.
+
+policy_id: sprint9_openhands_action_server_allowlist_v1
+
+allowed_executables:
+  - /openhands/micromamba/bin/micromamba
+  - /openhands/micromamba/envs/openhands/bin/poetry
+  - /openhands/micromamba/envs/openhands/bin/python3.12
+  - /usr/bin/basename
+  - /usr/bin/bash
+  - /usr/bin/cat
+  - /usr/bin/chmod
+  - /usr/bin/chown
+  - /usr/bin/cp
+  - /usr/bin/env
+  - /usr/bin/git
+  - /usr/bin/id
+  - /usr/bin/ls
+  - /usr/bin/mkdir
+  - /usr/bin/run-parts
+  - /usr/bin/sh
+  - /usr/bin/su
+  - /usr/bin/tmux
+  - /usr/bin/true
+  - /usr/bin/which
+  - /usr/local/bin/poetry
+  - /usr/local/bin/python3
+  - /usr/local/venv/bin/python
