@@ -37,7 +37,7 @@ The headline that survives this audit:
 
 > "Sprint 7 demonstrates the load-bearing (b)-interpretation at the agent layer: a real pinned OpenHands 1.6.0 `CodeActAgent` loop, driven by an OpenAI-API-shaped local fake-LLM HTTP endpoint, dispatches `execute_bash` tool calls through the pinned runtime's `action_execution_server` while the action server runs as a supervised child of the seccomp-user-notify + Landlock guard. An allowed `cat input.txt` returns content; a copied/renamed `/usr/bin/rm` is blocked at `execve` (`reason=blocked_executable_identity`, sha256 of the copied binary recorded), the action server returns `exit_code=126 'Operation not permitted'`, and that observation surfaces in the OpenHands trajectory's native `CmdOutputObservation` schema with matching `tool_call_id`. Sprint 2/4/5/6A/6B regressions reproduce 12/22/11/13/15 fail=0. F4 stays explicitly deferred. The result is the deterministic local agent proof; it is not a frontier-model claim, not a full OpenHands web-UI claim, and not a non-CmdRunAction claim — and the proof memo says so. Guard source/binary changed in this sprint **but only for the F7/A2 fidelity repair Sprint 4 caught**; the change is harness/repair work, not a guard feature change."
 
-Recommend: ship Sprint 7 as the (b)-sense agent-loop proof with the demo-viability nits (Section 7.3 idempotency, Section 7.4 cleanup) tightened in a Sprint 7B cleanup pass. Then the next gating boundary is one of: (i) frontier-model cassette / one-shot recorded GPT-4 trajectory replay, (ii) non-`CmdRunAction` coverage with FileWrite/FileRead/IPython/BrowseURL surfaces, (iii) the YAML observe→generate→enforce policy workflow already drafted in `notes/POST_SPRINT7_POLICY_CONFIG_PLAN_20260501.md`.
+Recommend: ship Sprint 7 as the (b)-sense agent-loop proof with the demo-viability nits (Section 7.3 idempotency, Section 7.4 cleanup) tightened in a Sprint 7B cleanup pass. Then the next gating boundary is one of: (i) frontier-model cassette / one-shot recorded GPT-4 trajectory replay, (ii) non-`CmdRunAction` coverage with FileWrite/FileRead/IPython/BrowseURL surfaces, (iii) the YAML observe→generate→enforce policy workflow already drafted in `docs/archive/notes/POST_SPRINT7_POLICY_CONFIG_PLAN_20260501.md`.
 
 ---
 
@@ -60,7 +60,7 @@ a838f5b Pre-register Sprint 7 full OpenHands agent gate
 243068f Sprint 6B OpenHands action server proof
 ```
 
-`a838f5b` precedes `a37aa0e` by 25:54 minutes. The brief flagged `99de47e Note post-Sprint 7 policy config plan` as possibly the gate; it is **not** — `git show --stat 99de47e` shows it adds only `notes/POST_SPRINT7_POLICY_CONFIG_PLAN_20260501.md`, a deferred product-direction note, not a gate. The actual gate is `proofs/SPRINT7_GATE_20260501.md`, landed under `a838f5b`. **Closed.**
+`a838f5b` precedes `a37aa0e` by 25:54 minutes. The brief flagged `99de47e Note post-Sprint 7 policy config plan` as possibly the gate; it is **not** — `git show --stat 99de47e` shows it adds only `docs/archive/notes/POST_SPRINT7_POLICY_CONFIG_PLAN_20260501.md`, a deferred product-direction note, not a gate. The actual gate is `proofs/SPRINT7_GATE_20260501.md`, landed under `a838f5b`. **Closed.**
 
 **Carry-Forward Open Items section.** Verified present in `SPRINT7_GATE_20260501.md` lines 100–110 and `SPRINT7_HEADLESS_AGENT_PROOF_20260501.md` lines 5–22. The proof memo's table is the most complete to date: F1–F8 + A1–A4 + B5–B6 inherited verbatim, plus three Sprint 7 carve-out rows (Non-CmdRunAction, Full OpenHands web UI, External frontier LLM behavior). Sprint 5 / Sprint 6A / Sprint 6B carry-forwards are absorbed into the F-table via "Closed in Sprint N; preserved by Sprint N replay" annotations rather than separate rows — which is the right compaction; the table doesn't need to grow forever. **Closed.**
 
@@ -362,7 +362,7 @@ This single line (replay script line 202) is the difference between "Sprint 7 bo
 1. May fail under the current allowlist (the policy doesn't include the Jupyter binaries),
 2. Adds Jupyter-startup execve records to the audit log unrelated to the demo claim.
 
-The proof memo discloses this (lines 95–96). It is consistent with the "Sprint 7 is a Bash/CmdRunAction execution-boundary proof" scope. But: it is a real product concern that **the current allowlist does not cover the default OpenHands runtime startup with plugins enabled**. This is what `notes/POST_SPRINT7_POLICY_CONFIG_PLAN_20260501.md` is for — the observe→generate→enforce policy workflow needs to be the *next* sprint, not "deferred indefinitely," because shipping the demo claim "drop this guard into OpenHands and it just works" requires plugins-on policies.
+The proof memo discloses this (lines 95–96). It is consistent with the "Sprint 7 is a Bash/CmdRunAction execution-boundary proof" scope. But: it is a real product concern that **the current allowlist does not cover the default OpenHands runtime startup with plugins enabled**. This is what `docs/archive/notes/POST_SPRINT7_POLICY_CONFIG_PLAN_20260501.md` is for — the observe→generate→enforce policy workflow needs to be the *next* sprint, not "deferred indefinitely," because shipping the demo claim "drop this guard into OpenHands and it just works" requires plugins-on policies.
 
 ### 7.7 Pass count of 7 — sufficient but minimal
 
@@ -447,7 +447,7 @@ What would distinguish "demo-ready" from "ship-ready":
 
 4. **Production topology** (Sprint 9). Bake the guard binary into the OpenHands runtime image instead of bind-mounting `/lab`. Verify it works without the bind mount. This is the difference between "lab integration" and "this could ship into a real OpenHands deployment."
 
-5. **YAML observe→generate→enforce policy workflow** (Sprint 10, per `notes/POST_SPRINT7_POLICY_CONFIG_PLAN_20260501.md`). Today the policy is a hand-curated `openhands_action_server.allow.json` with 23 entries; that's not a usable product surface. The observe-mode + generate-policy + review + enforce-mode loop is the productization wedge.
+5. **YAML observe→generate→enforce policy workflow** (Sprint 10, per `docs/archive/notes/POST_SPRINT7_POLICY_CONFIG_PLAN_20260501.md`). Today the policy is a hand-curated `openhands_action_server.allow.json` with 23 entries; that's not a usable product surface. The observe-mode + generate-policy + review + enforce-mode loop is the productization wedge.
 
 6. **F4 closure or compensating-control disclosure** (Sprint 11). The product can ship with F4 deferred *if* there's an explicit "we know this race exists and Landlock is our compensating control for class X but not class Y" disclosure. Right now the disclosure exists in audit memos but not in any user-facing doc.
 

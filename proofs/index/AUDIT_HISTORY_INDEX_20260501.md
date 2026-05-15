@@ -27,7 +27,7 @@ The repository intentionally preserves:
 - run-local Docker/OpenHands metadata;
 - known caveats and non-claims.
 
-The proof directory currently contains 4120 files and is approximately 29 MB.
+The proof directory currently contains 4537 files and is approximately 30 MB after removal of copied replay executable payloads from the tracked public tree.
 
 ## Sprint Chain
 

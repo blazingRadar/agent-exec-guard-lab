@@ -86,16 +86,16 @@ footer{text-align:center;padding:3rem 1.5rem;border-top:1px solid rgba(148,163,1
 
 <section>
   <div class="section-label">The Problem</div>
-  <h2>OpenHands executes arbitrary binaries inside its sandbox.</h2>
+  <h2>The container sandbox does not express task-scoped executable identity.</h2>
   <div class="threat">
     <h3>⚠ Unconstrained exec inside the container</h3>
     <p>Docker's default seccomp profile blocks ~44 dangerous syscalls but does <strong>not restrict execve</strong>. An AI agent that issues a bash command can run anything present in the container — including tools the operator never intended to allow. The model's self-reported behavior cannot be verified at the execution boundary.</p>
   </div>
   <div class="stats">
     <div class="stat"><div class="stat-n">0</div><div class="stat-l">execve restrictions in Docker default seccomp</div></div>
-    <div class="stat"><div class="stat-n">130</div><div class="stat-l">exec decisions logged in one OpenHands demo run</div></div>
+    <div class="stat"><div class="stat-n">130</div><div class="stat-l">exec decisions logged in one OpenHands demo run; see Sprint 10 memo</div></div>
     <div class="stat"><div class="stat-n">10</div><div class="stat-l">sprint proof chain</div></div>
-    <div class="stat"><div class="stat-n">22</div><div class="stat-l">independent audits across the sprint chain</div></div>
+    <div class="stat"><div class="stat-n">23</div><div class="stat-l">audit reports preserved across the sprint chain</div></div>
   </div>
 </section>
 

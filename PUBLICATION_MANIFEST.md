@@ -16,14 +16,14 @@ The current strongest claim is the Sprint 10 policy-workflow claim in `proofs/me
 
 The repository does not claim production sandbox security, complete `SECCOMP_USER_NOTIF_FLAG_CONTINUE` TOCTOU closure, full OpenHands web UI coverage, non-`CmdRunAction` coverage, read/write/network isolation, automatic policy approval, or signed/tamper-proof audit logs.
 
-## Hygiene Notes
+## Repository Hygiene
 
 - API keys and environment files are not included.
 - Current scripts derive the repository root dynamically or accept explicit root/environment variables.
 - The preserved proof tree intentionally includes historical command logs and run outputs. Some historical artifacts retain host-local proof paths because they are raw evidence of the run environment.
-- Strategy and IP-boundary notes that were not part of the evidence chain were removed from the public repository.
-- A full-history local backup was made before this cleanup pass.
+- Strategy, IP-boundary, and source-tracking notes that were not part of the evidence chain are excluded from the public artifact.
+- Copied replay executable payloads are excluded from the tracked public tree; commands, stdout/stderr, policies, hashes, and run metadata remain preserved.
 
 ## Verification Surface
 
-The publication check for this cleanup runs shell syntax checks, Python bytecode compilation, policy compiler checks, JSON parsing, Markdown link checks, public-surface hygiene scans, and a fresh-clone smoke check. Full Docker/OpenHands replay requires the original prepared lab environment and is not treated as a public self-serve test in this repository.
+The public verification surface is shell syntax checks, Python bytecode compilation, policy compiler checks, JSON parsing, Markdown link checks, public-surface hygiene scans, and a fresh-clone smoke check. Full Docker/OpenHands replay requires the original prepared lab environment and is not treated as a public self-serve test in this repository.

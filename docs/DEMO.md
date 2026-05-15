@@ -1,6 +1,6 @@
 # OpenHands Guard Demo
 
-This is the Sprint 9 productized demo path.
+This is the guided OpenHands demo path introduced in Sprint 9. Sprint 10 builds on this path with the observe/generate/review/enforce policy workflow, which is the repository's current strongest claim.
 
 ## Run
 

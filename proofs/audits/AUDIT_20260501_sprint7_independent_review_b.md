@@ -40,7 +40,7 @@ a37aa0e 2026-04-30 18:45:50 -0700 Sprint 7 headless OpenHands agent proof
 
 The gate commit precedes the proof commit by ~26 minutes of git timeline. This is the third clean gate-first commit pair (Sprint 6: `fe5bd19`→`78a2ba1`, Sprint 6B: `c4392ae`→`243068f`, Sprint 7: `a838f5b`→`a37aa0e`).
 
-The intermediate commit `99de47e Note post-Sprint 7 policy config plan` is **not** a gate file — it adds `notes/POST_SPRINT7_POLICY_CONFIG_PLAN_20260501.md` describing a YAML observe/generate/enforce workflow deferred until after Sprint 7. Confirmed by `git show --stat 99de47e`. This satisfies the brief's spot check.
+The intermediate commit `99de47e Note post-Sprint 7 policy config plan` is **not** a gate file — it adds `docs/archive/notes/POST_SPRINT7_POLICY_CONFIG_PLAN_20260501.md` describing a YAML observe/generate/enforce workflow deferred until after Sprint 7. Confirmed by `git show --stat 99de47e`. This satisfies the brief's spot check.
 
 ### 3.2 Carry-Forward Open Items
 
@@ -272,7 +272,7 @@ Before Sprint 8 begins, I'd recommend pre-Sprint-8 hardening of the Sprint 7 har
 
 For the Sprint 7 boundary itself: this **is** the sprint that closes the (a)→(b) gap at the agent layer. The remaining "demo-ready vs ship-ready" gap is:
 
-- Ship-ready needs Sprint 8 (frontier model) at minimum, plus a non-bind-mounted production-shaped image, plus YAML observe→generate→enforce policy workflow (the `notes/POST_SPRINT7_POLICY_CONFIG_PLAN_20260501.md` plan), plus F4 closure or a clear documented mitigation.
+- Ship-ready needs Sprint 8 (frontier model) at minimum, plus a non-bind-mounted production-shaped image, plus YAML observe→generate→enforce policy workflow (the `docs/archive/notes/POST_SPRINT7_POLICY_CONFIG_PLAN_20260501.md` plan), plus F4 closure or a clear documented mitigation.
 - Demo-ready: with the F-S7-1 reproducibility fix, Sprint 7 already supports a 2-minute live demo: `./scripts/integration/replay_sprint7_headless_agent.sh`, watch the harness boot the OpenHands runtime under the guard, fake-LLM dispatch `cat input.txt` (allowed), then `cp /usr/bin/rm ./python3 && ./python3 --version` (BLOCK), see "Operation not permitted" returned through OpenHands trajectory and `pass=7 fail=0`. Ran end-to-end in ~80 seconds in my reproduction. **Yes, the operator can run this in front of an external reviewer and have it complete with a clear ALLOW/BLOCK trajectory.**
 
 ## 10. Honest Headline Tightening
@@ -311,7 +311,7 @@ Read SPRINT6B_POST_AUDIT_CLEANUP_20260501.md
 Read AUDIT_20260501_sprint6b_independent_review_a.md
 Read AUDIT_20260501_sprint6b_independent_review_b.md
 Read SPRINT8_GATE_20260501.md
-Read notes/POST_SPRINT7_POLICY_CONFIG_PLAN_20260501.md
+Read docs/archive/notes/POST_SPRINT7_POLICY_CONFIG_PLAN_20260501.md
 Read policy/integration/openhands_action_server.allow.json
 Read proofs/sprint7_runs/sprint7-headless-agent-20260501T014104Z/openhands_config.toml
 
