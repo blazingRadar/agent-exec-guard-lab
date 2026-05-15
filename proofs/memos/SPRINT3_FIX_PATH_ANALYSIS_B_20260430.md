@@ -65,9 +65,9 @@ honestly in the claim and stop (Φ_E).
 
 ---
 
-## R₂ [candidate_fixes]
+## R₂ [operator_fixes]
 
-Live host probes ran just now to populate the candidate matrix:
+Live host probes ran just now to populate the operator matrix:
 
 ```
 landlock_create_ruleset() → ABI v7 (kernel 6.17)
@@ -194,7 +194,7 @@ This is strictly stronger than Φ_A on the binary-identity question: not just
 
 **complexity**
 
-This is the heavy lift. The candidate's current `Γ` does not require child
+This is the heavy lift. The operator's current `Γ` does not require child
 cooperation; Φ_B does. Three sub-options:
 
 - **Φ_B.1 — cooperative child shim**. Wrap `execvp` in `Γ` with a tiny
@@ -290,7 +290,7 @@ exact.
 - argv/envp transit: the child's argv vector at the time of execve is in
   *child memory*. Reading via `process_vm_readv` gets the τ₀ snapshot; that's
   what Sprint 2 already does for argv. Same race surface there.
-- Honesty cost: the candidate's claim shape says "execution guard for a
+- Honesty cost: the operator's claim shape says "execution guard for a
   supervised child"; Φ_C means "execution proxy that replaces the child". Not
   the same thing. Naming this clearly in the README would be required.
 
@@ -359,7 +359,7 @@ unchanged.
 
 **failure_modes**
 
-- Honest only if no overclaim is added later. The candidate's prior pattern
+- Honest only if no overclaim is added later. The operator's prior pattern
   has been to grow the "Claims Still Not Allowed" list, not shrink it; Φ_E is
   consistent with that pattern.
 - A later sprint that adds Docker on top of Φ_E inherits the C₁ disclosure.
@@ -392,7 +392,7 @@ Scoring matrix (B's weighting; A may differ):
 
 **justification (formal)**
 
-Φ_A is the only candidate that:
+Φ_A is the only operator that:
 
 - (a) gives a kernel-level guarantee that no exec lands outside Π,
 - (b) requires no child cooperation (works against arbitrary supervised binaries
@@ -612,7 +612,7 @@ the sprint terminates with Φ_E only):
 > kernel-documented (`man 2 seccomp_unotify`, 'TOCTOU considerations') and is
 > the reason the Sprint 2 claim shape stops at 'mechanism proof' rather than
 > 'security boundary'. Sprint 3 does not change that boundary; it documents
-> why the candidate Φ_A could not be shipped this sprint and what the next
+> why the operator Φ_A could not be shipped this sprint and what the next
 > sprint must answer to retry."
 
 This Φ_E claim is materially different from Φ_E-as-comfort: it is gated
@@ -639,7 +639,7 @@ artifacts must remain in `proofs/sprint3_runs/`, not be deleted.
 - closure_detector_layer: out of scope. The policy-confusion findings A's
   Sprint 2 review surfaced (parser walks past string-valued
   `allowed_executables` to next array) are real and worth fixing, but they
-  are *Sprint 2 prerequisites*, not Sprint 3 fix-path candidates. They
+  are *Sprint 2 prerequisites*, not Sprint 3 fix-path operators. They
   belong in a parallel cleanup task, not here.
 
 ### do_not_claim
@@ -666,12 +666,12 @@ clean the Φ_A implementation lands:
 If the Sprint 3 self-audit is tempted to assert any of the above, the
 honest_claim_policy from invariant `[I6]` requires that the assertion be
 withheld and instead added to the "Claims Still Not Allowed" list. The
-Sprint 1 and Sprint 2 candidate has a clean track record on this discipline;
+Sprint 1 and Sprint 2 operator has a clean track record on this discipline;
 preserve it.
 
 ### do_not_import
 
-- private_governance_IP: out of scope. Sprint 3 must not pull policy-language
+- governance_IP: out of scope. Sprint 3 must not pull policy-language
   schemas, claim-detector code, or governance taxonomies from any other lab
   in this user's tree. The policy file format remains the simple
   `allowed_executables` JSON shape Sprint 2 introduced. If JSON-parser
@@ -700,7 +700,7 @@ preserve it.
 
 ## Discipline Notes (worth preserving from Sprint 2 reviews)
 
-The candidate's pattern of preserving failed runs (e.g.
+The operator's pattern of preserving failed runs (e.g.
 `proofs/sprint2_runs/sprint2-20260430T220518Z` with `pass=10 fail=2`),
 SHA-anchoring source and binary in every replay, expanding the "Claims Still
 Not Allowed" list as new abilities are gained, and naming residual TOCTOU

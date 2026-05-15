@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -u
 
-ROOT="/home/blazingradar/agent-exec-guard-lab"
+ROOT="${AEG_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
 IMAGE="python:3.12-slim"
 RUN_ID="sprint5-docker-$(date -u +%Y%m%dT%H%M%SZ)"
 RUN_ROOT="$ROOT/proofs/sprint5_runs/$RUN_ID"

@@ -1,4 +1,4 @@
-$ source /home/blazingradar/huddy/config/.env
+$ source .env.local
 $ scripts/policy/compile_policy.py /home/blazingradar/agent-exec-guard-lab/policy/examples/openhands_action_server.yaml /home/blazingradar/agent-exec-guard-lab/proofs/sprint9_runs/sprint9-demo-20260501T040010Z/policy/openhands_action_server.allow.json
 $ scripts/policy/compile_policy.py /home/blazingradar/agent-exec-guard-lab/proofs/sprint9_runs/sprint9-demo-20260501T040010Z/compiler_negative/malformed.yaml /home/blazingradar/agent-exec-guard-lab/proofs/sprint9_runs/sprint9-demo-20260501T040010Z/compiler_negative/malformed.json
 $ scripts/policy/compile_policy.py /home/blazingradar/agent-exec-guard-lab/proofs/sprint9_runs/sprint9-demo-20260501T040010Z/compiler_negative/missing_allowed.yaml /home/blazingradar/agent-exec-guard-lab/proofs/sprint9_runs/sprint9-demo-20260501T040010Z/compiler_negative/missing_allowed.json

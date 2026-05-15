@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -u
 
-ROOT="/home/blazingradar/agent-exec-guard-lab"
+ROOT="${AEG_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
 IMAGE="ghcr.io/openhands/runtime:1.6.0-nikolaik"
 RUN_ID="sprint6-openhands-runtime-$(date -u +%Y%m%dT%H%M%SZ)"
 RUN_ROOT="$ROOT/proofs/sprint6_runs/$RUN_ID"

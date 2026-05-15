@@ -74,7 +74,7 @@ Findings:
   - fixed 4095-byte `process_vm_readv`
   - page-aware read would be stronger
 - Low: lab is not a git repo.
-  - acceptable privately; initialize before showing anyone
+  - acceptable in a prepared lab; initialize before showing anyone
 
 Recommended next gate:
 

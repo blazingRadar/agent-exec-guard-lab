@@ -201,7 +201,7 @@ Three things still gate "publicly shippable" per the cleanup memo's honest "Rema
 2. Recorded outreach asciinema or video
 3. Audit-log signing / tamper-proofing
 
-None of those are Sprint 10 deliverables. They're Sprint 11+ candidates or outreach-prep work.
+None of those are Sprint 10 deliverables. They're Sprint 11+ operators or outreach-prep work.
 
 ---
 
@@ -224,7 +224,7 @@ F4 and non-`CmdRunAction` coverage remain the architectural items beyond demo re
 What the cleanup commit got right that should be preserved:
 
 - **Both findings rated HIGH/MEDIUM by independent auditors were closed in code, not just docs.** The BLOCK ∩ ALLOW exclusion is a real code change, not a doc patch. Auditor reviews where the fix is "we added a sentence to the docs explaining why it's not actually a defect" are weak; this is a real fix.
-- **Crafted-input probes preserved separately** at `proofs/sprint10_runs/sprint10-post-audit-probes-*/`. These are the tests the auditors would have written; the candidate wrote them and preserved the artifacts.
+- **Crafted-input probes preserved separately** at `proofs/sprint10_runs/sprint10-post-audit-probes-*/`. These are the tests the auditors would have written; the operator wrote them and preserved the artifacts.
 - **Failed probe wrapper preserved** with `FAILURE_NOTE.md`. The shell-wrapper bug was caught and the fix (`set -euo pipefail`) is recorded. Same discipline as Sprint 5/7/8/9 — failures live in the trail.
 - **README rewrite leads with the load-bearing technical claim**, not the project history. A first-time reader hits the OpenHands execve gap in line 3.
 - **"Current Non-Claims" section** at the bottom of README — same disclosure discipline as the per-sprint memos but at the public-facing layer.

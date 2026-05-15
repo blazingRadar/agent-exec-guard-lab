@@ -9,7 +9,7 @@ Source of record: live commands run on this machine just now; bypasses tested in
 
 ## Audit Question
 
-Did Sprint 2 close the Sprint 1 basename-bypass and audit-integrity findings honestly, and what new bypass classes does the realpath+dev+ino design open up? Is the headline `pass=12 fail=0` accurate, and is the candidate's TOCTOU disclosure honest?
+Did Sprint 2 close the Sprint 1 basename-bypass and audit-integrity findings honestly, and what new bypass classes does the realpath+dev+ino design open up? Is the headline `pass=12 fail=0` accurate, and is the operator's TOCTOU disclosure honest?
 
 ## Verdict
 
@@ -20,7 +20,7 @@ Two findings worth naming before Sprint 3:
 1. **Policy parser is `strstr`-based, not a real JSON parser** — fragile but not currently fail-open in the cases I tested. Sprint 3 should swap it for a real parser before the policy is exposed to attacker influence.
 2. **Realpath of `/proc/self/exe` resolves in the supervisor's namespace, not the child's** — currently fail-closed (resolves to the guard binary itself, which is not allowlisted), but it's a wrong answer. The supervisor should resolve `/proc/self/exe` against `/proc/<child_pid>/root/proc/<child_pid>/exe`, or read the link explicitly via `readlinkat(child_proc_fd, "exe", ...)`.
 
-The candidate's posture (PASS for local identity hardening, NO production claim, residual TOCTOU disclosed) is correct. Recommend: independent audit gate cleared; Sprint 3 should fix the JSON parser and the /proc/self/exe resolution before adding Docker.
+The operator's posture (PASS for local identity hardening, NO production claim, residual TOCTOU disclosed) is correct. Recommend: independent audit gate cleared; Sprint 3 should fix the JSON parser and the /proc/self/exe resolution before adding Docker.
 
 ---
 
@@ -61,7 +61,7 @@ exit=0
 
 Sprint 1 bypasses now blocked (live-demonstrated below). All audit JSON fields promised in the headline (pid, syscall, raw_exe, realpath, cwd, dev, ino, sha256, argv, reason, timestamp) verified present in both ALLOW and BLOCK records via `python3 json.loads`.
 
-The candidate's discipline shape is preserved:
+The operator's discipline shape is preserved:
 - `proofs/sprint2_runs/sprint2-20260430T220518Z` is the *honestly preserved failed run* (pass=10 fail=2, harness-PATH bug, replay_summary.txt records the FAIL lines).
 - Per-case stdout/stderr/exit_code captured under each run dir.
 - Fixed-the-harness commit log lives in `SPRINT2_COMMAND_LOG_20260430.md` — they didn't rewrite history.
@@ -105,7 +105,7 @@ What I could not produce in a quick adversarial pass: an attacker-controlled pol
 
 ### Finding S2 — `/proc/self/exe` resolves in the supervisor's namespace (severity: LOW, fail-closed)
 
-In `resolve_child_exe()` (line 387-408), the supervisor calls `realpath(candidate, real)`. If the child execs `/proc/self/exe`, the candidate is `/proc/self/exe`, and `realpath` is called *from the supervisor process*. `/proc/self` from the supervisor points to the supervisor itself, not the child. So:
+In `resolve_child_exe()` (line 387-408), the supervisor calls `realpath(operator, real)`. If the child execs `/proc/self/exe`, the operator is `/proc/self/exe`, and `realpath` is called *from the supervisor process*. `/proc/self` from the supervisor points to the supervisor itself, not the child. So:
 
 ```
 $ guard --policy ... /proc/self/exe --version
@@ -140,7 +140,7 @@ This is **fail-safe**: the child cannot escape by killing the supervisor, becaus
 
 The Sprint 1 critical finding 2 (path-rewrite-during-CONTINUE TOCTOU) is *not closed*. Source line 604 still sets `resp.flags = SECCOMP_USER_NOTIF_FLAG_CONTINUE` on the ALLOW path. The kernel re-reads the userspace path argument when continuing the syscall.
 
-The `SECCOMP_IOCTL_NOTIF_ID_VALID` check (line 597) checks whether the supervised pid still has *that notification id* outstanding. It does NOT prevent the supervised child from rewriting its own argv pointer or the path string in its own memory between the moment the supervisor calls `process_vm_readv` and the moment the kernel re-resolves the path. The candidate writes this clearly in `SPRINT2_IDENTITY_HARDENING_20260430.md` lines 184-193 and again in `SPRINT2_AUDIT_20260430.md` lines 95-105. That's the right disclosure.
+The `SECCOMP_IOCTL_NOTIF_ID_VALID` check (line 597) checks whether the supervised pid still has *that notification id* outstanding. It does NOT prevent the supervised child from rewriting its own argv pointer or the path string in its own memory between the moment the supervisor calls `process_vm_readv` and the moment the kernel re-resolves the path. The operator writes this clearly in `SPRINT2_IDENTITY_HARDENING_20260430.md` lines 184-193 and again in `SPRINT2_AUDIT_20260430.md` lines 95-105. That's the right disclosure.
 
 Adversarial probe: I ran a swap loop on a symlink (`/tmp/race/exe` flipping between `/usr/bin/python3` and `/bin/rm`) and ran the guard 30 times against it. Decisions consistently matched the symlink target *as resolved by the supervisor's realpath*. I did not catch a "ALLOW python3, kernel-resolved-as-rm" case in this brief test. The race window between supervisor `process_vm_readv` → policy decision → `NOTIF_SEND` → kernel re-resolve is small and process_vm_readv is fast — but it exists. Mitigations are documented in the kernel `seccomp_unotify(2)` man page (use `SECCOMP_IOCTL_NOTIF_ADDFD`, or refuse-and-resynth).
 
@@ -175,7 +175,7 @@ I did not test:
 
 ## Honest Claim That Survives This Audit
 
-The candidate's current Sprint 2 claim, from `SPRINT2_AUDIT_20260430.md`:
+The operator's current Sprint 2 claim, from `SPRINT2_AUDIT_20260430.md`:
 
 > "A local seccomp user-notify guard can enforce a file-backed executable identity allowlist, reject the tested basename rename, symlink, and PATH-hijack bypasses, preserve nested execve trapping, conservatively block the tested execveat path, and emit JSON-safe audit records."
 
@@ -201,14 +201,14 @@ After (1)–(5), Docker. Not before. Adding a container layer over a fragile str
 
 ## Discipline Observations (worth preserving)
 
-What the candidate continued to do right between Sprint 1 and Sprint 2:
+What the operator continued to do right between Sprint 1 and Sprint 2:
 
 - Re-derivable provenance (SHAs match across audit memo, command log, replay run dir). Re-derivation took me 30 seconds.
 - Failed run preserved verbatim (`sprint2-20260430T220518Z` with `pass=10 fail=2` and the FAIL lines for `env_path_bypass_blocked` still in `replay_summary.txt`). This is the right move — do not edit history when the harness was at fault.
 - Per-run sub-directories with stdout/stderr/exit_code/command — diagnostic surface is preserved without me needing to re-run cases.
 - Honest disclosure of the `CONTINUE` TOCTOU residual *in the same memo as the PASS verdict*, not buried elsewhere. This is the difference between an honest pass and a marketing pass.
 - "Claims Still Not Allowed" list expanded between sprints (now includes "fd-relative `execveat` identity support" and "that path-based `CONTINUE` allows are TOCTOU-hardened"). Each new ability gained adds a new disallowed claim — the right reflex.
-- Auditor B (this report) and Auditor A run independently; the candidate did not pre-coordinate the audit briefs. That is the correct adversarial posture.
+- Auditor B (this report) and Auditor A run independently; the operator did not pre-coordinate the audit briefs. That is the correct adversarial posture.
 
 These habits are the actual differentiator. Keep doing them on every sprint.
 

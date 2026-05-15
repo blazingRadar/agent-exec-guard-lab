@@ -2,7 +2,7 @@
 
 Date: 2026-04-30
 Lab: `/home/blazingradar/agent-exec-guard-lab`
-Posture: bounded implementation sprint. No Docker, no OpenHands, no private governance-layer import.
+Posture: bounded implementation sprint. No Docker, no OpenHands, no governance-layer import.
 
 ## Decision
 
@@ -152,7 +152,7 @@ A local seccomp user-notify execution guard can preserve Sprint 2 file-backed ex
 - This does not support `execveat`; the guard still conservatively blocks tested `execveat`.
 - This does not restrict reads, writes, network, file creation, or shell builtins. It is an execute underlay only.
 
-## CTO Read
+## Reviewer Read
 
 This is worth doing and worth keeping.
 

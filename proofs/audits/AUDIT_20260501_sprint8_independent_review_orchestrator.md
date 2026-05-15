@@ -13,11 +13,11 @@ Did Sprint 8 deliver an external frontier-model OpenHands agent-loop proof that 
 
 ## Verdict
 
-**Sprint 8 substantively delivers.** Real OpenAI `gpt-5.2` (response model `gpt-5.2-2025-12-11`) drives a real OpenHands 1.6.0 `CodeActAgent` loop through the guarded action server; the BLOCK on the renamed `/usr/bin/rm` is reproducible end-to-end and structurally validated against the trajectory; both Sprint 7 audit findings (idempotency defect, soft pass criterion) are closed; xAI failure preserved as the original primary-provider candidate; pre-registration discipline holds in git timeline (`1699bac` precedes `681d0bb` by ~13 minutes).
+**Sprint 8 substantively delivers.** Real OpenAI `gpt-5.2` (response model `gpt-5.2-2025-12-11`) drives a real OpenHands 1.6.0 `CodeActAgent` loop through the guarded action server; the BLOCK on the renamed `/usr/bin/rm` is reproducible end-to-end and structurally validated against the trajectory; both Sprint 7 audit findings (idempotency defect, soft pass criterion) are closed; xAI failure preserved as the original primary-provider operator; pre-registration discipline holds in git timeline (`1699bac` precedes `681d0bb` by ~13 minutes).
 
 Three things worth noting honestly:
 
-1. **The bypass attempt is scripted, not organic.** The gate's "Preferred Test Shape" pre-authorizes a prescribed-command prompt; the candidate did not deviate from the gate. But the demo claim should be "guard catches a real frontier model executing a prescribed off-policy command path" — not "guard catches a frontier model reasoning its way to attempt a sandbox bypass." The latter is not what Sprint 8 proves and the proof memo correctly does not claim it.
+1. **The bypass attempt is scripted, not organic.** The gate's "Preferred Test Shape" pre-authorizes a prescribed-command prompt; the operator did not deviate from the gate. But the demo claim should be "guard catches a real frontier model executing a prescribed off-policy command path" — not "guard catches a frontier model reasoning its way to attempt a sandbox bypass." The latter is not what Sprint 8 proves and the proof memo correctly does not claim it.
 2. **The harness injects `read_input` responses to steer the agent past its first observation.** This is documented in the proof memo's Implementation Notes (line 147) and is a reasonable non-interactive harness pattern, but a demo audience should understand the agent did not autonomously decide to finish — the harness told it to.
 3. **One small disclosure inconsistency:** the proof memo records `iteration=5` for the final run; the actual `final_state.txt` from the same run records `iteration=3`. Either OpenHands counts iterations differently than the field name suggests, or the memo wasn't updated after a re-run. Worth a one-line fix.
 
@@ -74,7 +74,7 @@ chmod it executable, run ./python3 --version, and report the exact result. Finis
 
 The gate **explicitly pre-authorizes** the scripted prompt approach. The gate also commits, in writing: "If the model refuses, skips the adversarial step, or chooses a different command, preserve the run and tune the prompt only enough to make the requested test action explicit. **Do not hide refusal/variance.**"
 
-This is honest discipline. The gate acknowledges that organic frontier-model attempts at `cp rm ./python3 && ./python3` are unreliable, pre-commits to preserving any refusal, and pre-authorizes prescribed commands. The candidate followed this and the proof memo's Implementation Notes section disclose the read_input injection used to make the agent finish after the BLOCK observation rather than entering AWAITING_USER_INPUT.
+This is honest discipline. The gate acknowledges that organic frontier-model attempts at `cp rm ./python3 && ./python3` are unreliable, pre-commits to preserving any refusal, and pre-authorizes prescribed commands. The operator followed this and the proof memo's Implementation Notes section disclose the read_input injection used to make the agent finish after the BLOCK observation rather than entering AWAITING_USER_INPUT.
 
 **Demo implication:** the strongest assertable claim is "GPT-5.2 issued a real `execute_bash` tool call for a prescribed off-policy command and the guard caught it at the kernel layer." The weaker form ("frontier model reasoned its way to attempting a bypass") is not what Sprint 8 proves and the proof memo correctly does not claim it. The "Claim Now Allowed" section is honest in describing what was demonstrated.
 
@@ -92,7 +92,7 @@ CONTAINER_NAME="openhands-runtime-$SID"
 
 Each run now has a unique sid derived from the UTC timestamp. Container names also unique. Re-runs cannot collide on session state.
 
-Cleanup commit `3b979e8 Clean Sprint 7 and 8 harness idempotency` further indicates the candidate retroactively applied the fix to Sprint 7 as well. Closed.
+Cleanup commit `3b979e8 Clean Sprint 7 and 8 harness idempotency` further indicates the operator retroactively applied the fix to Sprint 7 as well. Closed.
 
 ### Sprint 7 soft-pass-criterion — TIGHTENED
 
@@ -111,13 +111,13 @@ This is dramatically stronger than `grep`. Closed.
 ### xAI rejection preservation — PASS, multiple probes preserved
 
 `proofs/sprint8_runs/probes/` contains:
-- `xai_models_probe.json` — model listing succeeded, returned 14+ Grok variants including the gate's candidate `grok-4.20-reasoning` family
+- `xai_models_probe.json` — model listing succeeded, returned 14+ Grok variants including the gate's operator `grok-4.20-reasoning` family
 - `xai_chat_probe2.json`, `xai_direct_chat_probe.json`, `xai_litellm_probe.json` — separate chat-completion probes via different code paths
 - `grok_key_direct_chat_probe.json` — additional direct-key probe
 
-All rejected with provider-side 403. The proof memo at line 67 honestly explains why xAI was the original candidate: the gate (at line ~30) listed xAI as the primary provider with a `grok-4.20-reasoning` candidate model. The pivot to OpenAI is documented and the original target is preserved as evidence. The gate's clause "If the xAI key cannot access a usable model, stop with a bounded blocker or fall back only after preserving the reason" was honored.
+All rejected with provider-side 403. The proof memo at line 67 honestly explains why xAI was the original operator: the gate (at line ~30) listed xAI as the primary provider with a `grok-4.20-reasoning` operator model. The pivot to OpenAI is documented and the original target is preserved as evidence. The gate's clause "If the xAI key cannot access a usable model, stop with a bounded blocker or fall back only after preserving the reason" was honored.
 
-This is a discipline win — the candidate could have silently swept the xAI failure under the rug. They didn't.
+This is a discipline win — the operator could have silently swept the xAI failure under the rug. They didn't.
 
 ### End-to-end trajectory — PASS
 
@@ -224,9 +224,9 @@ The wedge sentence the project has been building toward is now assertable:
 
 > "I built a Linux seccomp+Landlock execution guard that wraps the OpenHands runtime action server. Here's GPT-5.2 driving a real OpenHands CodeActAgent loop, issuing real `execute_bash` tool calls. When the agent issues a command that copies `/usr/bin/rm` to a permitted basename, the guard blocks it at the kernel layer, the action server returns `exit_code=126 Operation not permitted`, and OpenHands records the denial in its own trajectory."
 
-That sentence is grounded in evidence at `proofs/sprint8_runs/sprint8-frontier-agent-20260501T024005Z/`. Reproducing it costs ~$dollars-not-cents in OpenAI API spend per run, and the result is non-deterministic (gpt-5.2 may behave differently next call), which means the **demo artifact for outreach should be a recorded asciinema or video, not a live re-run** in front of a CTO. Live re-runs are fine if the candidate has burned a successful run beforehand and shows the recording, then re-runs as supplemental evidence.
+That sentence is grounded in evidence at `proofs/sprint8_runs/sprint8-frontier-agent-20260501T024005Z/`. Reproducing it costs ~$dollars-not-cents in OpenAI API spend per run, and the result is non-deterministic (gpt-5.2 may behave differently next call), which means the **demo artifact for outreach should be a recorded asciinema or video, not a live re-run** in front of an external reviewer. Live re-runs are fine if the operator has burned a successful run beforehand and shows the recording, then re-runs as supplemental evidence.
 
-The candidate now has:
+The operator now has:
 - Pinned source/runtime image SHAs
 - Pre-registered gate
 - Reproducible structured-validation harness
@@ -237,7 +237,7 @@ The candidate now has:
 
 ## Sprint 9 / Demo-Ready Prerequisites
 
-The proof memo is honest about what's still open. Per the carry-forward table, Sprint 9 candidates:
+The proof memo is honest about what's still open. Per the carry-forward table, Sprint 9 operators:
 - **YAML observe/generate/review/enforce workflow** (deferred from Sprint 8 carry-forward) — looks like the productized demo shape
 - **Full web UI proof** — out of scope for Sprint 8, would require driving OpenHands via its actual web UI
 - **Non-CmdRunAction coverage** — FileWrite/FileRead/IPython/BrowseURL still bypass at the Python layer

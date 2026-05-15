@@ -41,7 +41,7 @@ on_unknown_executable: block
 
 1. Observe mode
 
-Run OpenHands or another agent runtime normally under the guard, but do not block unknown executables. Record every requested executable identity, argv sample, cwd, hash, and decision candidate.
+Run OpenHands or another agent runtime normally under the guard, but do not block unknown executables. Record every requested executable identity, argv sample, cwd, hash, and decision operator.
 
 2. Generate policy
 

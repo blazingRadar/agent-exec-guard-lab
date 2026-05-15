@@ -139,7 +139,7 @@ A local seccomp user-notify execution guard can preserve Sprint 2 identity decis
 - Landlock loader paths remain host-specific and x86-64-oriented.
 - The guard remains execute-focused; it does not restrict reads, writes, network, shell builtins, or already-open file descriptors.
 
-## CTO Read
+## Reviewer Read
 
 Sprint 4 fixes the credibility problem raised by the audits. Sprint 3 made the execution boundary more interesting; Sprint 4 makes the audit trail much harder to dismiss.
 

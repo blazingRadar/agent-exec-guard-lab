@@ -118,7 +118,7 @@ Verified via `grep` against the current Sprint 3 source — none of the six land
 
 Sprint 3's "Claims Still Not Allowed" list grew with Landlock-specific carve-outs (no read/write/network coverage, no `execveat` support, no fd-stable execution) but did **not** carry forward the unclosed Sprint 2 findings. The list reads as if Sprint 2 was clean before Sprint 3 started; it wasn't.
 
-This is the same pattern the lab's earlier audit work caught in other projects: a sprint adds a real new layer, the new layer's caveats get listed, but the prior sprint's open findings silently fall off the disclosure register. The candidate's own discipline says "audit memos are load-bearing institutional memory" — this is the carry-forward gap that discipline is designed to catch.
+This is the same pattern the lab's earlier audit work caught in other projects: a sprint adds a real new layer, the new layer's caveats get listed, but the prior sprint's open findings silently fall off the disclosure register. The operator's own discipline says "audit memos are load-bearing institutional memory" — this is the carry-forward gap that discipline is designed to catch.
 
 ---
 

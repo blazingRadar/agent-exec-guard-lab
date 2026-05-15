@@ -67,6 +67,6 @@ Verified:
 
 Sprint 10 now supports this narrower product-workflow claim:
 
-> A reviewed guard audit log can be converted into a YAML allowlist candidate that preserves observed executable identity evidence, excludes any executable identity also seen in a BLOCK record, compiles to the guard JSON format, and can rerun the OpenHands guided demo successfully under the generated policy.
+> A reviewed guard audit log can be converted into a YAML allowlist operator that preserves observed executable identity evidence, excludes any executable identity also seen in a BLOCK record, compiles to the guard JSON format, and can rerun the OpenHands guided demo successfully under the generated policy.
 
 This does not make the repository public self-serve. It does not enforce human approval. It does not sign audit logs. It does not close F4.

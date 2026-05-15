@@ -9,11 +9,11 @@ Source of record: live commands run on this machine; SHAs re-derived; bypass tes
 
 ## Audit Question
 
-Did Sprint 2 (a) actually close the Sprint 1 basename/symlink/PATH-hijack bypasses, (b) deliver the headline architecture and audit changes claimed, and (c) introduce any new bypass or audit-integrity classes the candidate missed? And what should be tightened before Sprint 3 / before Docker?
+Did Sprint 2 (a) actually close the Sprint 1 basename/symlink/PATH-hijack bypasses, (b) deliver the headline architecture and audit changes claimed, and (c) introduce any new bypass or audit-integrity classes the operator missed? And what should be tightened before Sprint 3 / before Docker?
 
 ## Verdict
 
-**Sprint 2 closes the three Sprint 1 bypasses on this machine. The realpath+dev+ino identity check is real and works. The discipline shape is honest and the failed harness run is preserved.** But the headline overstates trust-boundary integrity in two ways the candidate did not name:
+**Sprint 2 closes the three Sprint 1 bypasses on this machine. The realpath+dev+ino identity check is real and works. The discipline shape is honest and the failed harness run is preserved.** But the headline overstates trust-boundary integrity in two ways the operator did not name:
 
 1. The supervised child can **forge audit records** (and corrupt the JSON stream) because the supervisor and child share fd 2; this is a live, demonstrable audit-trail integrity defect.
 2. The supervised child can **kill the supervisor** with `kill(getppid(), SIGTERM)`, which terminates the audit stream silently (no `supervisor_exit` line) — a denial-of-audit, not a bypass for execve, but it disproves "supervisor outside the trap boundary" as a security claim.
@@ -65,7 +65,7 @@ Architecture changes verified by reading `guard/usernotify_exec_guard.c` line-by
 - Listener fd handed back to the parent via Unix `socketpair` and `SCM_RIGHTS` (lines 641–670).
 - `SECCOMP_IOCTL_NOTIF_ID_VALID` checked before SEND (lines 597–600). On failure, the decision is rewritten to BLOCK with `reason=notification_id_invalid`. This matches the claim.
 - `execveat` is recognised by the BPF filter and notified, then the userspace `decide_exec` shortcuts to BLOCK with `reason=execveat_not_supported_in_sprint2` (lines 459–465).
-- ALLOW path still uses `SECCOMP_USER_NOTIF_FLAG_CONTINUE` (line 604). Documented limitation; matches the candidate's own caveat.
+- ALLOW path still uses `SECCOMP_USER_NOTIF_FLAG_CONTINUE` (line 604). Documented limitation; matches the operator's own caveat.
 - `PR_SET_NO_NEW_PRIVS` set before filter install (line 86). Preserved from Sprint 1.
 
 Failed harness run preserved at `proofs/sprint2_runs/sprint2-20260430T220518Z`:
@@ -165,7 +165,7 @@ Observations:
 2. **No `supervisor_exit` JSON record was written** — the supervisor was killed before it could log shutdown. The audit trail is silently truncated.
 3. After the supervisor died, the listener fd was closed by the kernel; further filtered syscalls in the child returned `ENOSYS` (errno 38). So the kernel does fail-safe on the listener-closed condition, and **`/bin/rm` did not actually run**. The child is left in a broken state where filtered syscalls return `ENOSYS`, but it can still execute non-filtered syscalls (open/read/write etc.) and run shell builtins inside an already-running allowed binary.
 
-Why this matters for the framing: the candidate writes "the supervisor is no longer under the supervised child seccomp filter" and "outside the trap boundary." That is mechanically true — the supervisor is not seccomp-filtered. But the trust boundary is wider than seccomp:
+Why this matters for the framing: the operator writes "the supervisor is no longer under the supervised child seccomp filter" and "outside the trap boundary." That is mechanically true — the supervisor is not seccomp-filtered. But the trust boundary is wider than seccomp:
 - supervisor and child share UID, so `kill(ppid, SIGTERM)` is permitted.
 - supervisor and child share PID namespace, so the child can read `/proc/<ppid>/comm`, `/proc/<ppid>/cmdline`, send signals, attach via ptrace if `kernel.yama.ptrace_scope=0` (default on this machine? not tested).
 - supervisor and child share filesystem and mount namespace, so the supervisor's `realpath()` resolves in the same namespace as the child's exec.
@@ -181,7 +181,7 @@ Mitigation directions:
 
 ## Critical Finding 3 — `SECCOMP_USER_NOTIF_FLAG_CONTINUE` TOCTOU window is documented but produced an audit-log inconsistency live (severity: MEDIUM, but the inconsistency is HIGH for audit fidelity)
 
-The candidate honestly documents that ALLOW still uses `CONTINUE` and that the kernel re-reads userspace memory after the supervisor's decision (`SPRINT2_IDENTITY_HARDENING_20260430.md` "Remaining Limitations"). `SECCOMP_IOCTL_NOTIF_ID_VALID` is checked before SEND, but as the candidate also notes, `NOTIF_ID_VALID` only confirms the notif is still outstanding — it does not prevent the userspace memory mutation race.
+The operator honestly documents that ALLOW still uses `CONTINUE` and that the kernel re-reads userspace memory after the supervisor's decision (`SPRINT2_IDENTITY_HARDENING_20260430.md` "Remaining Limitations"). `SECCOMP_IOCTL_NOTIF_ID_VALID` is checked before SEND, but as the operator also notes, `NOTIF_ID_VALID` only confirms the notif is still outstanding — it does not prevent the userspace memory mutation race.
 
 Live, just now, against the canonical race (one thread mutating the path string while a fork loop calls `execve` against it):
 
@@ -213,7 +213,7 @@ Of 50 attempts: stdout shows `git version 2.43.0` printed 26 times (i.e. 26 succ
 
 In this run, the race did not deterministically achieve "ALLOW logged for git but rm actually executed" (the visible outputs were all `git version 2.43.0`), and the kernel-level re-read of the path may also see the mutation flap back and forth such that whatever string is read at exec-time decides the actual binary. So: **I did not demonstrate a bypass against the policy** in the seconds I had to try. But I did demonstrate that **the audit record can already record disagreeing fields** (raw_exe says one thing, argv says another), which means a downstream parser cannot trust that `raw_exe` and `argv[0]` describe the same call.
 
-This is consistent with the kernel documentation. The candidate's stated posture is correct: residual TOCTOU is named, and "complete TOCTOU elimination" is on the "claims still not allowed" list. I am not faulting the framing here. I am noting that an attacker who *does* win the race will produce an audit record where the supervisor's `realpath` and `sha256` reflect what was on disk at the supervisor's stat moment, not what the kernel actually executed — so an ALLOW record cannot be relied on as proof that the matching binary was the one that ran.
+This is consistent with the kernel documentation. The operator's stated posture is correct: residual TOCTOU is named, and "complete TOCTOU elimination" is on the "claims still not allowed" list. I am not faulting the framing here. I am noting that an attacker who *does* win the race will produce an audit record where the supervisor's `realpath` and `sha256` reflect what was on disk at the supervisor's stat moment, not what the kernel actually executed — so an ALLOW record cannot be relied on as proof that the matching binary was the one that ran.
 
 Mitigation: this is fundamentally what the kernel `man 2 seccomp_unotify` "TOCTOU considerations" warns about. The known fixes are (a) use `SECCOMP_IOCTL_NOTIF_ADDFD` with a supervisor-validated fd and synthesise the syscall yourself, or (b) use `execveat` against an fd the supervisor opened and validated, instead of `CONTINUE`.
 
@@ -268,7 +268,7 @@ Mitigation: the supervisor must resolve symbolic paths from the child's perspect
 
 3. `policy_id` parsing is naive `strchr`-of-quote — a `policy_id` value that contains an embedded `"` will be truncated mid-string and the truncated value is what gets logged.
 
-None of these escalate to a fail-open today, because (a) the policy file is operator-controlled, and (b) `add_policy_path` calls `realpath` on every candidate and exits if it doesn't resolve. But a future operator who writes a policy that is structurally weird (comments, alternate field names, multi-array files for environment-specific allows) can land in the silently-walks-to-next-array failure mode. **Replace this with a real JSON parser before Sprint 3** (jansson, cJSON, or even hand-written but state-machine-based — not strstr).
+None of these escalate to a fail-open today, because (a) the policy file is operator-controlled, and (b) `add_policy_path` calls `realpath` on every operator and exits if it doesn't resolve. But a future operator who writes a policy that is structurally weird (comments, alternate field names, multi-array files for environment-specific allows) can land in the silently-walks-to-next-array failure mode. **Replace this with a real JSON parser before Sprint 3** (jansson, cJSON, or even hand-written but state-machine-based — not strstr).
 
 ---
 
@@ -361,13 +361,13 @@ After (1)–(5), Sprint 3 can credibly add Docker. (6) and (7) can run in parall
 
 ## Discipline Observations (worth preserving)
 
-What the candidate did right and should keep doing every sprint:
+What the operator did right and should keep doing every sprint:
 
 - **Failed run preserved unchanged**: `proofs/sprint2_runs/sprint2-20260430T220518Z` carries `pass=10 fail=2` with the exact failing case directories. Compare this to a culture where a failed run gets quietly deleted; that is the discipline that earns this audit chain its credibility.
 - **Three passing replays at increasing test count**: `220552Z (pass=11)`, `220610Z (pass=11 reproducibility)`, `220722Z (pass=12 after adding execveat)`. Re-running shows the test set converges, not flaps.
 - **SHA256 anchoring of source and binary in every replay** (`sha256s.txt` per run). Makes my re-derivation a one-liner.
 - **Explicit "Claims Still Not Allowed" list** in both the proof memo and the audit memo. Prevents anyone reading either as more than a mechanism proof.
-- **Honest naming of the residual `CONTINUE` TOCTOU** without trying to wave it away with `NOTIF_ID_VALID`. The candidate gets that `NOTIF_ID_VALID` does not address the userspace memory race; this is the second time in a row the candidate has voluntarily named a known-flaw rather than letting an auditor find it.
+- **Honest naming of the residual `CONTINUE` TOCTOU** without trying to wave it away with `NOTIF_ID_VALID`. The operator gets that `NOTIF_ID_VALID` does not address the userspace memory race; this is the second time in a row the operator has voluntarily named a known-flaw rather than letting an auditor find it.
 - **Per-case directories with stdout, stderr, exit_code, command, json_check** under each run root. Makes "show me what actually happened in case X" trivial.
 - **Replay script is idempotent and self-documenting**: it compiles, runs each case in its own subdirectory, and records hashes. Sprint 3 should keep this shape.
 
@@ -494,6 +494,6 @@ rm -rf '/tmp/a"b'
 - Sprint 2 source: `guard/usernotify_exec_guard.c` (672 lines, sha256 58b8409d…)
 - Sprint 2 binary: `bin/usernotify_exec_guard` (sha256 40e156ab…)
 - Sprint 2 latest passing run: `proofs/sprint2_runs/sprint2-20260430T221125Z` (created by my replay)
-- Sprint 2 candidate's passing run: `proofs/sprint2_runs/sprint2-20260430T220722Z` (pass=12 fail=0)
+- Sprint 2 operator's passing run: `proofs/sprint2_runs/sprint2-20260430T220722Z` (pass=12 fail=0)
 - Sprint 2 preserved failed run: `proofs/sprint2_runs/sprint2-20260430T220518Z` (pass=10 fail=2, harness PATH bug)
 - Sprint 1 prior audit: `proofs/AUDIT_20260430_sprint1_independent_review.md`

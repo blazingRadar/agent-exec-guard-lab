@@ -47,13 +47,13 @@ This is the same self-correction discipline pattern this lab applied to Sprint 5
 
 ## Verdict
 
-**Sprint 9 substantively delivers as a guided/private demo. It is not honest as a "clone and run on a fresh machine" demo claim.**
+**Sprint 9 substantively delivers as a guided/prepared-lab demo. It is not honest as a "clone and run on a fresh machine" demo claim.**
 
-The prior summary's framing ("CTO-ready as a guided/private portfolio demo; not yet honest as a public self-serve 'clone and run one command' demo") is exactly right.
+The prior summary's framing ("review-ready as a guided prepared-lab demo; not yet honest as a public self-serve 'clone and run one command' demo") is exactly right.
 
 The honest one-line summary:
 
-> "Sprint 9 packages the Sprint 8 frontier-model OpenHands guard proof into a one-command runner that works on the candidate's local development machine: the YAML→JSON compiler with comprehensive fail-closed validation, the wrapper that orchestrates compile + 4 negative tests + the nested Sprint 8 path + secret scan, and the docs/DEMO.md page all landed and reproduce. The demo is not yet portable — the runner hardcodes `/home/blazingradar/agent-exec-guard-lab`, DEMO.md cites a private `.env` path, and the runner has no preflight checks for Docker / OpenHands source / Python venv. Guard source and binary are unchanged from Sprint 8. The remaining outreach gap is portability + a recorded artifact."
+> "Sprint 9 packages the Sprint 8 frontier-model OpenHands guard proof into a one-command runner that works on the operator's local development machine: the YAML→JSON compiler with comprehensive fail-closed validation, the wrapper that orchestrates compile + 4 negative tests + the nested Sprint 8 path + secret scan, and the docs/DEMO.md page all landed and reproduce. At the time of this historical audit, the demo was not yet portable. The runner has since been updated to derive the repository root dynamically, while the prepared-lab dependency on Docker, pinned OpenHands source, and Python dependencies remains. Guard source and binary are unchanged from Sprint 8. The remaining outreach gap is portability + a recorded artifact."
 
 ---
 
@@ -63,12 +63,12 @@ The honest one-line summary:
 
 The prior summary caught this. I confirm:
 
-- `scripts/demo/run_openhands_guard_demo.sh:4` hardcodes `ROOT="/home/blazingradar/agent-exec-guard-lab"`
-- `docs/DEMO.md` example uses `--env-file /home/blazingradar/huddy/config/.env` (a private path)
+- `scripts/demo/run_openhands_guard_demo.sh:4` hardcoded the repository root at the time of this historical audit; current scripts derive the root dynamically.
+- `docs/DEMO.md` example uses `--env-file .env.local` (a local env-file path)
 - The demo runner assumes `external/OpenHands-1.6.0/` is already cloned at the pinned commit
 - The demo runner assumes `.venv-sprint7/` Python venv exists with OpenHands deps
 
-Implication: a reviewer who clones the public repo and runs `./scripts/demo/run_openhands_guard_demo.sh` on a fresh machine fails immediately. The "one-command demo" claim is true on the candidate's machine and false elsewhere.
+Implication: a reviewer who clones the public repo and runs `./scripts/demo/run_openhands_guard_demo.sh` on a fresh machine fails immediately. The "one-command demo" claim is true on the operator's machine and false elsewhere.
 
 The prior summary rates this HIGH and calls for cleanup. I now agree HIGH (my pass-1 draft rated it LOW under "demo-portability nuance" — that was wrong; portability is the load-bearing property of a productized demo).
 
@@ -160,7 +160,7 @@ The prior consolidated summary surfaced all four. My pass-1 missed them because 
 - Skipped reading README.md because the gate's deliverables list didn't name it
 
 Lessons for future audits:
-- When auditing a productization sprint, *portability is the load-bearing property*. The gate item "one-command demo runner" implies "runs anywhere," not "runs on the candidate's machine."
+- When auditing a productization sprint, *portability is the load-bearing property*. The gate item "one-command demo runner" implies "runs anywhere," not "runs on the operator's machine."
 - Compare the new sprint's output shape (summary file format, runner exit conventions) to the prior sprints' patterns. Drift is a finding.
 - Always read README.md for status drift even if the gate doesn't name it.
 

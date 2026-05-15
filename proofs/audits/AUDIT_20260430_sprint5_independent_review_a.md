@@ -14,7 +14,7 @@ Did Sprint 5 (a) deliver a real Docker integration proof — guard executing ins
 
 ## 2. Verdict
 
-**Sprint 5 delivers a real, reproducible "guard works inside a Docker container" proof. The headline as written is accurate but narrow — the candidate already drafts it that way in the memo. The discipline gap is one that matters for this project's credibility argument: the gate document and the proof memo were committed in the same commit (`e972a70`) rather than the gate landing first. Pre-registration is asserted by the document framing but not by the git timeline.**
+**Sprint 5 delivers a real, reproducible "guard works inside a Docker container" proof. The headline as written is accurate but narrow — the operator already drafts it that way in the memo. The discipline gap is one that matters for this project's credibility argument: the gate document and the proof memo were committed in the same commit (`e972a70`) rather than the gate landing first. Pre-registration is asserted by the document framing but not by the git timeline.**
 
 What is real:
 - 6/6 Sprint 5 cases reproduced live by re-running `scripts/integration/replay_sprint5_docker_guard.sh`. New `run_root` `sprint5-docker-20260501T000703Z`. Identity-based BLOCK on a copied `/bin/rm` inside the container. Forged JSON written by the supervised child captured as `child_stderr` with proper `data:` framing and not as `event:exec_decision`.
@@ -168,7 +168,7 @@ seccomp(NEW_LISTENER) returned listener_fd=3
 rc=0
 ```
 
-Verified: under Docker's default seccomp profile (`profile=builtin`), an unprivileged caller in a non-`--privileged`, non-`seccomp=unconfined` container CAN install a new seccomp filter with `NEW_LISTENER`. This makes the candidate's load-bearing claim — "the guard runs under Docker's default seccomp profile" — independently true.
+Verified: under Docker's default seccomp profile (`profile=builtin`), an unprivileged caller in a non-`--privileged`, non-`seccomp=unconfined` container CAN install a new seccomp filter with `NEW_LISTENER`. This makes the operator's load-bearing claim — "the guard runs under Docker's default seccomp profile" — independently true.
 
 ### 4.6 Landlock works inside container under default Docker seccomp
 
@@ -203,7 +203,7 @@ Inside the container, `sha256` field of the `exec_decision` JSON is a real 64-he
 
 **None that block keeping Sprint 5.** The discipline finding in Section 3 is the closest the audit comes; it's a procedural gap, not a technical one.
 
-The candidate's own "Claims Now Allowed" / "Claims Still Not Allowed" split in `SPRINT5_DOCKER_CONTAINER_PROOF_20260430.md` is the most concise honest summary. I would not tighten it further; the candidate has already pre-tightened it.
+The operator's own "Claims Now Allowed" / "Claims Still Not Allowed" split in `SPRINT5_DOCKER_CONTAINER_PROOF_20260430.md` is the most concise honest summary. I would not tighten it further; the operator has already pre-tightened it.
 
 ---
 

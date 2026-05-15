@@ -249,7 +249,7 @@ pass=12 fail=0
 run_root=/home/blazingradar/agent-exec-guard-lab/proofs/sprint6b_runs/sprint6b-action-server-20260501T005827Z
 ```
 
-12/12 reproduced live. New run dir preserved. (Note: a second run dir `…005856Z` also appeared — that one fired during the regression sweep that touched my previous Sprint 6A replay. Both run dirs report `pass=12 fail=0`. Both are independent of the candidate's `…004956Z`.)
+12/12 reproduced live. New run dir preserved. (Note: a second run dir `…005856Z` also appeared — that one fired during the regression sweep that touched my previous Sprint 6A replay. Both run dirs report `pass=12 fail=0`. Both are independent of the operator's `…004956Z`.)
 
 ### 5.4 Live re-run of regression replays
 
@@ -286,7 +286,7 @@ These are the OpenHands `CmdOutputObservation` shape with `success` and `extras.
 
 ### 5.6 Working tree state
 
-`git status --short` before my audit run was empty. After my audit it shows only my reproduction artifacts (new sprint2/4/5/6/6b run dirs, two `latest_*.txt` pointer updates) — no source/policy/script/proof modifications. **The candidate's working tree was clean.**
+`git status --short` before my audit run was empty. After my audit it shows only my reproduction artifacts (new sprint2/4/5/6/6b run dirs, two `latest_*.txt` pointer updates) — no source/policy/script/proof modifications. **The operator's working tree was clean.**
 
 ---
 
@@ -391,7 +391,7 @@ In approximate priority order:
 
 > "A local seccomp user-notify plus Landlock execution guard can wrap the pinned OpenHands `action_execution_server.py` runtime path, supervise real `/execute_action` `CmdRunAction` commands through `BashSession`, allow an approved workspace file read, block a copied and renamed `/usr/bin/rm` before output, and preserve parseable guard audit JSON under Docker default seccomp."
 
-I would not tighten this further; the candidate has already pre-tightened it. One sentence I would *add* to the proof memo for full discipline (mirroring my Sprint 5 recommendation):
+I would not tighten this further; the operator has already pre-tightened it. One sentence I would *add* to the proof memo for full discipline (mirroring my Sprint 5 recommendation):
 
 > "Note: the `/execute_action` HTTP request was issued by a hard-coded harness client (`send_action.py`), not by an OpenHands LLM-agent loop. Sprint 6B proves the agent-runtime command path is supervised; it does not yet prove that an autonomous LLM-issued action is supervised. Sprint 7 should pre-register the LLM-agent path."
 
@@ -426,7 +426,7 @@ bash scripts/replay_sprint4_audit_integrity.sh                   → pass=22 fai
 bash scripts/integration/replay_sprint5_docker_guard.sh          → pass=11 fail=0
 bash scripts/integration/replay_sprint6_openhands_runtime.sh     → pass=13 fail=0
 
-# audit log post-mortem on the candidate's final run:
+# audit log post-mortem on the operator's final run:
 grep '"event":"exec_decision"' \
    proofs/sprint6b_runs/sprint6b-action-server-20260501T004956Z/container_logs.combined \
  | python3 -c '<categorize ALLOW/BLOCK + workspace cwd>'
@@ -460,7 +460,7 @@ No retained `/tmp` artifacts created by this audit. The Sprint 6B harness writes
 - Pre-registered gate: `proofs/SPRINT6B_GATE_20260501.md` (commit `c4392ae`, 2026-04-30 17:39:02 -0700)
 - Proof memo: `proofs/SPRINT6B_ACTION_SERVER_PROOF_20260501.md` (commit `243068f`, 2026-04-30 17:54:54 -0700)
 - Command log: `proofs/SPRINT6B_COMMAND_LOG_20260501.md`
-- Final candidate run: `proofs/sprint6b_runs/sprint6b-action-server-20260501T004956Z/`
+- Final operator run: `proofs/sprint6b_runs/sprint6b-action-server-20260501T004956Z/`
 - Auditor reproduction runs: `proofs/sprint6b_runs/sprint6b-action-server-20260501T005827Z/` (and `…005856Z`)
 - Replay harness: `scripts/integration/replay_sprint6b_action_server.sh`
 - Policy: `policy/integration/openhands_action_server.allow.json`

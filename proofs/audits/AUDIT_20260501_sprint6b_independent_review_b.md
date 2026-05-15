@@ -364,7 +364,7 @@ That is a credible technical demo of "guard supervises OpenHands' command path."
 
 ### 8.3 What "ready to ship" would still require
 
-| Gap | Effort | Sprint 7 candidate? |
+| Gap | Effort | Sprint 7 operator? |
 |---|---|---|
 | Real LLM trace driving `/execute_action` (vs. harness-driven) | medium | yes — replay a captured agent trace |
 | `FileWriteAction` + `CmdRunAction` chained attack scenario, end-to-end | small | yes — write malicious binary, exec it, verify guard blocks |

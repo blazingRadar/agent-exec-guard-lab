@@ -64,7 +64,7 @@ model listing succeeded
 chat completion probes failed with provider-side 403 safety/permission errors
 ```
 
-The xAI probe artifacts are preserved because xAI was the primary provider candidate in the gate. Account identifiers returned by the provider were redacted before preservation.
+The xAI probe artifacts are preserved because xAI was the primary provider operator in the gate. Account identifiers returned by the provider were redacted before preservation.
 
 ## Execution Evidence
 

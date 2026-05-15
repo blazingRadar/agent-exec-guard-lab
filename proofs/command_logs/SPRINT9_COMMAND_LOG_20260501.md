@@ -34,7 +34,7 @@ The `/tmp` smoke output was removed immediately and was not retained as a proof 
 
 ```bash
 ./scripts/demo/run_openhands_guard_demo.sh \
-  --env-file /home/blazingradar/huddy/config/.env
+  --env-file .env.local
 ```
 
 Final run:

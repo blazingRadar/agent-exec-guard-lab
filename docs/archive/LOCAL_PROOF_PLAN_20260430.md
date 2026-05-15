@@ -35,9 +35,9 @@ Test cases:
 
 - allowed: `git --version`
 - allowed: `python3 --version`
-- blocked candidate: `/bin/rm`
-- blocked candidate: `curl ... | sh`
-- blocked candidate: `python3 -c 'import subprocess; subprocess.run(...)'`
+- blocked operator: `/bin/rm`
+- blocked operator: `curl ... | sh`
+- blocked operator: `python3 -c 'import subprocess; subprocess.run(...)'`
 
 Expected baseline:
 

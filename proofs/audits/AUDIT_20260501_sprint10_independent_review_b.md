@@ -143,7 +143,7 @@ I probed with paths containing `..`, embedded newlines, the bare `/`, and traili
 
 ### Summary
 
-The generator inherits the trust assumptions of the observation. It is safe under the assumption that the input audit log is the unmodified product of the trusted guard binary applied to a trusted run. None of those assumptions are documented or checked. This is fine for a private lab where the user runs the closed loop end-to-end on their own machine. It is *not* fine if the generator is positioned as a reviewable artifact pipeline, because the YAML it emits is the artifact a human reviewer is supposed to trust.
+The generator inherits the trust assumptions of the observation. It is safe under the assumption that the input audit log is the unmodified product of the trusted guard binary applied to a trusted run. None of those assumptions are documented or checked. This is fine for a prepared lab where the user runs the closed loop end-to-end on their own machine. It is *not* fine if the generator is positioned as a reviewable artifact pipeline, because the YAML it emits is the artifact a human reviewer is supposed to trust.
 
 ---
 
@@ -169,7 +169,7 @@ Client: Docker Engine - Community
  Version:    29.1.3
 ```
 
-A live `bash scripts/demo/observe_generate_review_enforce.sh --env-file …` would burn a fresh OpenAI gpt-5.2 frontier-model run. I did not execute this — both because it requires the candidate's API key (not available to the audit) and because the proof's reproduction discipline already preserves the artifacts. Verification was done by reading preserved artifacts.
+A live `bash scripts/demo/observe_generate_review_enforce.sh --env-file …` would burn a fresh OpenAI gpt-5.2 frontier-model run. I did not execute this — both because it requires the operator's API key (not available to the audit) and because the proof's reproduction discipline already preserves the artifacts. Verification was done by reading preserved artifacts.
 
 ### What the preserved artifacts confirm
 

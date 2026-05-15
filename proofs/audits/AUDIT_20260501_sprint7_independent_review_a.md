@@ -338,7 +338,7 @@ final_state: AgentState.FINISHED, iteration=3
 3. The harness lines 14–15 do `docker rm -f openhands-runtime-sprint7headless` to clean the container, but there is no analogous `rm -rf ~/.openhands/sessions/sprint7headless/`.
 4. There is also an "openhands_observed_denial" PASS that *passes even on a stuck run* — `grep -Rqs 'Operation not permitted' "$RUN_ROOT"` matches the `headless_agent.stderr` log of *prior runs' BashSession errors* that get echoed during state restoration. The check is too liberal. (False-pass risk in the harness itself.)
 
-**Severity:** Demo-blocker if a candidate runs `./scripts/integration/replay_sprint7_headless_agent.sh` twice in front of a CTO. The first run will pass; the second will fail confusingly. **This needs to be fixed in a Sprint 7B cleanup pass, before this is shipped as the demo wedge.**
+**Severity:** Demo-blocker if a operator runs `./scripts/integration/replay_sprint7_headless_agent.sh` twice in front of an external reviewer. The first run will pass; the second will fail confusingly. **This needs to be fixed in a Sprint 7B cleanup pass, before this is shipped as the demo wedge.**
 
 **Recommended fix:** Either generate a unique `sid` per run (e.g., `sid=f"sprint7headless-{RUN_ROOT.name}"`) or have the harness `rm -rf ~/.openhands/sessions/sprint7headless/` at the start, alongside the `docker rm -f`. The first option is cleaner because it preserves session forensics.
 

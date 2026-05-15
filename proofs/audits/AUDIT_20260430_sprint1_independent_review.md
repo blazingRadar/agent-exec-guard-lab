@@ -117,7 +117,7 @@ When the basename matches, the audit log records the path the supervisor saw at 
 
 ---
 
-## Secondary Finding 2 — JSON audit record is missing fields the candidate's own discipline standard would require
+## Secondary Finding 2 — JSON audit record is missing fields the operator's own discipline standard would require
 
 Compare the audit record format here:
 
@@ -197,7 +197,7 @@ After (1)–(5), then Docker. Not before. Adding Docker on top of a basename-byp
 
 ## Discipline Observations (worth preserving)
 
-What the candidate did right that should be preserved as the convention for every sprint going forward:
+What the operator did right that should be preserved as the convention for every sprint going forward:
 
 - Re-derivable provenance (source SHA + binary SHA + line count) — let me verify the work without rebuilding it.
 - Pre-registered scope (in/out of scope sections) — keeps the claim narrow on purpose.
@@ -206,7 +206,7 @@ What the candidate did right that should be preserved as the convention for ever
 - Realism finding (locale-check helpers under non-clean shell startup) — shows engineering instinct, not just mechanism delivery.
 - Per-file timestamps in the proof memo, command log, and audit memo — separates evidence from interpretation.
 
-This is the same discipline that earned the claim detector's audit chain its credibility. It is the candidate's actual differentiator and it is real.
+This is the same discipline that earned the claim detector's audit chain its credibility. It is the operator's actual differentiator and it is real.
 
 ---
 

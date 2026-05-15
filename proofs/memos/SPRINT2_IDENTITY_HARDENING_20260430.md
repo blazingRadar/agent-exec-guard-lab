@@ -28,7 +28,7 @@ Out of scope:
 - Docker
 - OpenHands
 - production security claims
-- private governance/IP logic
+- governance/IP logic
 
 ## Claim Target
 

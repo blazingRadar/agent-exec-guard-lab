@@ -9,7 +9,7 @@ Source of record: live commands run on this machine; commit history; preserved a
 
 ## Audit Question
 
-The Sprint 5 audit chain (orchestrator A, orchestrator B, Bohr, Laplace) named six items. The candidate's follow-up commit `8332e93` claims to clean Sprint 5 proof metadata. Did it close the items, and did it introduce anything that should be flagged before Sprint 6?
+The Sprint 5 audit chain (orchestrator A, orchestrator B, Bohr, Laplace) named six items. The operator's follow-up commit `8332e93` claims to clean Sprint 5 proof metadata. Did it close the items, and did it introduce anything that should be flagged before Sprint 6?
 
 ## Verdict
 
@@ -128,7 +128,7 @@ None of these block; all are nits. The follow-up commit substantively does what 
 - Source SHA `07a27fd1...` and binary SHA `e3bdaabf...` unchanged from the Sprint 5 head. The cleanup commit didn't touch the guard. Right move.
 - Working tree clean; `git status --short` returns empty.
 - Commit `8332e93 Clean Sprint 5 proof metadata` is on `origin/main`.
-- The latest sprint5 replay run (`sprint5-docker-20260501T002113Z`) reproduces `pass=11 fail=0` from the candidate's own command log.
+- The latest sprint5 replay run (`sprint5-docker-20260501T002113Z`) reproduces `pass=11 fail=0` from the operator's own command log.
 - Both Bohr (`subagent_bohr`) and Laplace (`subagent_laplace`) memos are present in `proofs/`.
 
 ---

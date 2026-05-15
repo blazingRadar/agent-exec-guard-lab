@@ -48,7 +48,7 @@ Qualifier: this is a *tooling* sprint, not a *kernel* sprint. The findings here 
   - Aggregate `pass=N fail=N` row in summary: **YES** (`pass=8 fail=0` at end of `workflow_summary.txt`).
   - Preflight checks: **PARTIAL.** Sprint 10 has no preflight stanza of its own (no check that `scripts/policy/generate_policy_from_audit.py`, `scripts/policy/compile_policy.py`, or `scripts/demo/run_openhands_guard_demo.sh` are present/executable; no Docker preflight). Mitigated by the fact that the inner `run_openhands_guard_demo.sh` invocation does its own preflight. But Sprint 10's outer wrapper inherits the *outcome* of Sprint 9's cleanup without inheriting the *pattern* completely.
   - Container cleanup: **N/A** for Sprint 10's outer wrapper (it does not directly start containers). The inner Sprint 9 runner's `cleanup_runtime` trap does the work.
-- **One regression vs Sprint 9 cleanup discipline:** the recorded `command_log.txt` and `SPRINT10_COMMAND_LOG_20260501.md` both contain the literal candidate path `/home/blazingradar/huddy/config/.env` — the exact pattern Sprint 9 cleanup F-9-A explicitly fixed in `docs/DEMO.md`. The runner itself accepts a generic `--env-file PATH` and `docs/POLICY_WORKFLOW.md` correctly uses `.env.local`, so it's only the proof artifacts that leak the private path. Low severity but a discipline regression worth naming.
+- **One regression vs Sprint 9 cleanup discipline:** the recorded `command_log.txt` and `SPRINT10_COMMAND_LOG_20260501.md` contained a local env-file path in the original proof artifacts. The runner itself accepts a generic `--env-file PATH` and `docs/POLICY_WORKFLOW.md` correctly uses `.env.local`, so this was only a proof-artifact path disclosure. Low severity but a discipline regression worth naming.
 
 ---
 
@@ -134,7 +134,7 @@ The "review" phase is the weakest link. It is three asserts on three known-good 
 - Sprint 10 outer summary records `pass=8 fail=0`. The 8 cases are: `env_file`, `observe_log`, `generate_policy`, `compile_generated_policy`, `generated_policy_assertions`, `enforce_generated_policy`, `enforce_summary`, `secret_scan`. These cover, in order: env loaded, audit log found, generator ran, output YAML compiled, content asserts passed, enforce demo passed, enforce summary equals `pass=14 fail=0`, no API key leakage.
 - Sprint 9 hand-rolled YAML has 23 paths; Sprint 10 generated has 16. The 7 missing from generated are all *unobserved-in-this-run* paths: `/usr/bin/env`, `/usr/bin/ls`, `/usr/bin/sh`, `/usr/bin/su`, `/usr/bin/true`, `/usr/bin/which`, `/usr/local/bin/poetry`, `/usr/local/bin/python3`, `/usr/local/venv/bin/python` (9 actually; `/usr/bin/which` reduces to `/usr/bin/which.debianutils` in observation, so the generated list has the resolved target the hand-rolled list lacks). I confirmed by grepping the audit log that none of these were ever exec'd by this prompt's run. The Sprint 9 hand-rolled list was over-broad relative to *this* OpenHands prompt; it may not be over-broad for *all* OpenHands prompts. The "minimal production policy" ceiling remains exactly that — minimal-for-this-flow, not minimal-for-OpenHands-in-general.
 - BLOCK preservation: confirmed in `blocked_records.json` (10 entries with line numbers 11, 12, 13, 14, 96, 98, 99, 100, 130, 141).
-- Repo is private (gh repo view confirmed `"visibility":"PRIVATE"`).
+- Repo visibility was not public at the time of the historical audit (gh repo view confirmed `"visibility":"PRIVATE"`).
 - Preserved failed run `sprint10-policy-workflow-20260501T075952Z` exists with `pass=4 fail=1`. The cause memo (assertion expected `realpath=/usr/bin/rm`, actual recorded `raw_exe=./python3`) is honest and was correctly tightened.
 
 ---
@@ -149,7 +149,7 @@ Fix: in the generator, after the loop, subtract BLOCK realpaths from ALLOW realp
 
 ### F-10-B (MEDIUM) — Generator has no input provenance discipline
 
-Generator accepts any JSON file. No path-anchoring (e.g., "must be inside `proofs/sprint{N}_runs/`"), no required schema fingerprint, no signature check. Combined with F-10-A, this means anyone with write access to the host filesystem can dictate the next policy by appending or producing audit JSON. In a CI / multi-tenant scenario this matters; in a candidate's lab it's notional.
+Generator accepts any JSON file. No path-anchoring (e.g., "must be inside `proofs/sprint{N}_runs/`"), no required schema fingerprint, no signature check. Combined with F-10-A, this means anyone with write access to the host filesystem can dictate the next policy by appending or producing audit JSON. In a CI / multi-tenant scenario this matters; in a operator's lab it's notional.
 
 Fix: at minimum, validate that the input path is under a known proofs directory or carries an expected `policy_id` field that matches the running guard's actual policy_id at observation time.
 
@@ -161,9 +161,9 @@ Three asserts on a known-good shape. Doesn't show the policy to a human. The doc
 
 Inherits cleanup from Sprint 9 partially. If `scripts/policy/generate_policy_from_audit.py` is missing or non-executable, the failure surfaces as a generic "policy generation failed" rather than a clear preflight FAIL. Cosmetic — Sprint 9's runner's preflight covers the enforce phase.
 
-### F-10-E (LOW) — Private path leaked into preserved command logs
+### F-10-E (LOW) — Local env-file path leaked into preserved command logs
 
-`proofs/SPRINT10_COMMAND_LOG_20260501.md` and `proofs/sprint10_runs/.../command_log.txt` both contain the literal string `/home/blazingradar/huddy/config/.env`. Sprint 9 cleanup F-9-A removed analogous strings from `docs/DEMO.md`. Sprint 10's runner accepts a generic `--env-file PATH`, so the runner itself is portable, but the preserved command-log artifacts inadvertently re-introduce a private path into the public-facing artifact set. (Does not leak the env contents — only the path string.)
+`proofs/SPRINT10_COMMAND_LOG_20260501.md` and `proofs/sprint10_runs/.../command_log.txt` originally contained a host-specific env-file path. Sprint 9 cleanup F-9-A removed analogous strings from `docs/DEMO.md`. Sprint 10's runner accepts a generic `--env-file PATH`, so the runner itself is portable, but the preserved command-log artifacts inadvertently re-introduced a local env-file path into the public-facing artifact set. (Does not leak the env contents — only the path string.)
 
 ### F-10-F (informational) — Generator output discards SHA / dev / ino metadata
 
@@ -184,7 +184,7 @@ All carried forward correctly in the proof memo's table:
 | Full OpenHands web UI | Out of scope |
 | Production-grade sandbox claim | Not allowed |
 
-Nothing new in Sprint 10 closes any of these. Sprint 10 explicitly does not change F4 status; the guard source/binary are unchanged. The "public clone-and-run" gap is unaddressed and the F-10-E private-path leak slightly worsens it at the proof-artifact level (though not at the runner level).
+Nothing new in Sprint 10 closes any of these. Sprint 10 explicitly does not change F4 status; the guard source/binary are unchanged. The "public clone-and-run" gap is unaddressed and the F-10-E local-path leak slightly worsens it at the proof-artifact level (though not at the runner level).
 
 ---
 
@@ -195,7 +195,7 @@ If the goal is "ship-ready" rather than "demo-ready":
 1. **Generator BLOCK ∩ ALLOW reconciliation** (F-10-A): trivial code change, important docs invariant.
 2. **Provenance-checked audit input** (F-10-B): refuse to generate from logs outside `proofs/sprint{N}_runs/`, or require a manifest fingerprint.
 3. **Real reviewer gate** (F-10-C): interactive `yes/diff/no` step, or signed-approval file gate.
-4. **Public bootstrap** (carried from Sprint 9 F-9-A): documented venv/Docker setup, pinned image digest in `docs/POLICY_WORKFLOW.md` and `docs/DEMO.md` (not the mutable `:1.6.0-nikolaik` tag), and a README quickstart that does not require the candidate's `.env` path.
+4. **Public bootstrap** (carried from Sprint 9 F-9-A): documented venv/Docker setup, pinned image digest in `docs/POLICY_WORKFLOW.md` and `docs/DEMO.md` (not the mutable `:1.6.0-nikolaik` tag), and a README quickstart that does not require the operator's `.env` path.
 5. **Recorded asciinema** (carried from Sprint 9 F-9-F): outreach artifact.
 6. **Generator emits identity evidence in metadata** (F-10-F): per-path observed dev/ino/sha256/raw_exe/observation count to make human review meaningful.
 7. **F4 closure or honest one-page memo** that stops being deferred forever.

@@ -40,7 +40,7 @@ The `/tmp` smoke outputs were removed immediately and were not retained as proof
 ## Preserved Failed Run
 
 ```bash
-./scripts/demo/observe_generate_review_enforce.sh --env-file /home/blazingradar/huddy/config/.env
+./scripts/demo/observe_generate_review_enforce.sh --env-file .env.local
 ```
 
 Run:
@@ -62,7 +62,7 @@ Incorrect assertion expected blocked copied-`rm` to appear as `realpath=/usr/bin
 ## Passing Run
 
 ```bash
-./scripts/demo/observe_generate_review_enforce.sh --env-file /home/blazingradar/huddy/config/.env
+./scripts/demo/observe_generate_review_enforce.sh --env-file .env.local
 ```
 
 Run:

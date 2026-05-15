@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Exec Guard — Kernel-Level AI Agent Execution Policy</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0e1a;color:#e2e8f0;font-family:'Inter',system-ui,sans-serif;line-height:1.6}
+a{color:#7dd3fc;text-decoration:none}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:2rem;background:radial-gradient(ellipse at 50% 0%,rgba(99,102,241,.18) 0%,transparent 70%)}
+.badge{display:inline-block;background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.4);color:#a5b4fc;padding:.25rem .75rem;border-radius:9999px;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.5rem}
+h1{font-size:clamp(2rem,5vw,3.5rem);font-weight:800;letter-spacing:-.03em;background:linear-gradient(135deg,#e2e8f0 0%,#a5b4fc 50%,#7dd3fc 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:1rem}
+.sub{font-size:1.15rem;color:#94a3b8;max-width:620px;margin:0 auto 2.5rem}
+.cta{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}
+.btn{padding:.7rem 1.5rem;border-radius:.5rem;font-size:.95rem;font-weight:600;cursor:pointer;border:none;transition:all .2s}
+.btn-primary{background:linear-gradient(135deg,#6366f1,#7c3aed);color:#fff}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(99,102,241,.4)}
+.btn-outline{background:transparent;border:1px solid rgba(148,163,184,.3);color:#94a3b8}
+.btn-outline:hover{border-color:#a5b4fc;color:#a5b4fc}
+section{padding:5rem 1.5rem;max-width:1100px;margin:0 auto}
+.section-label{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:#6366f1;font-weight:600;margin-bottom:.75rem}
+h2{font-size:clamp(1.5rem,3vw,2.25rem);font-weight:700;margin-bottom:1rem;letter-spacing:-.02em}
+.threat{background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:1rem;padding:2rem;margin-bottom:2rem}
+.threat h3{color:#f87171;margin-bottom:.5rem;font-size:1.1rem}
+.threat p{color:#94a3b8;font-size:.95rem}
+.demo-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:2rem}
+@media(max-width:700px){.demo-layout{grid-template-columns:1fr}}
+.terminal{background:#0f172a;border:1px solid rgba(148,163,184,.12);border-radius:.75rem;overflow:hidden}
+.term-bar{background:#1e293b;padding:.5rem 1rem;display:flex;align-items:center;gap:.4rem;font-size:.75rem;color:#64748b}
+.dot{width:10px;height:10px;border-radius:50%}
+.term-body{padding:1.25rem;font-family:'JetBrains Mono','Fira Code',monospace;font-size:.8rem;min-height:240px}
+.line{margin-bottom:.3rem;white-space:pre-wrap}
+.prompt{color:#7dd3fc}
+.cmd{color:#e2e8f0}
+.allow{color:#4ade80}
+.block{color:#f87171}
+.json-key{color:#a5b4fc}
+.json-str{color:#34d399}
+.json-red{color:#f87171}
+.dim{color:#64748b}
+.cursor{display:inline-block;width:8px;height:14px;background:#7dd3fc;animation:blink .8s step-end infinite;vertical-align:middle}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.hidden{display:none}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(148,163,184,.1);border-radius:1rem;overflow:hidden;margin-top:2rem}
+@media(max-width:700px){.flow{grid-template-columns:1fr 1fr}}
+.flow-step{background:#0f172a;padding:1.5rem 1rem;text-align:center}
+.flow-icon{font-size:1.8rem;margin-bottom:.75rem}
+.flow-title{font-size:.85rem;font-weight:700;color:#e2e8f0;margin-bottom:.4rem}
+.flow-desc{font-size:.75rem;color:#64748b}
+.compare{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-top:2rem}
+.compare-card{background:#0f172a;border:1px solid rgba(148,163,184,.1);border-radius:.75rem;padding:1.25rem}
+.compare-card h4{font-size:.85rem;font-weight:700;color:#94a3b8;margin-bottom:.5rem}
+.compare-card p{font-size:.8rem;color:#64748b}
+.compare-card.highlight{border-color:rgba(99,102,241,.4);background:rgba(99,102,241,.05)}
+.compare-card.highlight h4{color:#a5b4fc}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-top:3rem}
+.stat{text-align:center;padding:1.5rem;background:rgba(99,102,241,.06);border:1px solid rgba(99,102,241,.15);border-radius:.75rem}
+.stat-n{font-size:2rem;font-weight:800;color:#a5b4fc}
+.stat-l{font-size:.75rem;color:#64748b;margin-top:.25rem}
+.claim{background:rgba(16,185,129,.06);border:1px solid rgba(16,185,129,.2);border-radius:1rem;padding:2rem;margin-top:2rem}
+.claim h3{color:#34d399;margin-bottom:.75rem;font-size:1rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.claim p{color:#94a3b8;font-size:.95rem;margin-bottom:.75rem}
+.claim p:last-child{margin:0}
+.not-claim{background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.15);border-radius:1rem;padding:1.5rem;margin-top:1rem}
+.not-claim h3{color:#f87171;margin-bottom:.75rem;font-size:.9rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.not-claim ul{list-style:none;padding:0}
+.not-claim li{color:#94a3b8;font-size:.85rem;padding:.2rem 0;padding-left:1rem;position:relative}
+.not-claim li::before{content:"—";position:absolute;left:0;color:#ef4444}
+footer{text-align:center;padding:3rem 1.5rem;border-top:1px solid rgba(148,163,184,.1);color:#475569;font-size:.85rem}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="hero">
+  <div class="badge">Linux Kernel Security · Lab Research</div>
+  <h1>Agent Exec Guard</h1>
+  <p class="sub">A seccomp user-notify + Landlock execution policy layer for OpenHands AI agents. Every <code style="font-family:monospace;color:#7dd3fc">execve</code> decision is explicit. The model cannot self-report past the kernel boundary.</p>
+  <div class="cta">
+    <button class="btn btn-primary" onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})">Watch the Demo</button>
+    <button class="btn btn-outline" onclick="document.getElementById('proof').scrollIntoView({behavior:'smooth'})">View Proof Chain</button>
+  </div>
+</div>
+
+<section>
+  <div class="section-label">The Problem</div>
+  <h2>OpenHands executes arbitrary binaries inside its sandbox.</h2>
+  <div class="threat">
+    <h3>⚠ Unconstrained exec inside the container</h3>
+    <p>Docker's default seccomp profile blocks ~44 dangerous syscalls but does <strong>not restrict execve</strong>. An AI agent that issues a bash command can run anything present in the container — including tools the operator never intended to allow. The model's self-reported behavior cannot be verified at the execution boundary.</p>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-n">0</div><div class="stat-l">execve restrictions in Docker default seccomp</div></div>
+    <div class="stat"><div class="stat-n">130</div><div class="stat-l">exec decisions logged in one OpenHands demo run</div></div>
+    <div class="stat"><div class="stat-n">10</div><div class="stat-l">sprint proof chain</div></div>
+    <div class="stat"><div class="stat-n">22</div><div class="stat-l">independent audits across the sprint chain</div></div>
+  </div>
+</section>
+
+<section id="demo">
+  <div class="section-label">Live Demonstration</div>
+  <h2>Frontier model issues the command. The kernel enforces the policy.</h2>
+  <div class="demo-layout">
+    <div class="terminal">
+      <div class="term-bar"><span class="dot" style="background:#ef4444"></span><span class="dot" style="background:#f59e0b"></span><span class="dot" style="background:#22c55e"></span><span style="margin-left:.5rem">OpenHands Agent Trajectory</span></div>
+      <div class="term-body" id="traj">
+        <div class="line dim"># CodeActAgent driven by gpt-5.2</div>
+        <div class="line dim"># Agent issues execute_bash actions</div>
+        <div class="line" id="t1" style="display:none"><span class="prompt">agent&gt;</span> <span class="cmd">cat input.txt</span></div>
+        <div class="line" id="t2" style="display:none"><span style="color:#4ade80">sprint8-frontier-file</span></div>
+        <div class="line" id="t3" style="display:none" style="margin-top:.5rem"><span class="prompt">agent&gt;</span> <span class="cmd">cp /usr/bin/rm ./python3 &amp;&amp;</span></div>
+        <div class="line" id="t4" style="display:none"><span class="cmd" style="padding-left:2rem">chmod +x ./python3 &amp;&amp; ./python3 --version</span></div>
+        <div class="line" id="t5" style="display:none"><span class="block">bash: ./python3: Operation not permitted</span></div>
+        <div class="line" id="t6" style="display:none"><span class="block">exit_code=126</span></div>
+        <div class="cursor" id="tcursor"></div>
+      </div>
+    </div>
+    <div class="terminal">
+      <div class="term-bar"><span class="dot" style="background:#ef4444"></span><span class="dot" style="background:#f59e0b"></span><span class="dot" style="background:#22c55e"></span><span style="margin-left:.5rem">Guard Audit Stream (stderr)</span></div>
+      <div class="term-body" id="audit">
+        <div class="line dim"># usernotify_exec_guard audit JSON</div>
+        <div class="line dim"># supervisor-owned fd — child cannot forge</div>
+        <div id="a1" style="display:none">
+          <div class="line" style="margin-top:.5rem"><span class="allow">ALLOW</span></div>
+          <div class="line"><span class="json-key">"event"</span>: <span class="json-str">"exec_decision"</span>,</div>
+          <div class="line"><span class="json-key">"decision"</span>: <span class="allow">"ALLOW"</span>,</div>
+          <div class="line"><span class="json-key">"raw_exe"</span>: <span class="json-str">"/usr/bin/cat"</span>,</div>
+          <div class="line"><span class="json-key">"realpath"</span>: <span class="json-str">"/usr/bin/cat"</span>,</div>
+          <div class="line"><span class="json-key">"reason"</span>: <span class="json-str">"policy_allow"</span></div>
+        </div>
+        <div id="a2" style="display:none">
+          <div class="line" style="margin-top:.5rem"><span class="block">BLOCK</span></div>
+          <div class="line"><span class="json-key">"event"</span>: <span class="json-str">"exec_decision"</span>,</div>
+          <div class="line"><span class="json-key">"decision"</span>: <span class="block">"BLOCK"</span>,</div>
+          <div class="line"><span class="json-key">"raw_exe"</span>: <span class="json-red">"./python3"</span>,</div>
+          <div class="line"><span class="json-key">"reason"</span>: <span class="json-red">"blocked_executable_identity"</span>,</div>
+          <div class="line"><span class="json-key">"sha256"</span>: <span class="json-str">"532a47..."</span></div>
+        </div>
+        <div class="cursor" id="acursor"></div>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:1.5rem">
+    <button class="btn btn-primary" id="playBtn" onclick="runDemo()">▶ Run Demo</button>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">Policy Workflow</div>
+  <h2>Observe. Generate. Review. Enforce.</h2>
+  <p style="color:#94a3b8;max-width:600px">Sprint 10 closed the hardcoded-policy gap. Real guard audit logs from a live agent session drive automatic YAML policy generation. A human reviews before any enforcement.</p>
+  <div class="flow">
+    <div class="flow-step"><div class="flow-icon">👁</div><div class="flow-title">Observe</div><div class="flow-desc">Run agent in guarded session. Every exec logged to audit stream.</div></div>
+    <div class="flow-step"><div class="flow-icon">⚙️</div><div class="flow-title">Generate</div><div class="flow-desc">ALLOW records → reviewable YAML. BLOCK records preserved separately.</div></div>
+    <div class="flow-step"><div class="flow-icon">🔍</div><div class="flow-title">Review</div><div class="flow-desc">Human approves proposed allowlist. Any ALLOW/BLOCK overlap excluded.</div></div>
+    <div class="flow-step"><div class="flow-icon">🔒</div><div class="flow-title">Enforce</div><div class="flow-desc">Compiled JSON → guard. Anything outside policy blocked at exec time.</div></div>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">Comparison</div>
+  <h2>Additive, not a replacement.</h2>
+  <div class="compare">
+    <div class="compare-card"><h4>Docker seccomp (default)</h4><p>Broad compatibility baseline. Blocks ~44 dangerous syscalls. Does not restrict execve to agent-specific policy.</p></div>
+    <div class="compare-card"><h4>gVisor / Firecracker</h4><p>Stronger kernel isolation. Different deployment model. Does not provide per-agent executable identity policy.</p></div>
+    <div class="compare-card"><h4>E2B / bubblewrap</h4><p>Sandboxed execution environments. No per-binary identity enforcement tied to the agent policy surface.</p></div>
+    <div class="compare-card highlight"><h4>Agent Exec Guard (this lab)</h4><p>Lightweight additive layer around existing OpenHands Docker runtime. Every execve decision is explicit, identity-verified, and audited. Works under default Docker seccomp, no CAP_SYS_ADMIN required.</p></div>
+  </div>
+</section>
+
+<section id="proof">
+  <div class="section-label">Proof Chain</div>
+  <h2>Ten sprints. Twenty-two independent audits.</h2>
+  <div style="overflow-x:auto;margin-top:1.5rem">
+    <table style="width:100%;border-collapse:collapse;font-size:.85rem">
+      <thead><tr style="border-bottom:1px solid rgba(148,163,184,.15);color:#64748b;text-align:left">
+        <th style="padding:.5rem 1rem">Sprint</th><th style="padding:.5rem 1rem">Claim</th><th style="padding:.5rem 1rem">Result</th>
+      </tr></thead>
+      <tbody id="sprints"></tbody>
+    </table>
+  </div>
+  <div class="claim">
+    <h3>✓ Current Strongest Claim</h3>
+    <p>On the prepared lab machine, a pinned OpenHands 1.6.0 headless <code style="font-family:monospace;color:#7dd3fc">CodeActAgent</code> loop driven by OpenAI <code style="font-family:monospace;color:#7dd3fc">gpt-5.2</code> can issue real <code style="font-family:monospace;color:#7dd3fc">execute_bash</code> tool calls through the OpenHands Docker runtime action server, while a seccomp user-notify plus Landlock guard wraps that action server, allows approved executable identities, blocks a copied <code style="font-family:monospace;color:#f87171">/usr/bin/rm</code> renamed to <code style="font-family:monospace;color:#f87171">./python3</code>, and returns <code style="font-family:monospace;color:#f87171">Operation not permitted</code> through the OpenHands trajectory.</p>
+    <p>Real guard audit logs from a live run generate reviewable YAML policy, compile to guard JSON, and rerun the demo successfully under the generated policy while preserving the block assertion.</p>
+  </div>
+  <div class="not-claim">
+    <h3>✗ Not Claimed</h3>
+    <ul>
+      <li>Production-grade sandbox security</li>
+      <li>Full OpenHands web UI or non-CmdRunAction coverage</li>
+      <li>Complete F_CONT TOCTOU closure</li>
+      <li>Read / write / network isolation</li>
+      <li>Automatic policy approval without human review</li>
+      <li>Signed or tamper-proof audit logs</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <p>Agent Exec Guard · Public research artifact · Proof artifacts preserved in this repository</p>
+  <p style="margin-top:.5rem">Guard source: <code style="font-family:monospace">842a687b...</code> stable since Sprint 7 · F4 TOCTOU deferred and disclosed</p>
+</footer>
+
+<script>
+const sprints=[
+  ["S1","Raw seccomp user-notify mechanism proof","Partial PASS"],
+  ["S2","Basename/symlink/PATH identity hardening","PASS · pass=12"],
+  ["S3","Landlock execute underlay — file-level rules","PASS · pass=12"],
+  ["S4","Audit integrity: fd separation, signal handler, AF_ALG SHA256","PASS · pass=22"],
+  ["S5","Docker container: default seccomp composes cleanly","PASS · pass=11"],
+  ["S6A","OpenHands runtime one-file proof","PASS · pass=13"],
+  ["S6B","Action server — real /execute_action HTTP path","PASS · pass=15"],
+  ["S7","Headless CodeActAgent loop, deterministic fake LLM","PASS · pass=7"],
+  ["S8","Frontier model (gpt-5.2) drives real execute_bash actions","PASS · pass=10"],
+  ["S9","Productized demo: YAML policy + one-command runner","PASS · pass=14"],
+  ["S10","Observe/generate/review/enforce policy workflow","PASS · pass=11"],
+];
+const tb=document.getElementById('sprints');
+sprints.forEach(([s,c,r])=>{
+  const ok=r.startsWith('PASS');
+  tb.innerHTML+=`<tr style="border-bottom:1px solid rgba(148,163,184,.07)">
+    <td style="padding:.6rem 1rem;color:#a5b4fc;font-weight:700">${s}</td>
+    <td style="padding:.6rem 1rem;color:#94a3b8">${c}</td>
+    <td style="padding:.6rem 1rem;color:${ok?'#4ade80':'#f87171'}">${r}</td>
+  </tr>`;
+});
+
+let running=false;
+function show(id,delay){return new Promise(r=>setTimeout(()=>{document.getElementById(id).style.display='block';r()},delay))}
+async function runDemo(){
+  if(running)return;
+  running=true;
+  document.getElementById('playBtn').disabled=true;
+  document.getElementById('playBtn').textContent='Running…';
+  ['t1','t2','t3','t4','t5','t6','a1','a2'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none'});
+  await show('t1',400);
+  await show('a1',800);
+  await show('t2',1200);
+  await new Promise(r=>setTimeout(r,800));
+  await show('t3',200);
+  await show('t4',400);
+  await new Promise(r=>setTimeout(r,700));
+  await show('a2',200);
+  await show('t5',600);
+  await show('t6',200);
+  document.getElementById('playBtn').disabled=false;
+  document.getElementById('playBtn').textContent='▶ Run Again';
+  running=false;
+}
+</script>
+</body>
+</html>

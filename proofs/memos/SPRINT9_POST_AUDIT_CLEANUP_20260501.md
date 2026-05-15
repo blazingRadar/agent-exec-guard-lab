@@ -118,4 +118,4 @@ This does not change the claim boundary. The test remains prescribed, not organi
 
 ## Claim After Cleanup
 
-Sprint 9 is a guided private demo, not a public self-serve installer. On the prepared lab machine, the runner now derives the repo root dynamically, performs preflight checks, compiles YAML policy, rejects invalid policy cases, launches the pinned OpenHands/GPT path, appends aggregate pass/fail summary, attempts container cleanup, and preserves both failed and passing run artifacts.
+Sprint 9 is a guided prepared-lab demo, not a public self-serve installer. On the prepared lab machine, the runner now derives the repo root dynamically, performs preflight checks, compiles YAML policy, rejects invalid policy cases, launches the pinned OpenHands/GPT path, appends aggregate pass/fail summary, attempts container cleanup, and preserves both failed and passing run artifacts.

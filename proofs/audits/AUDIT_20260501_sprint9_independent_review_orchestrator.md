@@ -8,7 +8,7 @@ Source: user-provided consolidated audit notes from Sprint 9 audit agents.
 
 Sprint 9 core proof is supported.
 
-It is CTO-ready as a guided/private portfolio demo.
+It is review-ready as a guided/prepared-lab prepared-lab demo.
 
 It is not yet honest as a public self-serve "clone and run one command" demo.
 
@@ -19,7 +19,7 @@ It is not yet honest as a public self-serve "clone and run one command" demo.
 The first Sprint 9 runner and docs were tied to this lab machine:
 
 - hardcoded `/home/blazingradar/agent-exec-guard-lab`;
-- private env-file example in docs;
+- local env-file example in docs;
 - existing `external/OpenHands-1.6.0` assumption;
 - existing Python/OpenHands replay environment assumption.
 
@@ -58,7 +58,7 @@ Sprint 9 post-audit cleanup should:
 
 1. remove local hardcoded repo path from the demo runner;
 2. remove local hardcoded repo path from the Sprint 8 replay path used by the demo;
-3. replace private env-file examples with generic `OPENAI_API_KEY` / `.env.local` instructions;
+3. replace local env-file examples with generic `OPENAI_API_KEY` / `.env.local` instructions;
 4. add preflight checks for Docker and pinned OpenHands source;
 5. add runner-managed container cleanup;
 6. append aggregate pass/fail summary;

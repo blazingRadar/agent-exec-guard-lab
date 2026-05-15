@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -u
 
-ROOT="/home/blazingradar/agent-exec-guard-lab"
+ROOT="${AEG_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 GUARD="$ROOT/bin/usernotify_exec_guard"
 SRC="$ROOT/src/usernotify_exec_guard.c"
 POLICY="$ROOT/policy/sprint2.allow.json"

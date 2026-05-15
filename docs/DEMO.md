@@ -22,7 +22,7 @@ The optional env file is loaded locally and its contents are not copied into pro
 
 ## Prerequisites
 
-This is currently a guided private demo path, not a public self-serve clone-and-run release.
+This is currently a guided prepared-lab demo path, not a public self-serve clone-and-run release.
 
 Required local state:
 

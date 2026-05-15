@@ -12,7 +12,9 @@ The demo wraps the pinned OpenHands 1.6.0 headless `CodeActAgent` action server 
 - Not a fix for every `SECCOMP_USER_NOTIF_FLAG_CONTINUE` TOCTOU case.
 - Not a public self-serve clone-and-run package yet.
 
-This is a guided, private proof that an agent runtime can be governed below the model/tool layer: the model cannot self-report past the execution boundary.
+This is a guided proof that an agent runtime can be governed below the model/tool layer: the model cannot self-report past the execution boundary.
+
+Start with `PUBLICATION_MANIFEST.md` for the public claim boundary, included artifacts, hygiene notes, and verification surface. For a visual overview, open `demo/index.html`.
 
 ## Demonstrated Result
 
@@ -83,6 +85,8 @@ export OPENAI_API_KEY=...
 
 See:
 
+- [PUBLICATION_MANIFEST.md](PUBLICATION_MANIFEST.md)
+- [demo/index.html](demo/index.html)
 - [docs/DEMO.md](docs/DEMO.md)
 - [docs/POLICY_WORKFLOW.md](docs/POLICY_WORKFLOW.md)
 - [proofs/index/AUDIT_HISTORY_INDEX_20260501.md](proofs/index/AUDIT_HISTORY_INDEX_20260501.md)
@@ -96,7 +100,8 @@ scripts/demo/         guided OpenHands demo and policy workflow runners
 scripts/integration/  replay harnesses for Docker/OpenHands integration
 scripts/policy/       YAML policy compiler and observed-policy generator
 policy/               hand-authored and integration policy files
-docs/                 current docs; old planning notes live under docs/archive/
+docs/                 current docs and retained proof-planning notes
+demo/                 static visual overview of the lab claim and proof chain
 proofs/               audit trail, split into audits, gates, memos, command logs, and runs
 ```
 

@@ -265,7 +265,7 @@ Sprint 8 gate already pre-registered (`1699bac Pre-register Sprint 8 frontier mo
 
 Before Sprint 8 begins, I'd recommend pre-Sprint-8 hardening of the Sprint 7 harness shape (this is what would distinguish "demo-ready" from "ship-ready"):
 
-1. Fix F-S7-1 (clear or per-run-scope the OpenHands session). Otherwise a frontier-model run will inherit the same brittleness, and a CTO-facing demo could open a session and produce 0 LLM calls.
+1. Fix F-S7-1 (clear or per-run-scope the OpenHands session). Otherwise a frontier-model run will inherit the same brittleness, and a review-facing demo could open a session and produce 0 LLM calls.
 2. Tighten F-S7-2 (`openhands_observed_denial` should assert on the trajectory event, not a `grep -R`).
 3. Decide on F-S7-3/F-S7-4 (lock down the fake LLM endpoint with a token, or move to a UNIX socket so non-loopback sniffing is impossible).
 4. Add the one-sentence frontier-model behavioral caveat to the proof memo (§8.2).
@@ -273,7 +273,7 @@ Before Sprint 8 begins, I'd recommend pre-Sprint-8 hardening of the Sprint 7 har
 For the Sprint 7 boundary itself: this **is** the sprint that closes the (a)→(b) gap at the agent layer. The remaining "demo-ready vs ship-ready" gap is:
 
 - Ship-ready needs Sprint 8 (frontier model) at minimum, plus a non-bind-mounted production-shaped image, plus YAML observe→generate→enforce policy workflow (the `notes/POST_SPRINT7_POLICY_CONFIG_PLAN_20260501.md` plan), plus F4 closure or a clear documented mitigation.
-- Demo-ready: with the F-S7-1 reproducibility fix, Sprint 7 already supports a 2-minute live demo: `./scripts/integration/replay_sprint7_headless_agent.sh`, watch the harness boot the OpenHands runtime under the guard, fake-LLM dispatch `cat input.txt` (allowed), then `cp /usr/bin/rm ./python3 && ./python3 --version` (BLOCK), see "Operation not permitted" returned through OpenHands trajectory and `pass=7 fail=0`. Ran end-to-end in ~80 seconds in my reproduction. **Yes, the candidate can run this in front of a CTO and have it complete with a clear ALLOW/BLOCK trajectory.**
+- Demo-ready: with the F-S7-1 reproducibility fix, Sprint 7 already supports a 2-minute live demo: `./scripts/integration/replay_sprint7_headless_agent.sh`, watch the harness boot the OpenHands runtime under the guard, fake-LLM dispatch `cat input.txt` (allowed), then `cp /usr/bin/rm ./python3 && ./python3 --version` (BLOCK), see "Operation not permitted" returned through OpenHands trajectory and `pass=7 fail=0`. Ran end-to-end in ~80 seconds in my reproduction. **Yes, the operator can run this in front of an external reviewer and have it complete with a clear ALLOW/BLOCK trajectory.**
 
 ## 10. Honest Headline Tightening
 

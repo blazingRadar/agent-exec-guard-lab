@@ -2,11 +2,11 @@
 
 Date: 2026-05-01
 
-Purpose: single-file index of the sprint gates, proof memos, command logs, independent audits, and preserved run artifacts currently backed up in the private GitHub repository.
+Purpose: single-file index of the sprint gates, proof memos, command logs, independent audits, and preserved run artifacts in this repository.
 
 Repo: `https://github.com/blazingRadar/agent-exec-guard-lab`
 
-Verified GitHub visibility at time of writing: `PRIVATE`
+Verified GitHub visibility at time of writing: historical value from original closeout. Current visibility should be checked with `gh repo view blazingRadar/agent-exec-guard-lab --json visibility`.
 
 Latest pushed head should be verified with `git ls-remote origin refs/heads/main` after each update. Current Sprint 10 work begins at:
 

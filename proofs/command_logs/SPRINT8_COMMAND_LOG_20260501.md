@@ -18,7 +18,7 @@ Pre-registration commit:
 
 ## Provider Discovery
 
-xAI was the primary provider candidate from the gate.
+xAI was the primary provider operator from the gate.
 
 Commands run:
 
@@ -52,7 +52,7 @@ Command shape:
 
 ```text
 set -a
-. /home/blazingradar/huddy/config/.env
+. .env.local
 set +a
 python OpenAI LiteLLM probe
 ```
@@ -73,7 +73,7 @@ Main replay command:
 
 ```text
 set -a
-. /home/blazingradar/huddy/config/.env
+. .env.local
 set +a
 ./scripts/integration/replay_sprint8_frontier_agent.sh
 ```

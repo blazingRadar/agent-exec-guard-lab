@@ -26,7 +26,7 @@ Out of scope:
 - OpenHands integration
 - public repo packaging
 - claims about production readiness
-- private governance/IP exposure
+- governance/IP exposure
 
 ## Running Log
 
@@ -82,7 +82,7 @@ The guard:
 - blocks unlisted executable paths with `EPERM`
 - emits one JSON audit line per decision
 
-This is intentionally a minimal public-demo-shaped guard. It does not expose private governance logic.
+This is intentionally a minimal public-demo-shaped guard. It does not expose governance logic.
 
 ### First Implementation Finding
 

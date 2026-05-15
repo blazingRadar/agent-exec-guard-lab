@@ -19,7 +19,7 @@ This is a make-it-work sprint. Iteration is allowed. Final claims remain strict:
 Primary provider:
 
 - xAI API through its OpenAI-compatible endpoint `https://api.x.ai/v1`
-- candidate model: `grok-4.20-reasoning` or the closest available Grok 4.20 model exposed to the local API key
+- operator model: `grok-4.20-reasoning` or the closest available Grok 4.20 model exposed to the local API key
 
 The provider/model selection must be preserved without leaking secrets:
 

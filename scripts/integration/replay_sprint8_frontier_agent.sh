@@ -73,7 +73,7 @@ import os
 import sys
 from pathlib import Path
 
-ROOT = Path(os.environ.get("SPRINT8_ROOT", "/home/blazingradar/agent-exec-guard-lab"))
+ROOT = Path(os.environ["SPRINT8_ROOT"])
 RUN_ROOT = Path(os.environ["SPRINT8_RUN_ROOT"])
 SOURCE_DIR = ROOT / "external" / "OpenHands-1.6.0"
 POLICY = os.environ.get(

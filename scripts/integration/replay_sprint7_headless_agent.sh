@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -u
 
-ROOT="/home/blazingradar/agent-exec-guard-lab"
+ROOT="${AEG_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
 SOURCE_DIR="$ROOT/external/OpenHands-1.6.0"
 SOURCE_COMMIT="c5e0de8ecd85cef10e7808d57e9f939f3770ab9d"
 RUN_ID="sprint7-headless-agent-$(date -u +%Y%m%dT%H%M%SZ)"
@@ -55,7 +55,7 @@ import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
-ROOT = Path("/home/blazingradar/agent-exec-guard-lab")
+ROOT = Path(os.environ["SPRINT7_ROOT"])
 RUN_ROOT = Path(os.environ["SPRINT7_RUN_ROOT"])
 SOURCE_DIR = ROOT / "external" / "OpenHands-1.6.0"
 POLICY = "/lab/policy/integration/openhands_action_server.allow.json"
@@ -282,7 +282,7 @@ if [ ! -x "$SPRINT7_PYTHON" ]; then
   SPRINT7_PYTHON="python3"
 fi
 
-SPRINT7_RUN_ROOT="$RUN_ROOT" sg docker -c "SPRINT7_RUN_ROOT='$RUN_ROOT' '$SPRINT7_PYTHON' '$RUN_ROOT/sprint7_headless_agent.py'" \
+SPRINT7_RUN_ROOT="$RUN_ROOT" SPRINT7_ROOT="$ROOT" sg docker -c "SPRINT7_RUN_ROOT='$RUN_ROOT' SPRINT7_ROOT='$ROOT' '$SPRINT7_PYTHON' '$RUN_ROOT/sprint7_headless_agent.py'" \
   >"$RUN_ROOT/headless_agent.stdout" 2>"$RUN_ROOT/headless_agent.stderr"
 agent_rc=$?
 printf '%s\n' "$agent_rc" >"$RUN_ROOT/headless_agent.exit_code"

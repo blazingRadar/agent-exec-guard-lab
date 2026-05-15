@@ -55,7 +55,7 @@ the rest of the audit-trail hardening derived from the Sprint 2 audits (Φ_E).
 
 ---
 
-## R₂ — Candidate Fixes
+## R₂ — Possible Fixes
 
 ### Φ_A — Landlock underlay
 
